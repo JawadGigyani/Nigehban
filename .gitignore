@@ -16,8 +16,6 @@ dist/
 data/*
 !data/contracts/
 !data/reference/
-data/reference/*
-!data/reference/README.md
 *.db
 *.sqlite
 

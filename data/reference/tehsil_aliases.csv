@@ -1,0 +1,94 @@
+level,alias,district_slug,tehsil_id,source,note
+tehsil,Bar Chamarkand,bajaur,bajaur__bar_chamarkand,cod,PK50201
+tehsil,Barang,bajaur,bajaur__barang,cod,PK50202
+tehsil,Khar,bajaur,bajaur__khar,cod,PK50203
+tehsil,Mamund,bajaur,bajaur__mamund,cod,PK50204
+tehsil,Nawagai,bajaur,bajaur__nawagai,cod,PK50205
+tehsil,Salarzai,bajaur,bajaur__salarzai,cod,PK50206
+tehsil,Utman Khel,bajaur,bajaur__utman_khel,cod,PK50207
+tehsil,Allai,battagram,battagram__allai,cod,PK50401
+tehsil,Batagram,battagram,battagram__batagram,cod,PK50402
+tehsil,Daggar,buner,buner__daggar,cod,PK50501
+tehsil,Gagra,buner,buner__gagra,cod,PK50502
+tehsil,Khado Khel,buner,buner__khado_khel,cod,PK50503
+tehsil,Mandanr,buner,buner__mandanr,cod,PK50504
+tehsil,Chitral,lower_chitral,lower_chitral__chitral,cod,PK50701
+tehsil,Drosh,lower_chitral,lower_chitral__drosh,cod,PK50702
+tehsil,Lotkoh,lower_chitral,lower_chitral__lotkoh,cod,PK50703
+tehsil,Adenzai,lower_dir,lower_dir__adenzai,cod,PK52001
+tehsil,Balambat,lower_dir,lower_dir__balambat,cod,PK52002
+tehsil,Lalqila,lower_dir,lower_dir__lalqila,cod,PK52003
+tehsil,Munda,lower_dir,lower_dir__munda,cod,PK52004
+tehsil,Samarbagh,lower_dir,lower_dir__samarbagh,cod,PK52005
+tehsil,Timergara,lower_dir,lower_dir__timergara,cod,PK52006
+tehsil,Bat Khela,malakand,malakand__bat_khela,cod,PK52101
+tehsil,Dargai,malakand,malakand__dargai,cod,PK52102
+tehsil,Baffa Pakhal,mansehra,mansehra__baffa_pakhal,cod,PK52204
+tehsil,Bala Kot,mansehra,mansehra__bala_kot,cod,PK52201
+tehsil,Darband,mansehra,mansehra__darband,cod,PK52205
+tehsil,Mansehra,mansehra,mansehra__mansehra,cod,PK52202
+tehsil,Oghi,mansehra,mansehra__oghi,cod,PK52203
+tehsil,Alpuri,shangla,shangla__alpuri,cod,PK52901
+tehsil,Bisham,shangla,shangla__bisham,cod,PK52902
+tehsil,Chakisar,shangla,shangla__chakisar,cod,PK52903
+tehsil,Makhuzai,shangla,shangla__makhuzai,cod,PK52904
+tehsil,Martoong,shangla,shangla__martoong,cod,PK52905
+tehsil,Puran,shangla,shangla__puran,cod,PK52906
+tehsil,Babuzai,swat,swat__babuzai,cod,PK53201
+tehsil,Bahrain,swat,swat__bahrain,cod,PK53202
+tehsil,Barikot,swat,swat__barikot,cod,PK53203
+tehsil,Charbagh,swat,swat__charbagh,cod,PK53204
+tehsil,Kabal,swat,swat__kabal,cod,PK53205
+tehsil,Kalam,swat,swat__kalam,cod,PK53206
+tehsil,Khwaza Khela,swat,swat__khwaza_khela,cod,PK53207
+tehsil,Matta Kharirai,swat,swat__matta_kharirai,cod,PK53208
+tehsil,Matta Sebujni,swat,swat__matta_sebujni,cod,PK53209
+tehsil,Mastuj,upper_chitral,upper_chitral__mastuj,cod,PK50801
+tehsil,Mulkhow,upper_chitral,upper_chitral__mulkhow,cod,PK50802
+tehsil,Barawal,upper_dir,upper_dir__barawal,cod,PK53501
+tehsil,Dir,upper_dir,upper_dir__dir,cod,PK53502
+tehsil,Kalkot,upper_dir,upper_dir__kalkot,cod,PK53503
+tehsil,Khall,upper_dir,upper_dir__khall,cod,PK53504
+tehsil,Larjam,upper_dir,upper_dir__larjam,cod,PK53507
+tehsil,Shrengal,upper_dir,upper_dir__shrengal,cod,PK53505
+tehsil,Wari,upper_dir,upper_dir__wari,cod,PK53506
+tehsil,Bar Chamer Kand,bajaur,bajaur__bar_chamarkand,census_fuzzy,census 2023 tehsil; matches 'Bar Chamarkand' (92)
+tehsil,Barang,bajaur,bajaur__barang,census_same,census 2023 tehsil
+tehsil,Khar Bajaur,bajaur,bajaur__khar,census_hq_point,"census 2023 tehsil; HQ 'Khar Bajaur' (town) at 34.735,71.52506"
+tehsil,Mamund,bajaur,bajaur__mamund,census_same,census 2023 tehsil
+tehsil,Nawagai,bajaur,bajaur__nawagai,census_same,census 2023 tehsil
+tehsil,Salarzai,bajaur,bajaur__salarzai,census_same,census 2023 tehsil
+tehsil,Utman Khel,bajaur,bajaur__utman_khel,census_same,census 2023 tehsil
+tehsil,Batagram,battagram,battagram__batagram,census_same,census 2023 tehsil
+tehsil,Daggar,buner,buner__daggar,census_same,census 2023 tehsil
+tehsil,Gagra,buner,buner__gagra,census_same,census 2023 tehsil
+tehsil,Khado Khel,buner,buner__khado_khel,census_same,census 2023 tehsil
+tehsil,Mandanr,buner,buner__mandanr,census_same,census 2023 tehsil
+tehsil,Chitral,lower_chitral,lower_chitral__chitral,census_same,census 2023 sub_division
+tehsil,Drosh,lower_chitral,lower_chitral__drosh,census_same,census 2023 sub_division
+tehsil,Adenzai,lower_dir,lower_dir__adenzai,census_same,census 2023 sub_division
+tehsil,Lal Qila,lower_dir,lower_dir__lalqila,census_same,census 2023 sub_division
+tehsil,Samarbagh,lower_dir,lower_dir__samarbagh,census_same,census 2023 sub_division
+tehsil,Temergara,lower_dir,lower_dir__timergara,census_fuzzy,census 2023 sub_division; matches 'Timergara' (89)
+tehsil,Baffa Pakhal,mansehra,mansehra__baffa_pakhal,census_same,census 2023 tehsil
+tehsil,Balakot,mansehra,mansehra__bala_kot,census_same,census 2023 tehsil
+tehsil,Darband,mansehra,mansehra__darband,census_same,census 2023 tehsil
+tehsil,Mansehra,mansehra,mansehra__mansehra,census_same,census 2023 tehsil
+tehsil,Oghi,mansehra,mansehra__oghi,census_same,census 2023 tehsil
+tehsil,Alpuri,shangla,shangla__alpuri,census_same,census 2023 tehsil
+tehsil,Bisham,shangla,shangla__bisham,census_same,census 2023 tehsil
+tehsil,Chakisar,shangla,shangla__chakisar,census_same,census 2023 tehsil
+tehsil,Martung,shangla,shangla__martoong,census_fuzzy,census 2023 tehsil; matches 'Martoong' (80)
+tehsil,Puran,shangla,shangla__puran,census_same,census 2023 tehsil
+tehsil,Babuzai,swat,swat__babuzai,census_same,census 2023 tehsil
+tehsil,Barikot,swat,swat__barikot,census_same,census 2023 tehsil
+tehsil,Behrain,swat,swat__bahrain,census_fuzzy,census 2023 tehsil; matches 'Bahrain' (86)
+tehsil,Charbagh,swat,swat__charbagh,census_same,census 2023 tehsil
+tehsil,Kabal,swat,swat__kabal,census_same,census 2023 tehsil
+tehsil,Khawazakhela,swat,swat__khwaza_khela,census_fuzzy,census 2023 tehsil; matches 'Khwaza Khela' (96)
+tehsil,Matta,swat,swat__matta_kharirai,census_hq_point,"census 2023 tehsil; HQ 'Matta' (town) at 34.92558,72.41443"
+tehsil,Mastuj,upper_chitral,upper_chitral__mastuj,census_same,census 2023 sub_division
+tehsil,Dir,upper_dir,upper_dir__dir,census_same,census 2023 sub_division
+tehsil,Larjum,upper_dir,upper_dir__larjam,census_fuzzy,census 2023 sub_division; matches 'Larjam' (83)
+tehsil,Sharingal,upper_dir,upper_dir__shrengal,census_fuzzy,census 2023 sub_division; matches 'Shrengal' (82)
+tehsil,Wari,upper_dir,upper_dir__wari,census_same,census 2023 sub_division

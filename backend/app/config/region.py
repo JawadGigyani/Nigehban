@@ -24,9 +24,10 @@ class BoundingBox:
 
 @dataclass(frozen=True)
 class District:
-    name: str
+    name: str  # the spelling PDMA uses
     slug: str
     is_ardc: bool = False  # merged district under the ARDC framework
+    cod_name: str | None = None  # spelling in OCHA COD-AB, when different
 
 
 CANDIDATE_DISTRICTS: tuple[District, ...] = (
@@ -38,20 +39,24 @@ CANDIDATE_DISTRICTS: tuple[District, ...] = (
     District("Bajaur", "bajaur", is_ardc=True),
     District("Malakand", "malakand"),
     District("Mansehra", "mansehra"),
-    District("Battagram", "battagram"),
+    District("Battagram", "battagram", cod_name="Batagram"),
 )
 
 # Districts whose events are extracted and stored but not used for training.
 OUT_OF_SCOPE_DISTRICTS: tuple[District, ...] = (
-    District("Chitral", "chitral"),  # glacial floods; phase 2
+    District("Upper Chitral", "upper_chitral", cod_name="Chitral Upper"),  # glacial; phase 2
+    District("Lower Chitral", "lower_chitral", cod_name="Chitral Lower"),  # glacial; phase 2
 )
 
 # Set at gate G1. Empty means "all candidates".
 PILOT_DISTRICTS: tuple[str, ...] = ()
 
-# Covers all candidate districts with a small margin. Confirmed against the
-# tehsil polygons in M4a.
-CANDIDATE_BBOX = BoundingBox(south=34.1, west=71.1, north=36.0, east=73.8)
+# Bounds of the in-scope tehsil polygons (71.173-74.127 E, 34.150-35.899 N,
+# from COD-AB in M4a) plus about 5 km. Mansehra reaches 74.13 E.
+CANDIDATE_BBOX = BoundingBox(south=34.10, west=71.12, north=35.95, east=74.18)
+
+# Every kept tehsil, including out-of-scope Chitral (up to 36.91 N).
+REGION_BBOX = BoundingBox(south=34.10, west=71.12, north=36.95, east=74.18)
 
 
 def active_districts() -> tuple[District, ...]:
@@ -65,6 +70,20 @@ def district_by_slug(slug: str) -> District:
         if district.slug == slug:
             return district
     raise KeyError(slug)
+
+
+def slugify(name: str) -> str:
+    """Lowercase ASCII slug: 'Matta Kharirai' -> 'matta_kharirai'."""
+
+    out, prev_us = [], False
+    for ch in name.strip().lower():
+        if ch.isascii() and ch.isalnum():
+            out.append(ch)
+            prev_us = False
+        elif not prev_us:
+            out.append("_")
+            prev_us = True
+    return "".join(out).strip("_")
 
 
 def make_tehsil_id(district_slug: str, tehsil_slug: str) -> str:

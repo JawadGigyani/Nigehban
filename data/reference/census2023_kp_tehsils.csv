@@ -1,0 +1,149 @@
+district,tehsil,unit_type,area_km2,pop_2023,pop_2017,urban_share
+Abbottabad,Abbottabad,tehsil,1285.0,1003339,939576,0.275
+Abbottabad,Havelian,tehsil,342.0,256754,235725,0.2198
+Abbottabad,Lora,tehsil,187.0,98717,97876,0.0
+Abbottabad,Lower Tanawal,tehsil,153.0,60262,59912,0.0
+Bajaur,Bar Chamer Kand,tehsil,13.0,3574,2868,0.0
+Bajaur,Barang,tehsil,159.0,90082,76493,0.0
+Bajaur,Khar Bajaur,tehsil,238.0,301778,246875,0.0
+Bajaur,Mamund,tehsil,250.0,358190,311373,0.0
+Bajaur,Nawagai,tehsil,216.0,93850,78494,0.0
+Bajaur,Salarzai,tehsil,220.0,316767,267636,0.0
+Bajaur,Utman Khel,tehsil,194.0,123719,107248,0.0
+Bannu,Bakka Khel,tehsil,367.0,192797,168300,0.0
+Bannu,Bannu,tehsil,228.0,644909,563374,0.075
+Bannu,Domel,tehsil,425.0,224428,208968,0.0
+Bannu,Kakki,tehsil,66.0,92021,82265,0.0
+Bannu,Meryan,tehsil,141.0,166473,144164,0.0
+Bannu,Wazir,sub_division,745.0,37262,43112,0.0
+Batagram,Ai,tehsil,804.0,218149,180502,0.0
+Batagram,Batagram,tehsil,497.0,335984,296247,0.0
+Buner,Chagharzai,tehsil,218.0,125949,109291,0.0
+Buner,Daggar,tehsil,290.0,192776,176049,0.0
+Buner,Gadezai,tehsil,472.0,197466,178760,0.0
+Buner,Gagra,tehsil,217.0,179087,160680,0.0
+Buner,Khado Khel,tehsil,343.0,136560,118072,0.0
+Buner,Mandanr,tehsil,325.0,185031,152608,0.0
+Charsadda,Charsadda,tehsil,445.0,909438,809660,0.1698
+Charsadda,Shabqadar,tehsil,204.0,440524,379952,0.2323
+Charsadda,Tangi,tehsil,347.0,485542,421348,0.0734
+Dera Ismail Khan,Daraban,tehsil,1540.0,149447,124318,0.0
+Dera Ismail Khan,Dera Ismail Khan,tehsil,1167.0,767979,730678,0.2872
+Dera Ismail Khan,Drazanda,sub_division,2008.0,82386,68506,0.0
+Dera Ismail Khan,Kulachi,tehsil,1229.0,102595,101892,0.2386
+Dera Ismail Khan,Paharpur,tehsil,1657.0,406467,362606,0.2158
+Dera Ismail Khan,Paroa,tehsil,1733.0,320937,305594,0.1309
+Hangu,Hangu,tehsil,669.0,280883,270399,0.1554
+Hangu,Tall,tehsil,428.0,248019,248412,0.1697
+Haripur,Ghazi,tehsil,595.0,151839,144917,0.0
+Haripur,Haripur,tehsil,834.0,836058,683411,0.1767
+Haripur,Khanpur,tehsil,296.0,186886,173187,0.0
+Karak,Banda Daud Shah,tehsil,1465.0,177744,155482,0.0
+Karak,Karak,tehsil,1299.0,339983,292829,0.1708
+Karak,Takht-e-nasrati,tehsil,607.0,298151,257051,0.0
+Khyber,Bara,tehsil,1430.0,548084,443449,0.0
+Khyber,Jamrud,tehsil,311.0,243290,227557,0.2328
+Khyber,Landi Kotal,tehsil,679.0,312313,273052,0.1219
+Khyber,Mulla Gori,tehsil,156.0,42580,40188,0.0
+Kohat,Darra Adam Khel,sub_division,446.0,139839,118839,0.0
+Kohat,Gumbat,tehsil,503.0,124530,112340,0.0
+Kohat,Kohat,tehsil,911.0,817610,736657,0.2885
+Kohat,Lachi,tehsil,1131.0,152682,143430,0.2807
+Kolai Palas Kohistan,Battaira,sub_division,170.0,142660,93879,0.0
+Kolai Palas Kohistan,Palas,sub_division,1240.0,137502,181044,0.0
+Kurram,Central Kurram F.r,tehsil,1470.0,358670,229007,0.0
+Kurram,Lower Kurram,tehsil,940.0,150945,133929,0.2643
+Kurram,Upper Kurram,tehsil,970.0,275819,252436,0.0202
+Lakki Marwat,Bettani,sub_division,132.0,35571,26394,0.0
+Lakki Marwat,Ghazni Khel,tehsil,1153.0,329775,295984,0.0
+Lakki Marwat,Lakki Marwat,tehsil,1388.0,341693,282890,0.2071
+Lakki Marwat,Sarai Naurang,tehsil,623.0,333817,296870,0.0968
+Lower Chitral,Chitral,sub_division,6127.0,211374,183178,0.2704
+Lower Chitral,Drosh,sub_division,331.0,109033,95150,0.0
+Lower Dir,Adenzai,sub_division,372.0,378915,317526,0.0
+Lower Dir,Lal Qila,sub_division,216.0,247381,219567,0.0
+Lower Dir,Samarbagh,sub_division,419.0,427714,378004,0.0
+Lower Dir,Temergara,sub_division,576.0,596173,520985,0.0803
+Lower Kohistan,Bankand Ranolia,tehsil,331.0,205851,56366,0.0
+Lower Kohistan,Pattan,sub_division,311.0,134166,146136,0.0
+Malakand,Sam Rani Zai,sub_division,280.0,353291,303644,0.0
+Malakand,Swat Rani Zai,sub_division,672.0,472959,414162,0.1555
+Mansehra,Baffa Pakhal,tehsil,640.0,460090,406183,0.0382
+Mansehra,Balakot,tehsil,2376.0,310339,273257,0.0
+Mansehra,Darband,tehsil,102.0,51702,49503,0.0
+Mansehra,Mansehra,tehsil,700.0,723325,611338,0.1898
+Mansehra,Oghi,tehsil,307.0,251721,215461,0.0
+Mardan,Ghari Kapoora,tehsil,143.0,319465,266290,0.0
+Mardan,Katlang,tehsil,422.0,377535,316506,0.0
+Mardan,Mardan,tehsil,335.0,1040893,921581,0.3538
+Mardan,Rustam,tehsil,379.0,279527,241850,0.0
+Mardan,Takht Bhai,tehsil,353.0,727478,627172,0.1169
+Mohmand,Ambar Utman Khel,tehsil,273.0,79455,61951,0.0
+Mohmand,Halim Zai,tehsil,211.0,89149,78705,0.0
+Mohmand,Pindiali,tehsil,454.0,112247,89711,0.0
+Mohmand,Prang Ghar,tehsil,257.0,36046,36569,0.0
+Mohmand,Safi,tehsil,322.0,109620,98501,0.0
+Mohmand,Upper Mohmand,tehsil,513.0,63659,51154,0.0
+Mohmand,Yake Ghund,tehsil,266.0,63757,57754,0.0
+North Waziristan,Datta Khel,tehsil,1807.0,92196,75003,0.0
+North Waziristan,Dossali,tehsil,250.0,50524,39945,0.0
+North Waziristan,Gharyum,tehsil,320.0,18931,11811,0.0
+North Waziristan,Ghulam Khan,tehsil,191.0,31015,27015,0.0
+North Waziristan,Mir Ali,tehsil,605.0,229647,184986,0.0
+North Waziristan,Miran Shah,tehsil,402.0,123317,100644,0.0335
+North Waziristan,Razmak,tehsil,191.0,49367,15681,0.0
+North Waziristan,Shewa,tehsil,393.0,44126,39290,0.0
+North Waziristan,Spinwam,tehsil,548.0,54209,46171,0.0
+Nowshera,Jehangira,tehsil,718.0,434984,353764,0.1995
+Nowshera,Nowshera,tehsil,679.0,796226,728815,0.2543
+Nowshera,Pabbi,tehsil,351.0,509495,438416,0.1034
+Orakzai,Central,tehsil,399.0,92819,59132,0.0
+Orakzai,Ismail Zai,tehsil,275.0,39328,23963,0.0
+Orakzai,Lower,tehsil,565.0,125944,107323,0.0
+Orakzai,Upper,tehsil,299.0,129470,63885,0.0
+Peshawar,Badhber,tehsil,357.0,439912,384916,0.0
+Peshawar,Cham Kani,tehsil,226.0,624354,461177,0.0
+Peshawar,Hassan Khel,sub_division,261.0,72557,64761,0.0
+Peshawar,Mathra,tehsil,218.0,495059,408190,0.0
+Peshawar,Peshawar,tehsil,176.0,2113596,2183787,0.9018
+Peshawar,Pishta Khara,tehsil,135.0,480436,406984,0.0
+Peshawar,Shah Alam,tehsil,145.0,532848,422144,0.0
+Shangla,Alpuri,tehsil,582.0,366772,307333,0.0
+Shangla,Bisham,tehsil,184.0,121279,105950,0.0
+Shangla,Chakisar,tehsil,335.0,128238,110785,0.0
+Shangla,Martung,tehsil,188.0,103205,90243,0.0
+Shangla,Puran,tehsil,297.0,171758,145298,0.0
+South Waziristan,Birmil,tehsil,923.0,112757,104282,0.0
+South Waziristan,Ladha,tehsil,289.0,108344,77883,0.0
+South Waziristan,Makin,tehsil,404.0,66042,58646,0.0
+South Waziristan,Sararogha,tehsil,813.0,145118,98180,0.0
+South Waziristan,Serwekai,tehsil,398.0,58804,54540,0.0
+South Waziristan,Shaktoi,tehsil,177.0,44332,32959,0.0
+South Waziristan,Tiarza,tehsil,734.0,65798,45156,0.0
+South Waziristan,Toi Khulla,tehsil,567.0,102835,50413,0.0
+South Waziristan,Wana,tehsil,2315.0,184645,153156,0.0
+Swabi,Lahor,tehsil,318.0,354383,305782,0.1307
+Swabi,Razar,tehsil,418.0,682303,584876,0.0407
+Swabi,Swabi,tehsil,389.0,475352,406321,0.4012
+Swabi,Topi,tehsil,418.0,382562,328498,0.1957
+Swat,Babuzai,tehsil,297.0,696697,599324,0.5183
+Swat,Barikot,tehsil,419.0,220148,183777,0.5226
+Swat,Behrain,tehsil,2899.0,270623,248422,0.2835
+Swat,Charbagh,tehsil,161.0,159358,126001,0.0
+Swat,Kabal,tehsil,485.0,480827,420001,0.2757
+Swat,Khawazakhela,tehsil,392.0,307300,265500,0.1859
+Swat,Matta,tehsil,684.0,552431,465599,0.0938
+Tank,Jandola,sub_division,1221.0,44794,36418,0.0
+Tank,Tank,tehsil,1679.0,425499,390626,0.1156
+Torghar,Daur Mera,tehsil,86.0,50503,41661,0.0
+Torghar,Judba,tehsil,63.0,63083,57745,0.0
+Torghar,Khander,tehsil,305.0,86859,71943,0.0
+Upper Chitral,Mastuj,sub_division,8392.0,195528,169297,0.0
+Upper Dir,Dir,sub_division,1012.0,384667,335029,0.1244
+Upper Dir,Larjum,sub_division,1039.0,119396,104496,0.0
+Upper Dir,Sharingal,sub_division,1140.0,210356,185121,0.0
+Upper Dir,Wari,sub_division,508.0,369147,322755,0.0
+Upper Kohistan,Dassu,sub_division,1958.0,148914,124374,0.0
+Upper Kohistan,Harban Bhasha,tehsil,1298.0,49244,32510,0.0
+Upper Kohistan,Kandia,sub_division,1926.0,165232,83850,0.0
+Upper Kohistan,Seo,sub_division,258.0,59557,66552,0.0

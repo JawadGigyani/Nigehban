@@ -5,7 +5,10 @@
     "tehsil": "Daggar",
     "centroid_lat": 34.5,
     "centroid_lon": 72.48,
-    "is_ardc": false
+    "is_ardc": false,
+    "pcode": null,
+    "area_km2": null,
+    "in_scope": true
   },
   {
     "tehsil_id": "bajaur__khar",
@@ -13,6 +16,9 @@
     "tehsil": "Khar",
     "centroid_lat": 34.73,
     "centroid_lon": 71.52,
-    "is_ardc": true
+    "is_ardc": true,
+    "pcode": null,
+    "area_km2": null,
+    "in_scope": true
   }
 ]

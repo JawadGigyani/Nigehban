@@ -1,0 +1,6 @@
+level,alias,district_slug,tehsil_id,source,note
+tehsil,Ai,battagram,battagram__allai,manual,"Census 2023 'Ai' (804 km2) is Allai: Batagram has two COD-AB tehsils, Batagram (514 km2; census 497) and Allai (971 km2)"
+tehsil,Swat Rani Zai,malakand,malakand__bat_khela,manual,"Census sub-division 672 km2 vs COD-AB Bat Khela 685 km2"
+tehsil,Sam Rani Zai,malakand,malakand__dargai,manual,"Census sub-division 280 km2 vs COD-AB Dargai 222 km2"
+tehsil,Matta,swat,swat__matta_sebujni,manual,"Census 'Matta' 684 km2 = COD-AB Matta Kharirai 288 + Matta Sebujni 395; the HQ match gives Matta Kharirai, this row adds Matta Sebujni"
+tehsil,Behrain,swat,swat__kalam,manual,"Census 'Behrain' 2899 km2 ~ COD-AB Bahrain 1196 + Kalam 1952; the spelling match gives Bahrain, this row adds Kalam"

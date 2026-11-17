@@ -31,6 +31,9 @@ class TehsilRegion(Contract):
     centroid_lat: float = Latitude
     centroid_lon: float = Longitude
     is_ardc: bool = False
+    pcode: str | None = None  # OCHA COD-AB P-code
+    area_km2: float | None = Field(default=None, ge=0)
+    in_scope: bool = True  # False for districts kept only for geocoding (e.g. Chitral)
 
 
 class FloodEvent(Contract):

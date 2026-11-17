@@ -41,7 +41,7 @@ def test_region_candidates_and_ardc():
     assert len(slugs) == len(set(slugs))
     assert region.district_by_slug("bajaur").is_ardc
     assert not region.district_by_slug("swat").is_ardc
-    assert region.district_by_slug("chitral").slug == "chitral"
+    assert region.district_by_slug("upper_chitral").cod_name == "Chitral Upper"
     assert region.active_districts() == region.CANDIDATE_DISTRICTS  # pilot not chosen yet
 
 
