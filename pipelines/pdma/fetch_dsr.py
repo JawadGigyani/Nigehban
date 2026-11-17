@@ -10,7 +10,12 @@ folder and are never printed; only place, date and event fields are extracted
 later (M1).
 
 Usage:
-    python -m pipelines.pdma.fetch_dsr --start 1 --end 8200
+    python -m pipelines.pdma.fetch_dsr --start 1 --end 8200   # start or resume
+    python -m pipelines.pdma.fetch_dsr --status               # show progress
+
+Checkpoints: `_index.jsonl` gets one line per ID, forced to disk after the
+page is saved. If the computer turns off, run the same command again: it skips
+every ID already in the index and retries only errors.
 """
 
 from __future__ import annotations
@@ -20,6 +25,7 @@ import datetime as dt
 import gzip
 import json
 import logging
+import os
 import re
 import sys
 import time
@@ -89,8 +95,60 @@ def load_index(cache_dir: Path) -> dict[int, IndexEntry]:
 
 
 def _append_index(cache_dir: Path, entry: IndexEntry) -> None:
+    """Append one checkpoint line and force it to disk.
+
+    The line is written only after the page file is safely in place, so after
+    a power cut the worst case is one ID fetched again. A half-written last
+    line is ignored by `load_index`.
+    """
+
     with (cache_dir / INDEX_NAME).open("a", encoding="utf-8") as fh:
         fh.write(json.dumps(asdict(entry)) + "\n")
+        fh.flush()
+        os.fsync(fh.fileno())
+
+
+def repair_index(cache_dir: Path) -> bool:
+    """Drop a half-written last line left by a power cut. Returns True if repaired."""
+
+    index = cache_dir / INDEX_NAME
+    if not index.exists():
+        return False
+    data = index.read_bytes()
+    if not data or data.endswith(b"\n"):
+        return False
+    cut = data.rfind(b"\n") + 1  # 0 when the only line is partial
+    with index.open("r+b") as fh:
+        fh.truncate(cut)
+        fh.flush()
+        os.fsync(fh.fileno())
+    logger.warning("Removed a half-written checkpoint line from %s", index)
+    return True
+
+
+def _write_page(cache_dir: Path, dsrid: int, html: str) -> None:
+    """Write via a temp file and rename, so a cut never leaves a broken page."""
+
+    final = cache_path(cache_dir, dsrid)
+    tmp = final.with_suffix(final.suffix + ".tmp")
+    with gzip.open(tmp, "wt", encoding="utf-8") as fh:
+        fh.write(html)
+    os.replace(tmp, final)
+
+
+def summarise(cache_dir: Path) -> dict[str, object]:
+    entries = load_index(cache_dir)
+    counts = {"report": 0, "empty": 0, "error": 0}
+    for entry in entries.values():
+        counts[entry.status] = counts.get(entry.status, 0) + 1
+    reports = sorted((e for e in entries.values() if e.status == "report"), key=lambda e: e.dsrid)
+    return {
+        "ids_done": len(entries),
+        "last_id": max(entries) if entries else None,
+        **counts,
+        "first_report": (reports[0].dsrid, reports[0].report_date) if reports else None,
+        "last_report": (reports[-1].dsrid, reports[-1].report_date) if reports else None,
+    }
 
 
 Fetcher = Callable[[int], httpx.Response]
@@ -137,8 +195,7 @@ def fetch_one(
             report_date = parse_report_date(html)
             if report_date is None:
                 return IndexEntry(dsrid, "empty", len(response.content), None, status_code, now)
-            with gzip.open(cache_path(cache_dir, dsrid), "wt", encoding="utf-8") as fh:
-                fh.write(html)
+            _write_page(cache_dir, dsrid, html)
             return IndexEntry(
                 dsrid, "report", len(response.content), report_date.isoformat(), status_code, now
             )
@@ -162,6 +219,9 @@ def run(
     clock: Callable[[], float] = time.monotonic,
 ) -> dict[str, int]:
     cache_dir.mkdir(parents=True, exist_ok=True)
+    repair_index(cache_dir)
+    for leftover in cache_dir.glob("*.tmp"):  # page interrupted mid-write
+        leftover.unlink()
     done = load_index(cache_dir)
     counts = {"report": 0, "empty": 0, "error": 0, "skipped": 0}
     last_request = -float("inf")
@@ -200,7 +260,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--interval", type=float, default=settings.pdma_request_interval_s)
     parser.add_argument("--cache-dir", type=Path, default=settings.raw_pdma_dir)
     parser.add_argument("--no-retry-errors", action="store_true")
+    parser.add_argument("--status", action="store_true", help="print progress and exit")
     args = parser.parse_args(argv)
+
+    if args.status:
+        for key, value in summarise(args.cache_dir).items():
+            print(f"{key}: {value}")
+        return 0
 
     if args.interval < 1.0:
         parser.error("--interval must be at least 1 second (be polite to PDMA).")
