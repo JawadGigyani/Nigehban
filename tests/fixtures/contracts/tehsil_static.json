@@ -1,0 +1,12 @@
+[
+  {
+    "tehsil_id": "buner__daggar",
+    "mean_slope": 18.2,
+    "p90_slope": 34.0,
+    "catchment_area_km2": 410.0,
+    "drainage_density": 1.4,
+    "share_low_hand": 0.12,
+    "population": 150000.0,
+    "population_low_hand": 21000.0
+  }
+]

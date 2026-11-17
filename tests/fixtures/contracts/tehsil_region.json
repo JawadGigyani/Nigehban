@@ -1,0 +1,18 @@
+[
+  {
+    "tehsil_id": "buner__daggar",
+    "district": "Buner",
+    "tehsil": "Daggar",
+    "centroid_lat": 34.5,
+    "centroid_lon": 72.48,
+    "is_ardc": false
+  },
+  {
+    "tehsil_id": "bajaur__khar",
+    "district": "Bajaur",
+    "tehsil": "Khar",
+    "centroid_lat": 34.73,
+    "centroid_lon": 71.52,
+    "is_ardc": true
+  }
+]

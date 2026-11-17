@@ -1,0 +1,29 @@
+[
+  {
+    "tehsil_id": "buner__daggar",
+    "issued_at": "2025-08-14T06:00:00Z",
+    "valid_date": "2025-08-15",
+    "lead_days": 1,
+    "probability": 0.42,
+    "level": "high",
+    "drivers": [
+      {
+        "feature": "precip_sum",
+        "value": 34.2,
+        "contribution": 1.1
+      },
+      {
+        "feature": "soil_moisture_0_7",
+        "value": 0.31,
+        "contribution": 0.4
+      }
+    ],
+    "models_used": [
+      "ecmwf",
+      "gfs",
+      "icon"
+    ],
+    "glofas_flag": false,
+    "stale": false
+  }
+]

@@ -1,0 +1,13 @@
+[
+  {
+    "id": "sub_0001",
+    "channel": "web_inbox",
+    "language": "ur",
+    "tehsil_ids": [
+      "buner__daggar"
+    ],
+    "village_ids": [],
+    "created_at": "2025-08-14T06:00:00Z",
+    "active": true
+  }
+]

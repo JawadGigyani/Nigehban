@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+build/
+dist/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Data: private or large. Small reference files and contract notes are kept.
+data/*
+!data/contracts/
+!data/reference/
+data/reference/*
+!data/reference/README.md
+*.db
+*.sqlite
+
+# Model artifacts and logs
+models/
+logs/
+*.log
+
+# Frontend
+node_modules/
+.next/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

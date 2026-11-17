@@ -1,0 +1,14 @@
+[
+  {
+    "village_id": "vil_0001",
+    "hand_m": 2.1,
+    "exposure_band": "high",
+    "dist_to_stream_m": 85.0
+  },
+  {
+    "village_id": "vil_0002",
+    "hand_m": 14.0,
+    "exposure_band": "low",
+    "dist_to_stream_m": 900.0
+  }
+]

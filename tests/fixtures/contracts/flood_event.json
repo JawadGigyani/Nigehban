@@ -1,0 +1,36 @@
+[
+  {
+    "event_id": "evt_0001",
+    "date": "2025-08-15",
+    "report_date": "2025-08-15",
+    "district": "Buner",
+    "tehsil": "Daggar",
+    "tehsil_id": "buner__daggar",
+    "village": "Example Village",
+    "lat": 34.51,
+    "lon": 72.47,
+    "geocode_level": "village",
+    "event_type": "flash_flood",
+    "deaths": 3,
+    "houses_damaged": 5,
+    "source_dsrid": 1,
+    "extract_confidence": 0.9
+  },
+  {
+    "event_id": "evt_0002",
+    "date": "2025-08-15",
+    "report_date": "2025-08-15",
+    "district": "Shangla",
+    "tehsil": null,
+    "tehsil_id": null,
+    "village": null,
+    "lat": null,
+    "lon": null,
+    "geocode_level": "district",
+    "event_type": "roof_collapse",
+    "deaths": 1,
+    "houses_damaged": null,
+    "source_dsrid": 1,
+    "extract_confidence": 0.7
+  }
+]

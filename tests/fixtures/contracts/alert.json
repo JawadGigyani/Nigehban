@@ -1,0 +1,19 @@
+[
+  {
+    "id": "alr_0001",
+    "tehsil_id": "buner__daggar",
+    "level": "high",
+    "valid_date": "2025-08-15",
+    "issued_at": "2025-08-14T06:00:00Z",
+    "reason_codes": [
+      "heavy_rain_forecast",
+      "wet_ground"
+    ],
+    "message_ur": "(نمونہ) ڈگر میں کل سیلاب کا خطرہ زیادہ ہے۔ پی ڈی ایم اے اور ضلعی انتظامیہ کی ہدایات پر عمل کریں۔",
+    "message_en": "(Sample) High flash-flood risk in Daggar tomorrow. Follow PDMA and district administration instructions.",
+    "citations": [
+      "risk:FlashFloodRiskModel"
+    ],
+    "sent_to_count": 0
+  }
+]

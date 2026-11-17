@@ -1,0 +1,19 @@
+[
+  {
+    "source": "GloFAS via Open-Meteo Flood API",
+    "method": "Gumbel fit on annual maxima",
+    "points": [
+      {
+        "point_id": "swat_chakdara",
+        "name": "Swat at Chakdara",
+        "lat": 34.625,
+        "lon": 71.975,
+        "q2": 900.0,
+        "q5": 1400.0,
+        "q10": 1800.0,
+        "q20": 2200.0,
+        "years_used": 29
+      }
+    ]
+  }
+]

@@ -1,0 +1,36 @@
+[project]
+name = "nigehban"
+version = "0.1.0"
+description = "Tehsil-level flash-flood early warning for northern Khyber Pakhtunkhwa"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "beautifulsoup4>=4.12",
+    "cryptography>=43.0",
+    "fastapi>=0.115",
+    "httpx>=0.27",
+    "lxml>=5.3",
+    "openai>=1.50",
+    "pydantic>=2.8",
+    "pydantic-settings>=2.4",
+    "sqlmodel>=0.0.22",
+    "uvicorn[standard]>=0.30",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["backend*", "pipelines*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "live: calls a real external service (opt-in with NIGEHBAN_RUN_LIVE=1)",
+]

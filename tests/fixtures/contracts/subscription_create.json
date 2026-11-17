@@ -1,0 +1,11 @@
+[
+  {
+    "channel": "web_inbox",
+    "address": "device-token-example",
+    "language": "ur",
+    "tehsil_ids": [
+      "buner__daggar"
+    ],
+    "village_ids": []
+  }
+]

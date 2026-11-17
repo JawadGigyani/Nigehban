@@ -1,0 +1,32 @@
+[
+  {
+    "tehsil_id": "buner__daggar",
+    "date": "2025-08-15",
+    "model": "era5",
+    "lead_days": 0,
+    "precip_sum": 44.4,
+    "precip_max_1h": 9.1,
+    "precip_3d": 77.2,
+    "precip_7d_antecedent": 40.0,
+    "soil_moisture_0_7": 0.31,
+    "soil_moisture_7_28": 0.29,
+    "t2m_max": 31.5,
+    "t2m_anomaly": 0.8,
+    "glofas_discharge": null
+  },
+  {
+    "tehsil_id": "buner__daggar",
+    "date": "2025-08-15",
+    "model": "ecmwf",
+    "lead_days": 1,
+    "precip_sum": 34.2,
+    "precip_max_1h": null,
+    "precip_3d": null,
+    "precip_7d_antecedent": null,
+    "soil_moisture_0_7": null,
+    "soil_moisture_7_28": null,
+    "t2m_max": null,
+    "t2m_anomaly": null,
+    "glofas_discharge": null
+  }
+]
