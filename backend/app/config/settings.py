@@ -9,7 +9,7 @@ from enum import Enum
 from functools import lru_cache
 from pathlib import Path
 
-from pydantic import Field, SecretStr
+from pydantic import AliasChoices, Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -82,15 +82,30 @@ class Settings(BaseSettings):
     # Database: SQLite locally, Postgres (Supabase) when deployed.
     database_url: str = f"sqlite:///{(PROJECT_ROOT / 'data' / 'nigehban.db').as_posix()}"
 
-    # LLM
+    # LLM (LangChain). The primary provider is tried first; on errors or rate
+    # limits the fallback providers are tried in order.
     llm_provider: LLMProvider = LLMProvider.GROQ
-    llm_api_key: SecretStr | None = None
-    llm_base_url: str | None = None
-    llm_model: str | None = None
+    llm_fallback_providers: list[LLMProvider] = Field(default=[LLMProvider.GEMINI])
+    llm_api_key: SecretStr | None = None  # key for the primary provider
+    llm_base_url: str | None = None  # primary provider only
+    llm_model: str | None = None  # primary provider only
     llm_json_mode: JsonMode = JsonMode.JSON_SCHEMA
     llm_timeout_s: float = Field(default=60.0, gt=0)
     llm_max_retries: int = Field(default=3, ge=0)
     llm_validation_retries: int = Field(default=2, ge=0)
+
+    # Provider keys. The standard unprefixed names also work.
+    groq_api_key: SecretStr | None = Field(
+        default=None, validation_alias=AliasChoices("NIGEHBAN_GROQ_API_KEY", "GROQ_API_KEY")
+    )
+    gemini_api_key: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices("NIGEHBAN_GEMINI_API_KEY", "GEMINI_API_KEY"),
+    )
+    gemini_model: str | None = None
+    openai_api_key: SecretStr | None = Field(
+        default=None, validation_alias=AliasChoices("NIGEHBAN_OPENAI_API_KEY", "OPENAI_API_KEY")
+    )
 
     # Privacy: contact details are encrypted at rest and looked up by keyed hash.
     contact_encryption_key: SecretStr | None = None
@@ -109,14 +124,37 @@ class Settings(BaseSettings):
 
     @property
     def resolved_llm_base_url(self) -> str | None:
-        return self.llm_base_url or PROVIDER_DEFAULTS[self.llm_provider][0]
+        return self.base_url_for(self.llm_provider)
 
     @property
     def resolved_llm_model(self) -> str:
-        model = self.llm_model or PROVIDER_DEFAULTS[self.llm_provider][1]
+        return self.model_for(self.llm_provider)
+
+    def base_url_for(self, provider: LLMProvider) -> str | None:
+        if provider is self.llm_provider and self.llm_base_url:
+            return self.llm_base_url
+        return PROVIDER_DEFAULTS[provider][0]
+
+    def model_for(self, provider: LLMProvider) -> str:
+        if provider is self.llm_provider and self.llm_model:
+            return self.llm_model
+        if provider is LLMProvider.GEMINI and self.gemini_model:
+            return self.gemini_model
+        model = PROVIDER_DEFAULTS[provider][1]
         if not model:
             raise ValueError("NIGEHBAN_LLM_MODEL must be set for the custom provider.")
         return model
+
+    def api_key_for(self, provider: LLMProvider) -> SecretStr | None:
+        specific = {
+            LLMProvider.GROQ: self.groq_api_key,
+            LLMProvider.GEMINI: self.gemini_api_key,
+            LLMProvider.OPENAI: self.openai_api_key,
+            LLMProvider.CUSTOM: None,
+        }[provider]
+        if specific is not None:
+            return specific
+        return self.llm_api_key if provider is self.llm_provider else None
 
     @property
     def raw_pdma_dir(self) -> Path:

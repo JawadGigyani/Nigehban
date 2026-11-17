@@ -74,3 +74,38 @@ def test_polite_interval_is_respected(tmp_path):
     f.run(1, 3, tmp_path, lambda _: _resp(200, EMPTY), interval_s=2.0,
           sleep=sleep, clock=lambda: now["t"])
     assert sleeps == [2.0, 2.0]  # no wait before the first request
+
+
+def test_resume_after_power_cut_with_half_written_line(tmp_path):
+    """A cut mid-write leaves a truncated last line; it is ignored and that ID refetched."""
+
+    f.run(1, 2, tmp_path, lambda _: _resp(200, REPORT), interval_s=1.0, sleep=lambda s: None)
+    with (tmp_path / f.INDEX_NAME).open("a", encoding="utf-8") as fh:
+        fh.write('{"dsrid": 3, "status": "rep')  # power cut here
+    calls: list[int] = []
+
+    def fetcher(dsrid):
+        calls.append(dsrid)
+        return _resp(200, REPORT)
+
+    counts = f.run(1, 4, tmp_path, fetcher, interval_s=1.0, sleep=lambda s: None)
+    assert calls == [3, 4]
+    assert counts["skipped"] == 2
+    assert set(f.load_index(tmp_path)) == {1, 2, 3, 4}
+
+
+def test_page_write_is_atomic(tmp_path):
+    f.fetch_one(7, lambda _: _resp(200, REPORT), tmp_path, sleep=lambda s: None)
+    assert f.cache_path(tmp_path, 7).exists()
+    assert not list(tmp_path.glob("*.tmp"))
+
+
+def test_summarise_and_status_cli(tmp_path, capsys):
+    pages = {1: _resp(500, EMPTY), 2: _resp(200, REPORT)}
+    f.run(1, 2, tmp_path, lambda i: pages[i], interval_s=1.0, sleep=lambda s: None)
+    summary = f.summarise(tmp_path)
+    assert summary["ids_done"] == 2 and summary["last_id"] == 2
+    assert summary["report"] == 1 and summary["empty"] == 1
+    assert summary["last_report"] == (2, "2025-08-15")
+    assert f.main(["--status", "--cache-dir", str(tmp_path)]) == 0
+    assert "ids_done: 2" in capsys.readouterr().out

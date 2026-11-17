@@ -22,15 +22,28 @@ cp .env.example .env   # then fill in the keys
 .venv/Scripts/uvicorn backend.app.main:app  # API on http://127.0.0.1:8000/health
 ```
 
-Live LLM tests are opt-in: set `NIGEHBAN_RUN_LIVE=1`.
+Live LLM tests are opt-in. In PowerShell:
+
+```powershell
+$env:NIGEHBAN_RUN_LIVE="1"; .venv\Scripts\python -m pytest -m live; Remove-Item Env:NIGEHBAN_RUN_LIVE
+```
+
+LLM calls go through LangChain (`backend/app/llm/`): Groq first, then Gemini
+if Groq fails or hits its rate limit.
 
 ## Data pipelines
 
-PDMA KP daily situation reports (polite, resumable, cached; 2 s between requests):
+PDMA KP daily situation reports (polite, resumable, cached; 2 s between requests).
+Run from the `nigehban` folder (PowerShell shown):
 
-```bash
-.venv/Scripts/python -m pipelines.pdma.fetch_dsr --start 1 --end 8200
+```powershell
+.venv\Scripts\python -m pipelines.pdma.fetch_dsr --start 1 --end 8200   # start or resume
+.venv\Scripts\python -m pipelines.pdma.fetch_dsr --status               # progress
 ```
+
+Every ID tried is checkpointed in `data/raw/pdma_dsr/_index.jsonl` and forced
+to disk. If the computer turns off, run the same command again; it continues
+from where it stopped.
 
 Raw reports contain personal names. They stay in the gitignored `data/raw/`
 folder and are never committed. See `data/contracts/README.md` for every data

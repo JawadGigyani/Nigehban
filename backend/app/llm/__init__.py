@@ -1,3 +1,17 @@
-from backend.app.llm.client import LLMClient, LLMConfigError, LLMError, to_strict_schema
+from backend.app.llm.service import (
+    LLMConfigError,
+    LLMError,
+    LLMService,
+    ModelSlot,
+    build_chat_model,
+    to_strict_schema,
+)
 
-__all__ = ["LLMClient", "LLMConfigError", "LLMError", "to_strict_schema"]
+__all__ = [
+    "LLMConfigError",
+    "LLMError",
+    "LLMService",
+    "ModelSlot",
+    "build_chat_model",
+    "to_strict_schema",
+]
