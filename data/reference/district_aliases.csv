@@ -1,0 +1,53 @@
+alias,district_slug,source
+Abbotabad,abbottabad,variant
+Abbottabad,abbottabad,pdma
+Bajaur,bajaur,pdma
+Bannu,bannu,pdma
+Batagram,battagram,cod
+Battagram,battagram,pdma
+Buner,buner,pdma
+Charsadda,charsadda,pdma
+D. I. Khan,dera_ismail_khan,cod
+Dera Ismail Khan,dera_ismail_khan,pdma
+Hangu,hangu,pdma
+Haripur,haripur,pdma
+Karak,karak,pdma
+Khyber,khyber,pdma
+Kohat,kohat,pdma
+Kohistan Kolai Pallas,kohistan_kolai_pallas,pdma
+Kolai Palas,kohistan_kolai_pallas,variant
+Kolai Palas Kohistan,kohistan_kolai_pallas,cod
+Kolai Pallas,kohistan_kolai_pallas,variant
+Kurram,kurram,pdma
+Lakki Marwat,lakki_marwat,pdma
+Chitral Lower,lower_chitral,cod
+Lower Chitral,lower_chitral,pdma
+Dir Lower,lower_dir,variant
+Lower Dir,lower_dir,pdma
+Kohistan Lower,lower_kohistan,cod
+Lower Kohistan,lower_kohistan,pdma
+Malakand,malakand,pdma
+Mansehra,mansehra,pdma
+Mardan,mardan,pdma
+Mohmand,mohmand,pdma
+North Waziristan,north_waziristan,pdma
+Nowshera,nowshera,pdma
+Orakzai,orakzai,pdma
+Peshawar,peshawar,pdma
+Shangla,shangla,pdma
+Lower South Waziristan,south_waziristan,variant
+South Waziristan,south_waziristan,pdma
+South Waziristan Lower,south_waziristan,variant
+South Waziristan Upper,south_waziristan,variant
+Upper South Waziristan,south_waziristan,variant
+Swabi,swabi,pdma
+Swat,swat,pdma
+Tank,tank,pdma
+Tor Garh,torghar,variant
+Torghar,torghar,pdma
+Chitral Upper,upper_chitral,cod
+Upper Chitral,upper_chitral,pdma
+Dir Upper,upper_dir,variant
+Upper Dir,upper_dir,pdma
+Kohistan Upper,upper_kohistan,cod
+Upper Kohistan,upper_kohistan,pdma

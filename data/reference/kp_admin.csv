@@ -1,0 +1,154 @@
+district,district_cod,district_slug,district_pcode,tehsil,tehsil_id,tehsil_pcode,in_region
+Abbottabad,Abbottabad,abbottabad,PK501,Abbottabad,abbottabad__abbottabad,PK50101,False
+Abbottabad,Abbottabad,abbottabad,PK501,Havelian,abbottabad__havelian,PK50102,False
+Abbottabad,Abbottabad,abbottabad,PK501,Lora,abbottabad__lora,PK50103,False
+Abbottabad,Abbottabad,abbottabad,PK501,Lower Tanawal,abbottabad__lower_tanawal,PK50104,False
+Bajaur,Bajaur,bajaur,PK502,Bar Chamarkand,bajaur__bar_chamarkand,PK50201,True
+Bajaur,Bajaur,bajaur,PK502,Barang,bajaur__barang,PK50202,True
+Bajaur,Bajaur,bajaur,PK502,Khar,bajaur__khar,PK50203,True
+Bajaur,Bajaur,bajaur,PK502,Mamund,bajaur__mamund,PK50204,True
+Bajaur,Bajaur,bajaur,PK502,Nawagai,bajaur__nawagai,PK50205,True
+Bajaur,Bajaur,bajaur,PK502,Salarzai,bajaur__salarzai,PK50206,True
+Bajaur,Bajaur,bajaur,PK502,Utman Khel,bajaur__utman_khel,PK50207,True
+Bannu,Bannu,bannu,PK503,Baka Khel,bannu__baka_khel,PK50302,False
+Bannu,Bannu,bannu,PK503,Bannu,bannu__bannu,PK50301,False
+Bannu,Bannu,bannu,PK503,Domel,bannu__domel,PK50303,False
+Bannu,Bannu,bannu,PK503,Kakki,bannu__kakki,PK50304,False
+Bannu,Bannu,bannu,PK503,Miryan,bannu__miryan,PK50305,False
+Bannu,Bannu,bannu,PK503,Wazir,bannu__wazir,PK50306,False
+Battagram,Batagram,battagram,PK504,Allai,battagram__allai,PK50401,True
+Battagram,Batagram,battagram,PK504,Batagram,battagram__batagram,PK50402,True
+Buner,Buner,buner,PK505,Daggar,buner__daggar,PK50501,True
+Buner,Buner,buner,PK505,Gagra,buner__gagra,PK50502,True
+Buner,Buner,buner,PK505,Khado Khel,buner__khado_khel,PK50503,True
+Buner,Buner,buner,PK505,Mandanr,buner__mandanr,PK50504,True
+Charsadda,Charsadda,charsadda,PK506,Charsadda,charsadda__charsadda,PK50601,False
+Charsadda,Charsadda,charsadda,PK506,Shabqadar,charsadda__shabqadar,PK50602,False
+Charsadda,Charsadda,charsadda,PK506,Tangi,charsadda__tangi,PK50603,False
+Dera Ismail Khan,D. I. Khan,dera_ismail_khan,PK509,D. I. Khan,dera_ismail_khan__d_i_khan,PK50901,False
+Dera Ismail Khan,D. I. Khan,dera_ismail_khan,PK509,Daraban,dera_ismail_khan__daraban,PK50902,False
+Dera Ismail Khan,D. I. Khan,dera_ismail_khan,PK509,Darazinda,dera_ismail_khan__darazinda,PK50906,False
+Dera Ismail Khan,D. I. Khan,dera_ismail_khan,PK509,Kulachi,dera_ismail_khan__kulachi,PK50903,False
+Dera Ismail Khan,D. I. Khan,dera_ismail_khan,PK509,Paharpur,dera_ismail_khan__paharpur,PK50904,False
+Dera Ismail Khan,D. I. Khan,dera_ismail_khan,PK509,Paroa,dera_ismail_khan__paroa,PK50905,False
+Hangu,Hangu,hangu,PK510,Hangu,hangu__hangu,PK51001,False
+Hangu,Hangu,hangu,PK510,Tall,hangu__tall,PK51002,False
+Haripur,Haripur,haripur,PK511,Ghazi,haripur__ghazi,PK51101,False
+Haripur,Haripur,haripur,PK511,Haripur,haripur__haripur,PK51102,False
+Haripur,Haripur,haripur,PK511,Khanpur,haripur__khanpur,PK51103,False
+Karak,Karak,karak,PK512,Banda Daud Shah,karak__banda_daud_shah,PK51201,False
+Karak,Karak,karak,PK512,Karak,karak__karak,PK51202,False
+Karak,Karak,karak,PK512,Takht-E-Nasrati,karak__takht_e_nasrati,PK51203,False
+Khyber,Khyber,khyber,PK513,Bara,khyber__bara,PK51301,False
+Khyber,Khyber,khyber,PK513,Jamrud,khyber__jamrud,PK51302,False
+Khyber,Khyber,khyber,PK513,Landi Kotal,khyber__landi_kotal,PK51303,False
+Khyber,Khyber,khyber,PK513,Mulagori,khyber__mulagori,PK51304,False
+Kohat,Kohat,kohat,PK514,Darra Adam Khel,kohat__darra_adam_khel,PK51404,False
+Kohat,Kohat,kohat,PK514,Gumbat,kohat__gumbat,PK51403,False
+Kohat,Kohat,kohat,PK514,Kohat,kohat__kohat,PK51401,False
+Kohat,Kohat,kohat,PK514,Lachi,kohat__lachi,PK51402,False
+Kohistan Kolai Pallas,Kolai Palas Kohistan,kohistan_kolai_pallas,PK517,Battera Kolai,kohistan_kolai_pallas__battera_kolai,PK51702,False
+Kohistan Kolai Pallas,Kolai Palas Kohistan,kohistan_kolai_pallas,PK517,Palas,kohistan_kolai_pallas__palas,PK51701,False
+Kurram,Kurram,kurram,PK518,Central Kurram,kurram__central_kurram,PK51801,False
+Kurram,Kurram,kurram,PK518,Lower Kurram,kurram__lower_kurram,PK51802,False
+Kurram,Kurram,kurram,PK518,Upper Kurram,kurram__upper_kurram,PK51803,False
+Lakki Marwat,Lakki Marwat,lakki_marwat,PK519,Bettani,lakki_marwat__bettani,PK51903,False
+Lakki Marwat,Lakki Marwat,lakki_marwat,PK519,Lakki Marwat,lakki_marwat__lakki_marwat,PK51901,False
+Lakki Marwat,Lakki Marwat,lakki_marwat,PK519,Sarai Naurang,lakki_marwat__sarai_naurang,PK51902,False
+Lower Chitral,Chitral Lower,lower_chitral,PK507,Chitral,lower_chitral__chitral,PK50701,True
+Lower Chitral,Chitral Lower,lower_chitral,PK507,Drosh,lower_chitral__drosh,PK50702,True
+Lower Chitral,Chitral Lower,lower_chitral,PK507,Lotkoh,lower_chitral__lotkoh,PK50703,True
+Lower Dir,Lower Dir,lower_dir,PK520,Adenzai,lower_dir__adenzai,PK52001,True
+Lower Dir,Lower Dir,lower_dir,PK520,Balambat,lower_dir__balambat,PK52002,True
+Lower Dir,Lower Dir,lower_dir,PK520,Lalqila,lower_dir__lalqila,PK52003,True
+Lower Dir,Lower Dir,lower_dir,PK520,Munda,lower_dir__munda,PK52004,True
+Lower Dir,Lower Dir,lower_dir,PK520,Samarbagh,lower_dir__samarbagh,PK52005,True
+Lower Dir,Lower Dir,lower_dir,PK520,Timergara,lower_dir__timergara,PK52006,True
+Lower Kohistan,Kohistan Lower,lower_kohistan,PK515,Bankad,lower_kohistan__bankad,PK51502,False
+Lower Kohistan,Kohistan Lower,lower_kohistan,PK515,Pattan,lower_kohistan__pattan,PK51501,False
+Malakand,Malakand,malakand,PK521,Bat Khela,malakand__bat_khela,PK52101,True
+Malakand,Malakand,malakand,PK521,Dargai,malakand__dargai,PK52102,True
+Mansehra,Mansehra,mansehra,PK522,Baffa Pakhal,mansehra__baffa_pakhal,PK52204,True
+Mansehra,Mansehra,mansehra,PK522,Bala Kot,mansehra__bala_kot,PK52201,True
+Mansehra,Mansehra,mansehra,PK522,Darband,mansehra__darband,PK52205,True
+Mansehra,Mansehra,mansehra,PK522,Mansehra,mansehra__mansehra,PK52202,True
+Mansehra,Mansehra,mansehra,PK522,Oghi,mansehra__oghi,PK52203,True
+Mardan,Mardan,mardan,PK523,Garhi Kapura,mardan__garhi_kapura,PK52305,False
+Mardan,Mardan,mardan,PK523,Katlang,mardan__katlang,PK52301,False
+Mardan,Mardan,mardan,PK523,Mardan,mardan__mardan,PK52302,False
+Mardan,Mardan,mardan,PK523,Rustam,mardan__rustam,PK52304,False
+Mardan,Mardan,mardan,PK523,Takht Bhai,mardan__takht_bhai,PK52303,False
+Mohmand,Mohmand,mohmand,PK524,Ambar,mohmand__ambar,PK52401,False
+Mohmand,Mohmand,mohmand,PK524,Baizai,mohmand__baizai,PK52402,False
+Mohmand,Mohmand,mohmand,PK524,Halimzai,mohmand__halimzai,PK52403,False
+Mohmand,Mohmand,mohmand,PK524,Khwazai,mohmand__khwazai,PK52404,False
+Mohmand,Mohmand,mohmand,PK524,Pandiali,mohmand__pandiali,PK52405,False
+Mohmand,Mohmand,mohmand,PK524,Prang Ghar,mohmand__prang_ghar,PK52406,False
+Mohmand,Mohmand,mohmand,PK524,Safi,mohmand__safi,PK52407,False
+Mohmand,Mohmand,mohmand,PK524,Yaka Ghund,mohmand__yaka_ghund,PK52408,False
+North Waziristan,North Waziristan,north_waziristan,PK525,Data Khel,north_waziristan__data_khel,PK52501,False
+North Waziristan,North Waziristan,north_waziristan,PK525,Dossali,north_waziristan__dossali,PK52502,False
+North Waziristan,North Waziristan,north_waziristan,PK525,Garyum,north_waziristan__garyum,PK52503,False
+North Waziristan,North Waziristan,north_waziristan,PK525,Ghulam Khan,north_waziristan__ghulam_khan,PK52504,False
+North Waziristan,North Waziristan,north_waziristan,PK525,Mir Ali,north_waziristan__mir_ali,PK52505,False
+North Waziristan,North Waziristan,north_waziristan,PK525,Miran Shah,north_waziristan__miran_shah,PK52506,False
+North Waziristan,North Waziristan,north_waziristan,PK525,Razmak,north_waziristan__razmak,PK52507,False
+North Waziristan,North Waziristan,north_waziristan,PK525,Shawal,north_waziristan__shawal,PK52510,False
+North Waziristan,North Waziristan,north_waziristan,PK525,Shewa,north_waziristan__shewa,PK52508,False
+North Waziristan,North Waziristan,north_waziristan,PK525,Spinwam,north_waziristan__spinwam,PK52509,False
+Nowshera,Nowshera,nowshera,PK526,Jehangira,nowshera__jehangira,PK52603,False
+Nowshera,Nowshera,nowshera,PK526,Nowshera,nowshera__nowshera,PK52601,False
+Nowshera,Nowshera,nowshera,PK526,Pabbi,nowshera__pabbi,PK52602,False
+Orakzai,Orakzai,orakzai,PK527,Central Orakzai,orakzai__central_orakzai,PK52701,False
+Orakzai,Orakzai,orakzai,PK527,Ismailzai,orakzai__ismailzai,PK52702,False
+Orakzai,Orakzai,orakzai,PK527,Lower Orakzai,orakzai__lower_orakzai,PK52703,False
+Orakzai,Orakzai,orakzai,PK527,Upper Orakzai,orakzai__upper_orakzai,PK52704,False
+Peshawar,Peshawar,peshawar,PK528,Hassan Khel,peshawar__hassan_khel,PK52805,False
+Peshawar,Peshawar,peshawar,PK528,Town-I,peshawar__town_i,PK52801,False
+Peshawar,Peshawar,peshawar,PK528,Town-Ii,peshawar__town_ii,PK52802,False
+Peshawar,Peshawar,peshawar,PK528,Town-Iii,peshawar__town_iii,PK52803,False
+Peshawar,Peshawar,peshawar,PK528,Town-Iv,peshawar__town_iv,PK52804,False
+Shangla,Shangla,shangla,PK529,Alpuri,shangla__alpuri,PK52901,True
+Shangla,Shangla,shangla,PK529,Bisham,shangla__bisham,PK52902,True
+Shangla,Shangla,shangla,PK529,Chakisar,shangla__chakisar,PK52903,True
+Shangla,Shangla,shangla,PK529,Makhuzai,shangla__makhuzai,PK52904,True
+Shangla,Shangla,shangla,PK529,Martoong,shangla__martoong,PK52905,True
+Shangla,Shangla,shangla,PK529,Puran,shangla__puran,PK52906,True
+South Waziristan,South Waziristan,south_waziristan,PK530,Birmal,south_waziristan__birmal,PK53001,False
+South Waziristan,South Waziristan,south_waziristan,PK530,Ladha,south_waziristan__ladha,PK53002,False
+South Waziristan,South Waziristan,south_waziristan,PK530,Makin,south_waziristan__makin,PK53003,False
+South Waziristan,South Waziristan,south_waziristan,PK530,Sararogha,south_waziristan__sararogha,PK53004,False
+South Waziristan,South Waziristan,south_waziristan,PK530,Serwakai,south_waziristan__serwakai,PK53005,False
+South Waziristan,South Waziristan,south_waziristan,PK530,Tiarza,south_waziristan__tiarza,PK53006,False
+South Waziristan,South Waziristan,south_waziristan,PK530,Toi Khulla,south_waziristan__toi_khulla,PK53007,False
+South Waziristan,South Waziristan,south_waziristan,PK530,Wana,south_waziristan__wana,PK53008,False
+Swabi,Swabi,swabi,PK531,Lahor,swabi__lahor,PK53101,False
+Swabi,Swabi,swabi,PK531,Razar,swabi__razar,PK53104,False
+Swabi,Swabi,swabi,PK531,Swabi,swabi__swabi,PK53102,False
+Swabi,Swabi,swabi,PK531,Topi,swabi__topi,PK53103,False
+Swat,Swat,swat,PK532,Babuzai,swat__babuzai,PK53201,True
+Swat,Swat,swat,PK532,Bahrain,swat__bahrain,PK53202,True
+Swat,Swat,swat,PK532,Barikot,swat__barikot,PK53203,True
+Swat,Swat,swat,PK532,Charbagh,swat__charbagh,PK53204,True
+Swat,Swat,swat,PK532,Kabal,swat__kabal,PK53205,True
+Swat,Swat,swat,PK532,Kalam,swat__kalam,PK53206,True
+Swat,Swat,swat,PK532,Khwaza Khela,swat__khwaza_khela,PK53207,True
+Swat,Swat,swat,PK532,Matta Kharirai,swat__matta_kharirai,PK53208,True
+Swat,Swat,swat,PK532,Matta Sebujni,swat__matta_sebujni,PK53209,True
+Tank,Tank,tank,PK533,Jandola,tank__jandola,PK53302,False
+Tank,Tank,tank,PK533,Tank,tank__tank,PK53301,False
+Torghar,Tor Ghar,torghar,PK534,Judba,torghar__judba,PK53401,False
+Torghar,Tor Ghar,torghar,PK534,Khander,torghar__khander,PK53402,False
+Upper Chitral,Chitral Upper,upper_chitral,PK508,Mastuj,upper_chitral__mastuj,PK50801,True
+Upper Chitral,Chitral Upper,upper_chitral,PK508,Mulkhow,upper_chitral__mulkhow,PK50802,True
+Upper Dir,Upper Dir,upper_dir,PK535,Barawal,upper_dir__barawal,PK53501,True
+Upper Dir,Upper Dir,upper_dir,PK535,Dir,upper_dir__dir,PK53502,True
+Upper Dir,Upper Dir,upper_dir,PK535,Kalkot,upper_dir__kalkot,PK53503,True
+Upper Dir,Upper Dir,upper_dir,PK535,Khall,upper_dir__khall,PK53504,True
+Upper Dir,Upper Dir,upper_dir,PK535,Larjam,upper_dir__larjam,PK53507,True
+Upper Dir,Upper Dir,upper_dir,PK535,Shrengal,upper_dir__shrengal,PK53505,True
+Upper Dir,Upper Dir,upper_dir,PK535,Wari,upper_dir__wari,PK53506,True
+Upper Kohistan,Kohistan Upper,upper_kohistan,PK516,Dassu,upper_kohistan__dassu,PK51601,False
+Upper Kohistan,Kohistan Upper,upper_kohistan,PK516,Harban Basha,upper_kohistan__harban_basha,PK51603,False
+Upper Kohistan,Kohistan Upper,upper_kohistan,PK516,Kandia,upper_kohistan__kandia,PK51602,False
+Upper Kohistan,Kohistan Upper,upper_kohistan,PK516,Seo,upper_kohistan__seo,PK51604,False
