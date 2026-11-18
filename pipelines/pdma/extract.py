@@ -21,6 +21,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import csv
 import datetime as dt
 import hashlib
 import json
@@ -37,9 +38,10 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field
 
 from backend.app.config import get_settings
-from backend.app.geo import AdminNames
+from backend.app.geo import AdminNames, name_key
+from backend.app.llm import LLMRateLimitedError
 from pipelines.pdma.parse_dsr import ParsedReport, SummaryRow, load_report
-from pipelines.pdma.redact import has_name_markers, safe_redact
+from pipelines.pdma.redact import has_name_markers, place_checker, safe_redact
 
 logger = logging.getLogger("pdma.extract")
 
@@ -52,6 +54,8 @@ COLLAPSE = re.compile(r"roof|house|wall|room|building|structure", re.IGNORECASE)
 WEATHER = re.compile(r"rain|snow|storm|wind|weather|flood|monsoon", re.IGNORECASE)
 
 PROMPT_VERSION = "v1"
+ALL_LIMITED_WAIT_S = 60
+MAX_ALL_LIMITED_WAITS = 5
 
 
 # ---- The form the LLM fills -------------------------------------------------
@@ -147,9 +151,28 @@ def iter_reports(raw_dir: Path, start: int = 0, end: int = 10**9) -> Iterator[Pa
             yield load_report(path)
 
 
-def build_tasks(reports, names: AdminNames) -> tuple[list[Task], Counter]:
+def load_place_keys(ref_dir: Path) -> dict[str, set[str]]:
+    """Gazetteer and tehsil name keys per district, for keeping places during redaction."""
+
+    places: dict[str, set[str]] = {}
+    with (ref_dir / "gazetteer.csv").open(encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            keys = places.setdefault(row["district_slug"], set())
+            keys.add(name_key(row["name"]))
+            keys.update(name_key(a) for a in row["alt_names"].split("|") if a)
+    with (ref_dir / "kp_admin.csv").open(encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            places.setdefault(row["district_slug"], set()).add(name_key(row["tehsil"]))
+    for keys in places.values():
+        keys.discard("")
+    return places
+
+
+def build_tasks(reports, names: AdminNames,
+                place_keys: dict[str, set[str]] | None = None) -> tuple[list[Task], Counter]:
     tasks: list[Task] = []
     counts: Counter = Counter()
+    place_keys = place_keys or {}
     for report in reports:
         if report.report_date is None:
             counts["no_date"] += 1
@@ -160,12 +183,13 @@ def build_tasks(reports, names: AdminNames) -> tuple[list[Task], Counter]:
             counts[group] += 1
             if group != "flood_like":
                 continue
-            text = safe_redact(" ".join(texts)) if texts else ""
+            slug = names.resolve_district(row.district_raw)
+            is_place = place_checker(place_keys.get(slug or "", set()), name_key)
+            text = safe_redact(" ".join(texts), is_place) if texts else ""
             assert not has_name_markers(text)
             tasks.append(Task(
                 dsrid=report.dsrid, report_date=report.report_date,
-                district_raw=row.district_raw,
-                district_slug=names.resolve_district(row.district_raw),
+                district_raw=row.district_raw, district_slug=slug,
                 row=row, text=text or "(no incident text)",
             ))
     return tasks, counts
@@ -173,25 +197,52 @@ def build_tasks(reports, names: AdminNames) -> tuple[list[Task], Counter]:
 
 # ---- Running ------------------------------------------------------------------
 
+def is_done(cache_dir: Path, task: Task) -> bool:
+    """True if this report and district already has an answer (any text hash).
+
+    Matching on report and district, not the text hash, means a change to the
+    redaction rules does not trigger a full (and quota-heavy) re-extraction.
+    """
+
+    prefix = task.cache_name.rsplit("_", 1)[0] + "_"
+    return any(cache_dir.glob(f"{prefix}*.json"))
+
 def run(tasks: list[Task], cache_dir: Path, service, *, sleep_s: float, limit: int | None) -> Counter:
     cache_dir.mkdir(parents=True, exist_ok=True)
     counts: Counter = Counter()
     done_calls = 0
     for task in tasks:
         path = cache_dir / task.cache_name
-        if path.exists():
+        if is_done(cache_dir, task):
             counts["cached"] += 1
             continue
         if limit is not None and done_calls >= limit:
             counts["left"] += 1
             continue
         started = time.monotonic()
-        try:
-            result = service.complete_structured(SYSTEM_PROMPT, build_user_prompt(task), ExtractionResult)
-        except Exception as exc:  # keep going; failed tasks are retried next run
+        result = None
+        for wait_round in range(MAX_ALL_LIMITED_WAITS + 1):
+            try:
+                result = service.complete_structured(
+                    SYSTEM_PROMPT, build_user_prompt(task), ExtractionResult
+                )
+                break
+            except LLMRateLimitedError:
+                if wait_round == MAX_ALL_LIMITED_WAITS:
+                    break
+                logger.info("All LLM keys are rate limited; waiting %d s", ALL_LIMITED_WAIT_S)
+                time.sleep(ALL_LIMITED_WAIT_S)
+            except Exception as exc:  # keep going; failed tasks are retried next run
+                logger.warning("DSRID %d %s failed: %s", task.dsrid, task.district_raw,
+                               type(exc).__name__)
+                break
+        if result is None:
             counts["failed"] += 1
-            logger.warning("DSRID %d %s failed: %s", task.dsrid, task.district_raw, type(exc).__name__)
-            time.sleep(sleep_s * 3)
+            if wait_round == MAX_ALL_LIMITED_WAITS:
+                logger.warning("Stopping: every key is still rate limited (likely daily limits). "
+                               "Rerun later; finished rows are kept.")
+                counts["left"] += 1
+                break
             continue
         record = {
             "dsrid": task.dsrid,
@@ -234,8 +285,9 @@ def main(argv: list[str] | None = None) -> int:
         logging.getLogger(noisy).setLevel(logging.WARNING)
 
     names = AdminNames.from_dir(settings.data_dir / "reference")
-    tasks, groups = build_tasks(iter_reports(args.raw_dir, args.start, args.end), names)
-    cached = sum((args.cache_dir / t.cache_name).exists() for t in tasks)
+    place_keys = load_place_keys(settings.data_dir / "reference")
+    tasks, groups = build_tasks(iter_reports(args.raw_dir, args.start, args.end), names, place_keys)
+    cached = sum(is_done(args.cache_dir, t) for t in tasks)
     logger.info("Rows by group: %s | LLM tasks %d (cached %d, to do %d)",
                 dict(groups), len(tasks), cached, len(tasks) - cached)
     if args.dry_run:
