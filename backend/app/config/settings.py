@@ -93,6 +93,7 @@ class Settings(BaseSettings):
     llm_timeout_s: float = Field(default=60.0, gt=0)
     llm_max_retries: int = Field(default=3, ge=0)
     llm_validation_retries: int = Field(default=2, ge=0)
+    llm_reasoning_effort: str | None = "low"  # for reasoning models (Groq gpt-oss)
 
     # Provider keys. The standard unprefixed names also work.
     groq_api_key: SecretStr | None = Field(

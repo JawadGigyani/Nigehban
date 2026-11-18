@@ -54,6 +54,9 @@ class FloodEvent(Contract):
     houses_damaged: int | None = Field(default=None, ge=0)
     source_dsrid: int = Field(ge=1)
     extract_confidence: float = Field(ge=0, le=1)
+    place_role: str | None = None  # "incident" | "residence" | "unclear" (where the place came from)
+    water_body: str | None = None  # river or stream named in the report
+    n_reports: int = Field(default=1, ge=1)  # reports merged into this event
 
     @property
     def is_positive(self) -> bool:
