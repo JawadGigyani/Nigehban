@@ -138,27 +138,31 @@ class LLMService:
                     )
                 logger.info("Skipping LLM fallback '%s': no API key.", provider.value)
                 continue
-            model_name = settings.model_for(provider)
-            # Reasoning models on Groq (gpt-oss) spend tokens on hidden reasoning;
-            # "low" keeps extraction calls inside the free per-minute token limit.
-            effort = (
-                settings.llm_reasoning_effort
-                if provider is LLMProvider.GROQ and "gpt-oss" in model_name
-                else None
-            )
-            model = build_chat_model(
-                api_key=key.get_secret_value(),
-                model=model_name,
-                base_url=settings.base_url_for(provider),
-                timeout_s=settings.llm_timeout_s,
-                max_retries=settings.llm_max_retries,
-                http_client=http_client,
-                reasoning_effort=effort,
-            )
             json_mode = (
                 settings.llm_json_mode if provider is settings.llm_provider else JsonMode.JSON_SCHEMA
             )
-            slots.append(ModelSlot(provider, model, json_mode))
+            # Groq rate limits are per model, so an extra Groq model adds free capacity.
+            model_names = [settings.model_for(provider)]
+            if provider is LLMProvider.GROQ:
+                model_names += [m for m in settings.groq_extra_models if m not in model_names]
+            for model_name in model_names:
+                # Reasoning models on Groq (gpt-oss) spend tokens on hidden reasoning;
+                # "low" keeps extraction calls inside the free per-minute token limit.
+                effort = (
+                    settings.llm_reasoning_effort
+                    if provider is LLMProvider.GROQ and "gpt-oss" in model_name
+                    else None
+                )
+                model = build_chat_model(
+                    api_key=key.get_secret_value(),
+                    model=model_name,
+                    base_url=settings.base_url_for(provider),
+                    timeout_s=settings.llm_timeout_s,
+                    max_retries=settings.llm_max_retries,
+                    http_client=http_client,
+                    reasoning_effort=effort,
+                )
+                slots.append(ModelSlot(provider, model, json_mode))
         return cls(slots, validation_retries=settings.llm_validation_retries)
 
     @property

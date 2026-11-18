@@ -69,6 +69,16 @@
       <span class="dot" style="background:#7048e8"></span>GeoNames
       <span class="dot" style="background:#2f9e44"></span>both</p>
 
+    <div id="events-panel" hidden>
+      <h2>PDMA events</h2>
+      <p class="note"><span class="dot" style="background:#e03131"></span>flood (positive)
+        <span class="dot" style="background:#495057"></span>landslide / collapse
+        <br>Large dot = village-level, small = tehsil centre.</p>
+      <label class="row"><input type="checkbox" id="pos-only" checked> Flood events only</label>
+      <label class="row">Year <select id="year"><option value="">All</option></select></label>
+      <p class="note" id="event-count"></p>
+    </div>
+
     <h2>Find a place</h2>
     <input type="search" id="q" placeholder="e.g. Mingora, Kalam, Pir Baba">
     <div id="results"></div>
@@ -257,12 +267,44 @@ async function load() {
   // Optional layer: geocoded PDMA events (added in M1; private, local only).
   fetch(DATA + "events/flood_events.geojson").then(r => r.ok ? r.json() : null).then(ev => {
     if (!ev) return;
+    ev.features.forEach(f => { f.properties.year = String(f.properties.date).slice(0, 4); });
     map.addSource("events", { type: "geojson", data: ev });
     map.addLayer({ id: "events", type: "circle", source: "events", paint: {
       "circle-color": ["case", ["get", "is_positive"], "#e03131", "#495057"],
-      "circle-radius": 5, "circle-stroke-color": "#fff", "circle-stroke-width": 1,
+      "circle-radius": ["case", ["==", ["get", "geocode_level"], "village"], 6, 4],
+      "circle-stroke-color": "#fff", "circle-stroke-width": 1.2, "circle-opacity": 0.9,
     } });
     document.getElementById("events-row").hidden = false;
+    document.getElementById("events-panel").hidden = false;
+
+    const years = [...new Set(ev.features.map(f => f.properties.year))].sort();
+    const sel = document.getElementById("year");
+    years.forEach(y => sel.insertAdjacentHTML("beforeend", `<option>${y}</option>`));
+    const posOnly = document.getElementById("pos-only");
+    const applyFilter = () => {
+      const f = ["all"];
+      if (posOnly.checked) f.push(["==", ["get", "is_positive"], true]);
+      if (sel.value) f.push(["==", ["get", "year"], sel.value]);
+      map.setFilter("events", f.length > 1 ? f : null);
+      const n = ev.features.filter(x => (!posOnly.checked || x.properties.is_positive)
+                                     && (!sel.value || x.properties.year === sel.value)).length;
+      document.getElementById("event-count").textContent = `${n} events on the map (district-level events have no point).`;
+    };
+    posOnly.onchange = applyFilter; sel.onchange = applyFilter; applyFilter();
+
+    map.on("click", "events", e => {
+      const p = e.features[0].properties;
+      new maplibregl.Popup().setLngLat(e.lngLat).setHTML(
+        `<b>${esc(p.event_type.replace("_", " "))}</b> · ${esc(p.date)}<table class="pp">
+         <tr><td>Where</td><td>${esc(p.village || "(tehsil centre)")}, ${esc(p.tehsil || "")}, ${esc(p.district)}</td></tr>
+         <tr><td>Level</td><td>${esc(p.geocode_level)}${p.place_role ? " · " + esc(p.place_role) : ""}</td></tr>
+         ${p.water_body ? `<tr><td>Water</td><td>${esc(p.water_body)}</td></tr>` : ""}
+         <tr><td>Deaths</td><td>${p.deaths ?? "?"}</td></tr>
+         <tr><td>Reports</td><td>${p.n_reports} (DSRID ${p.source_dsrid})</td></tr>
+         <tr><td>Confidence</td><td>${p.extract_confidence}</td></tr></table>`).addTo(map);
+    });
+    map.on("mouseenter", "events", () => map.getCanvas().style.cursor = "pointer");
+    map.on("mouseleave", "events", () => map.getCanvas().style.cursor = "");
   }).catch(() => {});
 }
 

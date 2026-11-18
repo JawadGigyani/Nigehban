@@ -115,9 +115,11 @@ def test_from_settings_builds_primary_and_fallback(monkeypatch):
     s = Settings(_env_file=None)
     assert s.api_key_for(LLMProvider.GEMINI).get_secret_value() == "gemini-key"
     service = LLMService.from_settings(s)
-    assert service.providers == (LLMProvider.GROQ, LLMProvider.GEMINI)
-    groq, gemini = (slot.model for slot in service.slots)
+    assert service.providers == (LLMProvider.GROQ, LLMProvider.GROQ, LLMProvider.GEMINI)
+    groq, groq_extra, gemini = (slot.model for slot in service.slots)
     assert groq.model_name == "openai/gpt-oss-120b"
+    assert groq_extra.model_name == "openai/gpt-oss-20b"  # separate free quota
+    assert groq.reasoning_effort == "low"
     assert "googleapis.com" in str(gemini.openai_api_base)
 
 
@@ -125,7 +127,7 @@ def test_from_settings_skips_fallback_without_key(monkeypatch):
     monkeypatch.setenv("NIGEHBAN_LLM_API_KEY", "groq-key")
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     monkeypatch.delenv("NIGEHBAN_GEMINI_API_KEY", raising=False)
-    service = LLMService.from_settings(Settings(_env_file=None))
+    service = LLMService.from_settings(Settings(_env_file=None, groq_extra_models=[]))
     assert service.providers == (LLMProvider.GROQ,)
 
 
