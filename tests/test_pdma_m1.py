@@ -206,3 +206,23 @@ def test_redaction_keeps_known_and_likely_places():
         assert place in out
     assert safe_redact("In Mir Khan Arang Tehsil Uthmankhel during rain") == \
         "In Mir Khan Arang Tehsil Uthmankhel during rain"
+
+
+def test_apply_corrections(tmp_path):
+    from collections import Counter
+
+    from backend.app.contracts import FloodEvent
+    from pipelines.pdma.build_events import apply_corrections
+
+    event = FloodEvent(event_id="evt_x", date="2025-06-28", report_date="2025-06-28",
+                       district="Charsadda", geocode_level="district", event_type="flood",
+                       source_dsrid=1, extract_confidence=0.9)
+    path = tmp_path / "c.csv"
+    path.write_text("event_id,field,value,reason\n"
+                    "evt_x,event_type,other,not a flood\n"
+                    "evt_x,date,2025-06-27,body found next day\n"
+                    "evt_missing,district,Swat,unknown id\n", encoding="utf-8")
+    stats = Counter()
+    (fixed,) = apply_corrections([event], path, stats)
+    assert not fixed.is_positive and str(fixed.date) == "2025-06-27"
+    assert stats["corrected_events"] == 1

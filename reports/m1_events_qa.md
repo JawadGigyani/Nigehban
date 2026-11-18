@@ -7,10 +7,10 @@ All figures are counts; the event file itself is private (`data/events/`, gitign
 
 | Check | Value | Threshold | Pass |
 |---|---|---|---|
-| Unique positive district-days, candidate districts | 131 | >= 100 | yes |
+| Unique positive district-days, candidate districts | 132 | >= 100 | yes |
 | Positive events at tehsil level or better, candidate districts | 69% | >= 60% | yes |
 
-All KP: 383 positive events on 369 district-days.
+All KP: 382 positive events on 368 district-days.
 
 ## Events by type (all KP, after de-duplication)
 
@@ -20,8 +20,8 @@ All KP: 383 positive events on 369 district-days.
 | flash_flood | 251 |
 | landslide | 220 |
 | drowning | 70 |
-| flood | 60 |
-| other | 31 |
+| flood | 59 |
+| other | 32 |
 | cloudburst | 2 |
 
 Positives = flash_flood, flood, cloudburst, drowning. Landslides and roof collapses are stored but are not positives.
@@ -36,7 +36,7 @@ Positives = flash_flood, flood, cloudburst, drowning. Landslides and roof collap
 | 2022 | 94 |
 | 2023 | 37 |
 | 2024 | 55 |
-| 2025 | 95 |
+| 2025 | 94 |
 | 2026 | 7 |
 
 ## Positive events by district (all KP)
@@ -45,10 +45,10 @@ Positives = flash_flood, flood, cloudburst, drowning. Landslides and roof collap
 |---|---|
 | Upper Chitral | 32 |
 | Swat | 30 |
-| Lower Chitral | 27 |
+| Lower Chitral | 26 |
 | Upper Dir | 24 |
 | Dera Ismail Khan | 21 |
-| Bajaur | 19 |
+| Bajaur | 20 |
 | Buner | 18 |
 | Upper Kohistan | 16 |
 | South Waziristan Lower | 15 |
@@ -70,11 +70,11 @@ Positives = flash_flood, flood, cloudburst, drowning. Landslides and roof collap
 | North Waziristan | 5 |
 | Haripur | 5 |
 | Bannu | 4 |
-| Charsadda | 4 |
+| Lower Kohistan | 4 |
 | Mardan | 4 |
 | Peshawar | 4 |
-| Lower Kohistan | 4 |
 | Kohistan Kolai Pallas | 3 |
+| Charsadda | 3 |
 | Hangu | 2 |
 | Kohat | 2 |
 | Orakzai | 2 |
@@ -85,7 +85,7 @@ Positives = flash_flood, flood, cloudburst, drowning. Landslides and roof collap
 | Level | Events |
 |---|---|
 | district | 45 |
-| tehsil | 23 |
+| tehsil | 24 |
 | village | 75 |
 
 ## Positive events per tehsil (candidate districts, top 25)
@@ -99,7 +99,7 @@ Positives = flash_flood, flood, cloudburst, drowning. Landslides and roof collap
 | malakand__bat_khela | 4 |
 | swat__khwaza_khela | 4 |
 | bajaur__salarzai | 4 |
-| bajaur__utman_khel | 3 |
+| bajaur__utman_khel | 4 |
 | upper_dir__wari | 3 |
 | swat__barikot | 3 |
 | upper_dir__larjam | 3 |
@@ -133,6 +133,8 @@ Positives = flash_flood, flood, cloudburst, drowning. Landslides and roof collap
 
 Name safety: villages are stored only as gazetteer names; water-body strings with name markers are dropped; no free text is stored.
 
+<!-- manual sections below: kept on rebuild -->
+
 ## Spot check (50 random positive events)
 
 Second reader: each event was compared with the original report text (names
@@ -150,6 +152,20 @@ human look are marked in `data/events/spot_check_reviewed.csv` (private).
 The one date and district error is the same event: a drowning in Bajaur
 reported by Charsadda, where the body was found. Target (90% date and
 district) is met.
+
+**Follow-up (19 Nov 2026).** A team member checked the flagged rows against
+the reports. The 3 unverified tehsils were looked up online:
+
+| Village in report | Tehsil assigned | Finding |
+|---|---|---|
+| Tarpatar (Upper Dir) | Larjam | The report names only the village; the tehsil comes from the village location. Tarpatar (Taraptar) is a union council in the Usheri valley, which lies in Larjam tehsil. Kept. |
+| Gandigar (Upper Dir) | Dir | The 2017 census lists Gandigar Bala, Gandigar Payeen and Kila Gandigar under Dir tehsil. Kept. |
+| Zaith / Zait (Upper Chitral) | Mulkhow | News reports place Zait among the Reshun–Kuragh–Charun villages near the Mulkhow/Mastuj line. Still unverified; Upper Chitral is outside the candidate area. |
+
+Three corrections were applied through `data/events/event_corrections.csv`
+(private; applied on every rebuild): the Lower Chitral event moved from
+Chitral to Drosh tehsil; the glacier-melt river rise is no longer a positive;
+the Charsadda drowning moved to Utman Khel, Bajaur, dated 27 Jun 2025.
 
 ## Name redaction (privacy)
 
