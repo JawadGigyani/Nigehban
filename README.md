@@ -45,6 +45,23 @@ Every ID tried is checkpointed in `data/raw/pdma_dsr/_index.jsonl` and forced
 to disk. If the computer turns off, run the same command again; it continues
 from where it stopped.
 
+Flood event dataset (M1), after the download:
+
+```powershell
+.venv\Scripts\python -m pipelines.pdma.extract --dry-run   # count the LLM work
+.venv\Scripts\python -m pipelines.pdma.extract             # LLM extraction (cached, resumable)
+.venv\Scripts\python -m pipelines.pdma.build_events        # dedupe, geocode, write outputs
+```
+
+- `extract` parses each report, keeps flood-like district rows, removes names
+  from the incident text (`pipelines/pdma/redact.py`) and asks the LLM to fill
+  a fixed form (event type, date, tehsil, villages, river, counts). Answers are
+  cached in `data/interim/pdma_llm/`.
+- `build_events` geocodes (village -> tehsil -> district), merges repeat
+  reports, and writes `data/events/flood_events.parquet` and `.geojson`
+  (private), `data/events/spot_check.csv` (50 events to check by hand) and
+  `reports/m1_events_qa.md` (counts and gate G1).
+
 Raw reports contain personal names. They stay in the gitignored `data/raw/`
 folder and are never committed. See `data/contracts/README.md` for every data
 file and its contract.

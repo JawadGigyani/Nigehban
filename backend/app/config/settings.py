@@ -93,6 +93,7 @@ class Settings(BaseSettings):
     llm_timeout_s: float = Field(default=60.0, gt=0)
     llm_max_retries: int = Field(default=3, ge=0)
     llm_validation_retries: int = Field(default=2, ge=0)
+    llm_reasoning_effort: str | None = "low"  # for reasoning models (Groq gpt-oss)
 
     # Provider keys. The standard unprefixed names also work.
     groq_api_key: SecretStr | None = Field(
@@ -103,6 +104,8 @@ class Settings(BaseSettings):
         validation_alias=AliasChoices("NIGEHBAN_GEMINI_API_KEY", "GEMINI_API_KEY"),
     )
     gemini_model: str | None = None
+    # Extra Groq models tried after the primary one (each has its own free quota).
+    groq_extra_models: list[str] = Field(default=["openai/gpt-oss-20b"])
     openai_api_key: SecretStr | None = Field(
         default=None, validation_alias=AliasChoices("NIGEHBAN_OPENAI_API_KEY", "OPENAI_API_KEY")
     )
