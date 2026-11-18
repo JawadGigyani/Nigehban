@@ -53,7 +53,7 @@ PROVIDER_DEFAULTS: dict[LLMProvider, tuple[str | None, str]] = {
     LLMProvider.GROQ: ("https://api.groq.com/openai/v1", "openai/gpt-oss-120b"),
     LLMProvider.GEMINI: (
         "https://generativelanguage.googleapis.com/v1beta/openai/",
-        "gemini-2.5-flash",
+        "gemini-3.5-flash-lite",
     ),
     LLMProvider.OPENAI: (None, "gpt-4.1-mini"),
     LLMProvider.CUSTOM: (None, ""),
@@ -109,6 +109,20 @@ class Settings(BaseSettings):
     openai_api_key: SecretStr | None = Field(
         default=None, validation_alias=AliasChoices("NIGEHBAN_OPENAI_API_KEY", "OPENAI_API_KEY")
     )
+    # More keys per provider, comma-separated, used after the main key when it is
+    # rate limited. Example: NIGEHBAN_GROQ_API_KEYS=gsk_aaa,gsk_bbb
+    groq_api_keys: SecretStr | None = Field(
+        default=None, validation_alias=AliasChoices("NIGEHBAN_GROQ_API_KEYS", "GROQ_API_KEYS")
+    )
+    gemini_api_keys: SecretStr | None = Field(
+        default=None, validation_alias=AliasChoices("NIGEHBAN_GEMINI_API_KEYS", "GEMINI_API_KEYS")
+    )
+    openai_api_keys: SecretStr | None = Field(
+        default=None, validation_alias=AliasChoices("NIGEHBAN_OPENAI_API_KEYS", "OPENAI_API_KEYS")
+    )
+    # How long a rate-limited key/model is skipped before it is tried again.
+    llm_cooldown_s: float = Field(default=120.0, ge=0)
+    llm_daily_cooldown_s: float = Field(default=3600.0, ge=0)
 
     # Privacy: contact details are encrypted at rest and looked up by keyed hash.
     contact_encryption_key: SecretStr | None = None
@@ -158,6 +172,24 @@ class Settings(BaseSettings):
         if specific is not None:
             return specific
         return self.llm_api_key if provider is self.llm_provider else None
+
+    def api_keys_for(self, provider: LLMProvider) -> list[SecretStr]:
+        """Main key first, then the extra keys; duplicates and blanks removed."""
+
+        extra = {
+            LLMProvider.GROQ: self.groq_api_keys,
+            LLMProvider.GEMINI: self.gemini_api_keys,
+            LLMProvider.OPENAI: self.openai_api_keys,
+            LLMProvider.CUSTOM: None,
+        }[provider]
+        values: list[str] = []
+        main = self.api_key_for(provider)
+        if main is not None:
+            values.append(main.get_secret_value().strip())
+        if extra is not None:
+            values += [k.strip() for k in extra.get_secret_value().split(",")]
+        unique = list(dict.fromkeys(v for v in values if v))
+        return [SecretStr(v) for v in unique]
 
     @property
     def raw_pdma_dir(self) -> Path:

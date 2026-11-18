@@ -1,4 +1,5 @@
 from backend.app.llm.service import (
+    LLMRateLimitedError,
     LLMConfigError,
     LLMError,
     LLMService,
@@ -10,6 +11,7 @@ from backend.app.llm.service import (
 __all__ = [
     "LLMConfigError",
     "LLMError",
+    "LLMRateLimitedError",
     "LLMService",
     "ModelSlot",
     "build_chat_model",

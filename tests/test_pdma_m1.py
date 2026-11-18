@@ -172,3 +172,37 @@ def test_tehsil_spelling_variants_within_district(geocoder):
     assert geocoder._tehsil("shangla", "Besham") == "shangla__bisham"
     assert geocoder._tehsil("bajaur", "Wara Mamund") == "bajaur__mamund"
     assert geocoder._tehsil("buner", "Khadu Khel") == "buner__khado_khel"
+
+
+@pytest.mark.parametrize("text", [
+    "Houses Damaged 1. Abdul Testaziz resident of Garam Chashma 2. Syed Testshah resident of Garam Chashma",
+    "Crops Damaged 1. Muhammad Testnabi 2. Testnazir Khan 3. Fazal Testuddin",
+    "the other Testijaz Khan (Age 13 years) drowned in the drain",
+    "On 15-08-2024, due to heavy rain, Testmanzoor Khan was flooded away.",
+    "Injured 3. Testmuddasir Ahmad s/0 Testmuhtiyar Ahmad 4. Testfour",
+    "15. Atta Ullahs/o Akram Testkhan (Hair dresser shop)",
+    "Two rooms of Mr.Abdus Testsatar Slo Mubarak Testshah Rio Batara collapsed.",
+    "Boundary wall of a house owned by Testhashim Ali in Paharpur",
+    "standing crops of [person] and Sher Testnazim were damaged",
+    "died sons of Sher Testbadshah, while 03 women got injured",
+    "40. Testaisha Bi Bi Widow of Muhammad Testqadir (Two Rooms)",
+    "Testhastam resident of Dorma Kore Loe Shilman (Boundary wall)",
+])
+def test_redaction_removes_other_name_forms(text):
+    out = safe_redact(text)
+    assert "Test" not in out, out
+    assert not has_name_markers(out)
+
+
+def test_redaction_keeps_known_and_likely_places():
+    from pipelines.pdma.extract import load_place_keys
+    from pipelines.pdma.redact import place_checker
+    from backend.app.geo import name_key
+
+    is_place = place_checker(load_place_keys(REF)["swat"], name_key)
+    text = "flash floods in: 1. Saidu Sharif 2. Faiz Abad; resident of Umar Khel Kacha near Kernal Sher Khan Kili"
+    out = safe_redact(text, is_place)
+    for place in ("Saidu Sharif", "Faiz Abad", "Umar Khel", "Kernal Sher Khan Kili"):
+        assert place in out
+    assert safe_redact("In Mir Khan Arang Tehsil Uthmankhel during rain") == \
+        "In Mir Khan Arang Tehsil Uthmankhel during rain"

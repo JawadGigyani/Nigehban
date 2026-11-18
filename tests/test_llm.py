@@ -175,3 +175,45 @@ def test_live_urdu_text(provider):
         "Tell people to move to higher ground because flash flood risk is high.",
     )
     assert any("؀" <= ch <= "ۿ" for ch in text)  # Arabic-script characters
+
+
+def test_rate_limited_slot_is_paused_and_skipped():
+    now = {"t": 0.0}
+    first = FakeServer([429])
+    second = FakeServer(['{"district": "Swat"}', '{"district": "Dir"}'])
+    service = LLMService([_slot(first), _slot(second)], validation_retries=0,
+                         cooldown_s=120, clock=lambda: now["t"])
+    assert service.complete_structured("s", "u", Extract).district == "Swat"
+    assert service.available_slots() == [1]  # first slot cooling down
+    assert service.complete_structured("s", "u", Extract).district == "Dir"
+    assert len(first.requests) == 1  # not called again while paused
+    now["t"] = 121.0
+    assert service.available_slots() == [0, 1]  # back after the cooldown
+
+
+def test_all_slots_limited_raises_rate_limited_error():
+    from backend.app.llm import LLMRateLimitedError
+
+    service = LLMService([_slot(FakeServer([429]))], validation_retries=0)
+    with pytest.raises(LLMRateLimitedError):
+        service.complete_structured("s", "u", Extract)
+    with pytest.raises(LLMRateLimitedError):  # now paused: fails fast, no request
+        service.complete_structured("s", "u", Extract)
+
+
+def test_extra_keys_build_more_slots_without_leaking_keys(monkeypatch):
+    monkeypatch.setenv("NIGEHBAN_LLM_API_KEY", "gsk_main")
+    monkeypatch.setenv("NIGEHBAN_GROQ_API_KEYS", "gsk_two, gsk_three,gsk_main,")
+    monkeypatch.setenv("GEMINI_API_KEY", "gem_main")
+    monkeypatch.setenv("NIGEHBAN_GEMINI_API_KEYS", "gem_two")
+    s = Settings(_env_file=None)
+    assert [k.get_secret_value() for k in s.api_keys_for(LLMProvider.GROQ)] == ["gsk_main", "gsk_two", "gsk_three"]
+    service = LLMService.from_settings(s)
+    labels = [slot.label for slot in service.slots]
+    assert labels == [
+        "groq#1:openai/gpt-oss-120b", "groq#1:openai/gpt-oss-20b",
+        "groq#2:openai/gpt-oss-120b", "groq#2:openai/gpt-oss-20b",
+        "groq#3:openai/gpt-oss-120b", "groq#3:openai/gpt-oss-20b",
+        "gemini#1:gemini-3.5-flash-lite", "gemini#2:gemini-3.5-flash-lite",
+    ]
+    assert not any("gsk_" in label or "gem_" in label for label in labels)
