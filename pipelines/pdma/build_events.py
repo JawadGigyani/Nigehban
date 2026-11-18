@@ -306,6 +306,43 @@ def to_events(drafts: list[Draft]) -> list[FloodEvent]:
     return events
 
 
+# ---- Manual corrections (from the human spot check) -----------------------------------
+
+CORRECTABLE = {"date", "district", "tehsil", "tehsil_id", "village", "lat", "lon",
+               "geocode_level", "event_type", "place_role"}
+
+
+def apply_corrections(events: list[FloodEvent], path: Path, stats: Counter) -> list[FloodEvent]:
+    """Apply `event_id,field,value,reason` rows. An empty value clears the field.
+
+    The event_id is the one printed in spot_check.csv, so a correction keeps working
+    when the dataset is rebuilt. Unknown ids are reported, not silently ignored.
+    """
+
+    if not path.is_file():
+        return events
+    by_id: dict[str, dict] = {}
+    with path.open(encoding="utf-8", newline="") as fh:
+        for row in csv.DictReader(fh):
+            field = row["field"].strip()
+            if field not in CORRECTABLE:
+                raise ValueError(f"Field {field!r} cannot be corrected")
+            value = row["value"].strip()
+            by_id.setdefault(row["event_id"].strip(), {})[field] = value or None
+    out = []
+    for e in events:
+        changes = by_id.pop(e.event_id, None)
+        if changes:
+            data = e.model_dump()
+            data.update(changes)
+            e = FloodEvent.model_validate(data)
+            stats["corrected_events"] += 1
+        out.append(e)
+    for missing in by_id:
+        print(f"warning: correction for unknown event {missing}")
+    return out
+
+
 def write_outputs(events: list[FloodEvent], out_dir: Path) -> pd.DataFrame:
     out_dir.mkdir(parents=True, exist_ok=True)
     frame = pd.DataFrame([{**e.model_dump(mode="python"), "is_positive": e.is_positive} for e in events])
@@ -338,6 +375,9 @@ def write_spot_check(events: list[FloodEvent], path: Path, n: int = 50, seed: in
             writer.writerow([e.event_id, e.date, e.district, e.tehsil or "", e.village or "",
                              e.event_type.value, e.deaths if e.deaths is not None else "", e.source_dsrid,
                              f"https://rms.pdma.gov.pk/ViewDSR.aspx?DSRID={e.source_dsrid}", "", "", "", ""])
+
+
+MANUAL_MARKER = "<!-- manual sections below: kept on rebuild -->"
 
 
 def write_qa(frame: pd.DataFrame, stats: Counter, path: Path, n_reports: int, last_report: str) -> dict:
@@ -418,6 +458,12 @@ Positives = flash_flood, flood, cloudburst, drowning. Landslides and roof collap
 Name safety: villages are stored only as gazetteer names; water-body strings with name markers are dropped; no free text is stored.
 """
     path.parent.mkdir(parents=True, exist_ok=True)
+    # Hand-written sections (spot check, privacy notes) live below this marker and
+    # are kept when the report is regenerated.
+    if path.is_file():
+        old = path.read_text(encoding="utf-8")
+        if MANUAL_MARKER in old:
+            text = text.rstrip() + "\n\n" + old[old.index(MANUAL_MARKER):]
     path.write_text(text, encoding="utf-8")
     return gate
 
@@ -438,6 +484,7 @@ def main(argv: list[str] | None = None) -> int:
     drafts += drafts_from_tables(args.raw_dir, geocoder.names, stats)
     stats["drafts"] = len(drafts)
     events = to_events(deduplicate(drafts))
+    events = apply_corrections(events, args.out_dir / "event_corrections.csv", stats)
 
     for e in events:  # final privacy check
         for value in (e.village, e.tehsil, e.water_body):
