@@ -49,6 +49,18 @@ Raw reports contain personal names. They stay in the gitignored `data/raw/`
 folder and are never committed. See `data/contracts/README.md` for every data
 file and its contract.
 
+## Data viewer (local only)
+
+A MapLibre map of the reference data (tehsils, gazetteer places, and the
+geocoded PDMA events once M1 has built them). Serve the repo root and open the page:
+
+```powershell
+.venv\Scripts\python -m http.server 8800 --bind 127.0.0.1
+# then open http://127.0.0.1:8800/tools/map/
+```
+
+Keep it local: the events layer is built from private PDMA data.
+
 ## Layout
 
 ```

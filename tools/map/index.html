@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nigehban Data Viewer</title>
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #ffffff; --text: #1d2430; --muted: #5d6878;
+    --border: #dfe3ea; --accent: #1f6feb;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #11151c; --panel: #181e27; --text: #e6e9ef; --muted: #9aa5b5;
+            --border: #2a3240; --accent: #58a6ff; }
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
+               font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  #app { display: flex; height: 100%; }
+  #panel { width: 320px; flex: none; overflow-y: auto; background: var(--panel);
+           border-right: 1px solid var(--border); padding: 16px; }
+  #map { flex: 1; }
+  h1 { font-size: 17px; margin: 0 0 2px; }
+  h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .04em;
+       color: var(--muted); margin: 18px 0 8px; }
+  .sub { color: var(--muted); font-size: 12px; margin: 0; }
+  label.row { display: flex; align-items: center; gap: 8px; margin: 5px 0; cursor: pointer; }
+  input[type=search] { width: 100%; padding: 7px 9px; border: 1px solid var(--border);
+       border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  td, th { padding: 4px 4px; border-bottom: 1px solid var(--border); text-align: left; }
+  th { color: var(--muted); font-weight: 600; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.d { cursor: pointer; }
+  tr.d:hover td { background: var(--bg); }
+  .sw { display: inline-block; width: 11px; height: 11px; border-radius: 2px;
+        margin-right: 6px; vertical-align: -1px; }
+  .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%;
+         margin-right: 6px; vertical-align: 0; border: 1px solid #0003; }
+  #results div { padding: 4px 2px; cursor: pointer; border-bottom: 1px solid var(--border);
+                 font-size: 12.5px; }
+  #results div:hover { color: var(--accent); }
+  #results small { color: var(--muted); }
+  .note { font-size: 12px; color: var(--muted); }
+  .maplibregl-popup-content { color: #1d2430; font-size: 12.5px; max-width: 280px; }
+  .maplibregl-popup-content b { font-size: 13.5px; }
+  .pp td { padding: 1px 6px 1px 0; border: none; }
+  @media (max-width: 760px) {
+    #app { flex-direction: column; }
+    #panel { width: 100%; height: 42%; border-right: none; border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <aside id="panel">
+    <h1>Nigehban data viewer</h1>
+    <p class="sub">Local check of the reference data. Not for publishing.</p>
+
+    <h2>Layers</h2>
+    <label class="row"><input type="checkbox" data-layer="tehsil-fill" checked> Tehsil areas</label>
+    <label class="row"><input type="checkbox" data-layer="tehsil-label" checked> Tehsil names</label>
+    <label class="row"><input type="checkbox" data-layer="places" checked> Gazetteer places</label>
+    <label class="row" id="events-row" hidden><input type="checkbox" data-layer="events" checked> PDMA flood events</label>
+    <p class="note">Places: <span class="dot" style="background:#e8590c"></span>OSM
+      <span class="dot" style="background:#7048e8"></span>GeoNames
+      <span class="dot" style="background:#2f9e44"></span>both</p>
+
+    <h2>Find a place</h2>
+    <input type="search" id="q" placeholder="e.g. Mingora, Kalam, Pir Baba">
+    <div id="results"></div>
+
+    <h2>Districts</h2>
+    <table id="districts">
+      <thead><tr><th>District</th><th class="n">Tehsils</th><th class="n">Places</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <p class="note">Click a district to zoom. Grey areas with dashed outlines (Chitral)
+      are kept for geocoding only and are out of scope for the MVP.</p>
+
+    <h2>Sources</h2>
+    <p class="note">Tehsils: OCHA COD-AB (2022), CC BY-IGO. Places: OpenStreetMap (ODbL)
+      and GeoNames (CC BY 4.0). Basemap © OpenStreetMap contributors.</p>
+  </aside>
+  <div id="map"></div>
+</div>
+
+<script>
+const DATA = "../../data/";
+const DISTRICT_COLORS = {
+  swat: "#1971c2", buner: "#e8590c", shangla: "#2f9e44", upper_dir: "#9c36b5",
+  lower_dir: "#c2255c", bajaur: "#f08c00", malakand: "#0c8599", mansehra: "#5c940d",
+  battagram: "#6741d9", upper_chitral: "#868e96", lower_chitral: "#adb5bd",
+};
+const SOURCE_COLORS = ["match", ["get", "sources"],
+  "osm", "#e8590c", "geonames", "#7048e8", "#2f9e44"];
+
+const map = new maplibregl.Map({
+  container: "map",
+  style: {
+    version: 8,
+    glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
+    sources: {
+      osm: { type: "raster", tileSize: 256, maxzoom: 19,
+             tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+             attribution: "© OpenStreetMap contributors" },
+    },
+    layers: [{ id: "osm", type: "raster", source: "osm", paint: { "raster-saturation": -0.4 } }],
+  },
+  center: [72.4, 35.1], zoom: 7.3,
+});
+map.addControl(new maplibregl.NavigationControl(), "top-right");
+map.addControl(new maplibregl.ScaleControl({ unit: "metric" }), "bottom-left");
+
+function parseCSV(text) {
+  const rows = []; let row = [], field = "", q = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) {
+      if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
+      else if (c === '"') q = false;
+      else field += c;
+    } else if (c === '"') q = true;
+    else if (c === ",") { row.push(field); field = ""; }
+    else if (c === "\n" || c === "\r") {
+      if (c === "\r" && text[i + 1] === "\n") i++;
+      row.push(field); field = "";
+      if (row.length > 1 || row[0] !== "") rows.push(row);
+      row = [];
+    } else field += c;
+  }
+  if (field || row.length) { row.push(field); rows.push(row); }
+  const head = rows.shift();
+  return rows.map(r => Object.fromEntries(head.map((h, i) => [h, r[i] ?? ""])));
+}
+
+function districtOf(tid) { return tid.split("__")[0]; }
+function esc(s) { return String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+function bboxOf(features) {
+  let b = [180, 90, -180, -90];
+  const walk = c => typeof c[0] === "number"
+    ? (b = [Math.min(b[0], c[0]), Math.min(b[1], c[1]), Math.max(b[2], c[0]), Math.max(b[3], c[1])])
+    : c.forEach(walk);
+  features.forEach(f => walk(f.geometry.coordinates));
+  return [[b[0], b[1]], [b[2], b[3]]];
+}
+
+async function load() {
+  const [tehsils, gazText] = await Promise.all([
+    fetch(DATA + "reference/tehsils.geojson").then(r => r.json()),
+    fetch(DATA + "reference/gazetteer.csv").then(r => r.text()),
+  ]);
+  const places = parseCSV(gazText);
+  const placeFC = { type: "FeatureCollection", features: places.map(p => ({
+    type: "Feature",
+    geometry: { type: "Point", coordinates: [+p.lon, +p.lat] },
+    properties: p,
+  })) };
+  tehsils.features.forEach(f => { f.properties.district_slug = districtOf(f.properties.tehsil_id); });
+
+  const colorExpr = ["match", ["get", "district_slug"]];
+  Object.entries(DISTRICT_COLORS).forEach(([k, v]) => colorExpr.push(k, v));
+  colorExpr.push("#999");
+
+  map.addSource("tehsils", { type: "geojson", data: tehsils });
+  map.addSource("places", { type: "geojson", data: placeFC });
+
+  map.addLayer({ id: "tehsil-fill", type: "fill", source: "tehsils", paint: {
+    "fill-color": colorExpr,
+    "fill-opacity": ["case", ["get", "in_scope"], 0.28, 0.12],
+  } });
+  // Dash patterns cannot vary per feature, so in-scope and out-of-scope get separate layers.
+  map.addLayer({ id: "tehsil-line", type: "line", source: "tehsils",
+    filter: ["==", ["get", "in_scope"], true],
+    paint: { "line-color": colorExpr, "line-width": 1.4 } });
+  map.addLayer({ id: "tehsil-line-out", type: "line", source: "tehsils",
+    filter: ["==", ["get", "in_scope"], false],
+    paint: { "line-color": colorExpr, "line-width": 1.4, "line-dasharray": [2, 2] } });
+  map.addLayer({ id: "places", type: "circle", source: "places", paint: {
+    "circle-color": SOURCE_COLORS,
+    "circle-radius": ["interpolate", ["linear"], ["zoom"], 7, 1.6, 10, 3.5, 13, 6],
+    "circle-stroke-width": ["interpolate", ["linear"], ["zoom"], 7, 0, 10, 0.6],
+    "circle-stroke-color": "#fff", "circle-opacity": 0.85,
+  } });
+  map.addLayer({ id: "tehsil-label", type: "symbol", source: "tehsils", layout: {
+    "text-field": ["get", "tehsil"], "text-font": ["Open Sans Semibold"],
+    "text-size": ["interpolate", ["linear"], ["zoom"], 7, 10, 10, 14],
+  }, paint: { "text-color": "#1d2430", "text-halo-color": "#fff", "text-halo-width": 1.6 } });
+
+  map.fitBounds(bboxOf(tehsils.features.filter(f => f.properties.in_scope)), { padding: 30 });
+
+  // District table
+  const tCount = {}, pCount = {};
+  tehsils.features.forEach(f => tCount[f.properties.district_slug] = (tCount[f.properties.district_slug] || 0) + 1);
+  places.forEach(p => pCount[p.district_slug] = (pCount[p.district_slug] || 0) + 1);
+  const tbody = document.querySelector("#districts tbody");
+  Object.keys(DISTRICT_COLORS).forEach(d => {
+    const tr = document.createElement("tr"); tr.className = "d";
+    const name = tehsils.features.find(f => f.properties.district_slug === d)?.properties.district ?? d;
+    tr.innerHTML = `<td><span class="sw" style="background:${DISTRICT_COLORS[d]}"></span>${esc(name)}</td>
+      <td class="n">${tCount[d] || 0}</td><td class="n">${(pCount[d] || 0).toLocaleString()}</td>`;
+    tr.onclick = () => map.fitBounds(bboxOf(tehsils.features.filter(f => f.properties.district_slug === d)), { padding: 40 });
+    tbody.appendChild(tr);
+  });
+  const tot = document.createElement("tr");
+  tot.innerHTML = `<th>Total</th><th class="n">${tehsils.features.length}</th><th class="n">${places.length.toLocaleString()}</th>`;
+  tbody.appendChild(tot);
+
+  // Popups
+  const placeCount = {};
+  places.forEach(p => placeCount[p.tehsil_id] = (placeCount[p.tehsil_id] || 0) + 1);
+  map.on("click", "tehsil-fill", e => {
+    if (map.queryRenderedFeatures(e.point, { layers: ["places"] }).length) return;
+    const p = e.features[0].properties;
+    new maplibregl.Popup().setLngLat(e.lngLat).setHTML(
+      `<b>${esc(p.tehsil)}</b> tehsil, ${esc(p.district)}<table class="pp">
+       <tr><td>ID</td><td>${esc(p.tehsil_id)}</td></tr>
+       <tr><td>P-code</td><td>${esc(p.pcode)}</td></tr>
+       <tr><td>Area</td><td>${Number(p.area_km2).toLocaleString()} km²</td></tr>
+       <tr><td>Places</td><td>${placeCount[p.tehsil_id] || 0}</td></tr>
+       <tr><td>In MVP scope</td><td>${p.in_scope ? "yes" : "no (geocoding only)"}</td></tr>
+       ${p.is_ardc ? "<tr><td>ARDC</td><td>yes (merged district)</td></tr>" : ""}</table>`).addTo(map);
+  });
+  map.on("click", "places", e => {
+    const p = e.features[0].properties;
+    new maplibregl.Popup().setLngLat(e.lngLat).setHTML(placePopup(p)).addTo(map);
+  });
+  ["tehsil-fill", "places"].forEach(l => {
+    map.on("mouseenter", l, () => map.getCanvas().style.cursor = "pointer");
+    map.on("mouseleave", l, () => map.getCanvas().style.cursor = "");
+  });
+
+  // Search
+  const q = document.getElementById("q"), results = document.getElementById("results");
+  q.addEventListener("input", () => {
+    const s = q.value.trim().toLowerCase();
+    results.innerHTML = "";
+    if (s.length < 2) return;
+    const hits = places.filter(p => p.name.toLowerCase().includes(s) || p.alt_names.toLowerCase().includes(s)
+                                   || p.name_ur.includes(q.value.trim())).slice(0, 25);
+    hits.forEach(p => {
+      const div = document.createElement("div");
+      div.innerHTML = `${esc(p.name)} <small>${esc(p.feature)} · ${esc(p.tehsil_id.replace("__", " / "))}</small>`;
+      div.onclick = () => {
+        map.flyTo({ center: [+p.lon, +p.lat], zoom: 13 });
+        new maplibregl.Popup().setLngLat([+p.lon, +p.lat]).setHTML(placePopup(p)).addTo(map);
+      };
+      results.appendChild(div);
+    });
+    if (!hits.length) results.innerHTML = '<p class="note">No match.</p>';
+  });
+
+  // Optional layer: geocoded PDMA events (added in M1; private, local only).
+  fetch(DATA + "events/flood_events.geojson").then(r => r.ok ? r.json() : null).then(ev => {
+    if (!ev) return;
+    map.addSource("events", { type: "geojson", data: ev });
+    map.addLayer({ id: "events", type: "circle", source: "events", paint: {
+      "circle-color": ["case", ["get", "is_positive"], "#e03131", "#495057"],
+      "circle-radius": 5, "circle-stroke-color": "#fff", "circle-stroke-width": 1,
+    } });
+    document.getElementById("events-row").hidden = false;
+  }).catch(() => {});
+}
+
+function placePopup(p) {
+  return `<b>${esc(p.name)}</b>${p.name_ur ? ` <span dir="rtl">${esc(p.name_ur)}</span>` : ""}
+    <table class="pp"><tr><td>Type</td><td>${esc(p.feature)}</td></tr>
+    <tr><td>Tehsil</td><td>${esc(p.tehsil_id)}</td></tr>
+    ${p.alt_names ? `<tr><td>Also</td><td>${esc(p.alt_names.split("|").slice(0, 4).join(", "))}</td></tr>` : ""}
+    ${p.population ? `<tr><td>Population</td><td>${Number(p.population).toLocaleString()}</td></tr>` : ""}
+    <tr><td>Source</td><td>${esc(p.sources)}</td></tr>
+    <tr><td>Lat, lon</td><td>${p.lat}, ${p.lon}</td></tr></table>`;
+}
+
+document.querySelectorAll("input[data-layer]").forEach(cb => cb.addEventListener("change", () => {
+  if (map.getLayer(cb.dataset.layer)) map.setLayoutProperty(cb.dataset.layer, "visibility", cb.checked ? "visible" : "none");
+  if (cb.dataset.layer === "tehsil-fill")
+    ["tehsil-line", "tehsil-line-out"].forEach(l => map.getLayer(l) &&
+      map.setLayoutProperty(l, "visibility", cb.checked ? "visible" : "none"));
+}));
+
+map.on("load", () => load().catch(err => {
+  document.getElementById("panel").insertAdjacentHTML("beforeend",
+    `<p class="note" style="color:#e03131">Could not load data: ${esc(err.message)}. Serve the repo root
+     (python -m http.server 8800) and open /tools/map/.</p>`);
+}));
+</script>
+</body>
+</html>
