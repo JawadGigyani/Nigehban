@@ -73,7 +73,8 @@ class HydrometDaily(Contract):
     date: dt.date
     model: HydrometModel
     lead_days: int = Field(ge=0, le=3)
-    precip_sum: float = Field(ge=0)
+    precip_sum: float = Field(ge=0)  # area mean over the tehsil (mm)
+    precip_cell_max: float | None = Field(default=None, ge=0)  # wettest grid cell in the tehsil (mm)
     precip_max_1h: float | None = Field(default=None, ge=0)
     precip_3d: float | None = Field(default=None, ge=0)
     precip_7d_antecedent: float | None = Field(default=None, ge=0)

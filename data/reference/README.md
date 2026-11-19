@@ -48,3 +48,11 @@ Rebuild in order:
 - **Gazetteer** places come mostly from GeoNames (9,443 of 11,466). Positions
   are approximate and some names are duplicated under different spellings
   more than 1 km apart.
+
+## tehsil_grid.csv (M2)
+
+Weather grid cells for each tehsil: the 0.25° ERA5 / ECMWF cells that overlap
+the tehsil polygon, with `weight` = the cell's share of the tehsil's area
+(weights sum to 1 per tehsil; slivers under 2% are dropped). 197 rows, 80
+unique cells, 53 tehsils. Built from `tehsils.geojson` by
+`backend/app/hydromet/grid.py`.
