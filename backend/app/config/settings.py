@@ -168,6 +168,10 @@ class Settings(BaseSettings):
     whatsapp_phone_number_id: str | None = None
     whatsapp_template: str | None = None  # approved template with one body parameter; else plain text
 
+    # SMS.to (free credits on signup, supports Pakistan). Used for SMS when the key is set.
+    smsto_api_key: SecretStr | None = None
+    smsto_sender_id: str = "Nigehban"
+
     # Twilio (free trial credit): SMS to verified numbers, and the WhatsApp Sandbox for testing.
     # When set, Twilio is used for SMS and WhatsApp instead of the adapters above.
     twilio_account_sid: str | None = None

@@ -145,6 +145,28 @@ class WhatsAppChannel:
             return DeliveryResult(ok=False, channel=self.name, error=exc.__class__.__name__)
 
 
+class SmsToChannel:
+    """SMS through SMS.to (https://sms.to): POST /sms/send with a bearer API key."""
+
+    name = ChannelName.SMS
+
+    def __init__(self, api_key: str, sender_id: str = "Nigehban") -> None:
+        self.api_key, self.sender_id = api_key, sender_id
+
+    def send(self, address: str, text: str, audio_url: str | None = None) -> DeliveryResult:
+        to = address if address.startswith("+") else "+92" + address.lstrip("0")
+        try:
+            r = httpx.post("https://api.sms.to/sms/send", timeout=20,
+                           headers={"Authorization": f"Bearer {self.api_key}", "Accept": "application/json"},
+                           json={"message": text[:900], "to": to, "sender_id": self.sender_id})
+            body = r.json()
+            if r.status_code in (200, 201, 202) and body.get("success", True):
+                return DeliveryResult(ok=True, channel=self.name, provider_message_id=str(body.get("message_id", "")))
+            return DeliveryResult(ok=False, channel=self.name, error=str(body.get("message", r.status_code))[:200])
+        except (httpx.HTTPError, ValueError) as exc:
+            return DeliveryResult(ok=False, channel=self.name, error=exc.__class__.__name__)
+
+
 class TwilioChannel:
     """SMS or WhatsApp through Twilio's Messages API (trial credit works for testing).
 
@@ -191,6 +213,8 @@ def build_channels(settings) -> dict[ChannelName, object]:
         ChannelName.SMS: SmsGatewayChannel(settings.sms_gateway_url, settings.sms_gateway_username,
                                            secret(settings.sms_gateway_password)),
     }
+    if settings.smsto_api_key:
+        channels[ChannelName.SMS] = SmsToChannel(secret(settings.smsto_api_key), settings.smsto_sender_id)
     if twilio:
         token = secret(settings.twilio_auth_token)
         channels[ChannelName.WHATSAPP] = TwilioChannel(ChannelName.WHATSAPP, settings.twilio_account_sid, token,

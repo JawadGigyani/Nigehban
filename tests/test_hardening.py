@@ -199,3 +199,19 @@ def test_imerg_parsing_and_tehsil_weights():
     full = np.full((len(LONS), len(LATS)), 10.0)
     mean, cell_max = tehsil_values(full, weights)["swat__babuzai"]
     assert mean == 10.0 and cell_max == 10.0
+
+
+def test_smsto_channel(monkeypatch):
+    from backend.app.alerts.channels import SmsToChannel
+
+    seen = {}
+
+    def fake_post(url, timeout=None, headers=None, json=None):
+        seen.update(url=url, headers=headers, json=json)
+        return httpx.Response(200, json={"success": True, "message_id": "m1", "message": "queued"})
+
+    monkeypatch.setattr(httpx, "post", fake_post)
+    r = SmsToChannel("key", "Nigehban").send("03235550000", "الرٹ")
+    assert r.ok and r.provider_message_id == "m1"
+    assert seen["url"] == "https://api.sms.to/sms/send" and seen["headers"]["Authorization"] == "Bearer key"
+    assert seen["json"] == {"message": "الرٹ", "to": "+923235550000", "sender_id": "Nigehban"}
