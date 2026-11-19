@@ -1,0 +1,225 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+
+import RiskMap, { type MapMarker } from "@/components/RiskMap";
+import { api, ApiError, LEVEL_COLORS, LEVEL_ORDER, type Level, type RiskResponse, type TehsilDetail } from "@/lib/api";
+
+const LEVEL_LABEL: Record<Level, string> = { low: "Low", moderate: "Moderate", high: "High", very_high: "Very high" };
+const PRESETS: { label: string; asOf: string | null }[] = [
+  { label: "Live", asOf: null },
+  { label: "Replay: 14 Aug 2025 (Buner cloudburst eve)", asOf: "2025-08-14T09:00:00+05:00" },
+  { label: "Replay: 26 Jun 2025 (Swat River flood eve)", asOf: "2025-06-26T09:00:00+05:00" },
+];
+
+function Login({ onToken }: { onToken: (t: string) => void }) {
+  const [pw, setPw] = useState("");
+  const [err, setErr] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  return (
+    <div className="login">
+      <form className="card" onSubmit={async (e) => {
+        e.preventDefault();
+        setBusy(true);
+        setErr(null);
+        try {
+          const r = await api.login(pw);
+          try { sessionStorage.setItem("nigehban:board", r.token); } catch { /* session only */ }
+          onToken(r.token);
+        } catch (e2) {
+          setErr(e2 instanceof ApiError ? e2.message : "Login failed.");
+        } finally {
+          setBusy(false);
+        }
+      }}>
+        <h2 style={{ margin: 0 }}>Nigehban authority board</h2>
+        <p className="muted" style={{ margin: 0 }}>PDMA, district administration and Rescue 1122.</p>
+        <input type="password" autoComplete="current-password" placeholder="Board password" value={pw} onChange={(e) => setPw(e.target.value)} />
+        <button className="btn" disabled={busy || !pw}>{busy ? "Signing in…" : "Sign in"}</button>
+        {err && <div className="banner err">{err}</div>}
+      </form>
+    </div>
+  );
+}
+
+export default function BoardPage() {
+  const [token, setToken] = useState<string | null>(null);
+  const [checked, setChecked] = useState(false);
+  const [geo, setGeo] = useState<GeoJSON.FeatureCollection | null>(null);
+  const [risk, setRisk] = useState<RiskResponse | null>(null);
+  const [preset, setPreset] = useState(0);
+  const [customDate, setCustomDate] = useState("");
+  const [lead, setLead] = useState(1);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [detail, setDetail] = useState<TehsilDetail | null>(null);
+  const [alerts, setAlerts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    document.documentElement.lang = "en";
+    document.documentElement.dir = "ltr";
+    try { setToken(sessionStorage.getItem("nigehban:board")); } catch { /* none */ }
+    setChecked(true);
+  }, []);
+
+  const asOf = customDate ? `${customDate}T09:00:00+05:00` : PRESETS[preset].asOf;
+
+  useEffect(() => {
+    if (!token) return;
+    api.tehsils().then(setGeo).catch(() => setError("Could not load tehsil boundaries."));
+  }, [token]);
+
+  useEffect(() => {
+    if (!token) return;
+    setLoading(true);
+    setError(null);
+    api.risk(asOf).then((r) => { setRisk(r); setLoading(false); })
+      .catch((e) => { setError(e instanceof ApiError ? e.message : "Could not load risk."); setLoading(false); });
+    api.alerts(token, asOf !== null).then(setAlerts).catch((e) => {
+      if (e instanceof ApiError && e.status === 401) { setToken(null); try { sessionStorage.removeItem("nigehban:board"); } catch { /* */ } }
+    });
+  }, [token, asOf]);
+
+  useEffect(() => {
+    setDetail(null);
+    if (selected) api.tehsil(selected, asOf).then(setDetail).catch(() => setDetail(null));
+  }, [selected, asOf]);
+
+  const rows = useMemo(() => {
+    if (!risk) return [];
+    return [...risk.tehsils].sort((a, b) => {
+      const da = a.days.find((d) => d.lead_days === lead);
+      const db = b.days.find((d) => d.lead_days === lead);
+      return (LEVEL_ORDER.indexOf(db?.level ?? "low") - LEVEL_ORDER.indexOf(da?.level ?? "low"))
+        || ((db?.probability ?? 0) - (da?.probability ?? 0));
+    });
+  }, [risk, lead]);
+
+  const counts = useMemo(() => {
+    const c: Record<Level, number> = { low: 0, moderate: 0, high: 0, very_high: 0 };
+    rows.forEach((r) => { const d = r.days.find((x) => x.lead_days === lead); if (d) c[d.level] += 1; });
+    return c;
+  }, [rows, lead]);
+
+  const markers: MapMarker[] = useMemo(() => {
+    if (!detail) return [];
+    return [
+      ...detail.shelters.map((f) => ({ lon: f.lon, lat: f.lat, color: f.kind === "high_ground" ? "#1c7ed6" : "#2f9e44",
+        label: `${f.kind === "high_ground" ? "Higher ground" : "Shelter"}: ${f.name || f.subtype} (unverified)` })),
+      ...detail.rescue_1122.map((f) => ({ lon: f.lon, lat: f.lat, color: "#f03e3e", label: `${f.name} (${f.subtype || "unverified"})` })),
+      ...detail.high_villages.slice(0, 10).map((v) => ({ lon: v.lon, lat: v.lat, color: "#7048e8", label: `High exposure: ${v.name}` })),
+    ];
+  }, [detail]);
+
+  if (!checked) return null;
+  if (!token) return <Login onToken={setToken} />;
+
+  const sel = rows.find((r) => r.tehsil_id === selected);
+  const issue = risk ? new Date(risk.issue_date) : null;
+  const dayName = (l: number) => (issue ? new Date(issue.getTime() + l * 86400000).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }) : `+${l}`);
+
+  return (
+    <div className="board">
+      <div className="board-top">
+        <h1>Nigehban · Flash-flood risk board</h1>
+        <select value={customDate ? -1 : preset} onChange={(e) => { setCustomDate(""); setPreset(Number(e.target.value)); }}>
+          {PRESETS.map((p, i) => <option key={p.label} value={i}>{p.label}</option>)}
+          {customDate && <option value={-1}>Replay: {customDate}</option>}
+        </select>
+        <label className="row" style={{ gap: 6 }}>
+          <span style={{ fontSize: 13 }}>or date</span>
+          <input type="date" min="2024-03-01" value={customDate} onChange={(e) => setCustomDate(e.target.value)} />
+        </label>
+        <div className="seg" role="group" aria-label="Day">
+          {[0, 1, 2, 3].map((l) => <button key={l} className={lead === l ? "on" : ""} onClick={() => setLead(l)}>{dayName(l)}</button>)}
+        </div>
+        {risk?.replay && <span className="pill" style={{ background: "#fff3d6", color: "#6a4b00" }}>REPLAY · forecasts as issued {risk.issue_date}</span>}
+        <button className="btn secondary" style={{ marginLeft: "auto", padding: "6px 12px" }}
+          onClick={() => { try { sessionStorage.removeItem("nigehban:board"); } catch { /* */ } setToken(null); }}>Sign out</button>
+      </div>
+      <div className="board-main">
+        <div className="board-map">
+          {loading && <div className="loading-overlay">Computing risk for all tehsils…</div>}
+          <RiskMap geojson={geo} risk={risk?.tehsils ?? []} lead={lead} selected={selected} onSelect={setSelected} markers={markers} />
+          <div className="legend">
+            {LEVEL_ORDER.map((l) => <span key={l}><i className="chip" style={{ background: LEVEL_COLORS[l] }} />{LEVEL_LABEL[l]}</span>)}
+          </div>
+        </div>
+        <aside className="board-side">
+          {error && <section><div className="banner err">{error}</div></section>}
+          <section>
+            <div className="kpis">
+              {LEVEL_ORDER.slice().reverse().map((l) => (
+                <div key={l} className="kpi" style={{ borderTop: `4px solid ${LEVEL_COLORS[l]}` }}><b>{counts[l]}</b>{LEVEL_LABEL[l]}</div>
+              ))}
+            </div>
+            <p className="tiny" style={{ marginBottom: 0 }}>Tehsils by level for {dayName(lead)}. Levels come from the risk model and fixed thresholds only.</p>
+          </section>
+          {sel && (
+            <section>
+              <h2>{sel.tehsil} <span className="muted">· {sel.district}</span></h2>
+              <div className="row" style={{ marginBottom: 8 }}>
+                {sel.days.map((d) => (
+                  <span key={d.date} className="pill" style={{ background: LEVEL_COLORS[d.level], color: d.level === "moderate" ? "#3a2a00" : "#fff" }}>
+                    {dayName(d.lead_days)}: {LEVEL_LABEL[d.level]}{d.glofas_flag ? " · river" : ""}
+                  </span>
+                ))}
+              </div>
+              <p className="muted" style={{ margin: "4px 0" }}>Why: {sel.days.find((d) => d.lead_days === lead)?.drivers.join("; ") || "—"}</p>
+              {detail ? (
+                <>
+                  <p className="muted" style={{ margin: "4px 0" }}>
+                    Villages: <b>{detail.exposure.high}</b> high, {detail.exposure.medium} medium, {detail.exposure.low} low exposure (of {detail.exposure.villages}).
+                  </p>
+                  <p className="tiny" style={{ margin: "2px 0 6px" }}>High exposure: {detail.high_villages.slice(0, 8).map((v) => v.name).join(", ") || "none"}</p>
+                  <b style={{ fontSize: 13 }}>Shelters and higher ground</b>
+                  {detail.shelters.map((f) => (
+                    <div key={f.id} className="facility"><span>{f.name || f.subtype} <span className="pill">{f.kind === "high_ground" ? "higher ground" : f.subtype}</span></span><span className="tiny">{f.km} km</span></div>
+                  ))}
+                  <b style={{ fontSize: 13 }}>Rescue 1122</b>
+                  {detail.rescue_1122.map((f) => (
+                    <div key={f.id} className="facility"><span>{f.name}</span><span className="tiny">{f.km} km · {f.subtype || "unverified"}</span></div>
+                  ))}
+                  {detail.rivers.map((r) => (
+                    <p key={r.point_id} className="tiny">{r.name}: {r.series.map((s) => `${s.discharge.toFixed(0)}`).join(" → ")} m³/s (2-yr flow {r.q2.toFixed(0)})</p>
+                  ))}
+                  <p className="tiny">{detail.note}</p>
+                  <button className="btn secondary" disabled title="Arrives with the advisory module (M11)">Draft advisory (coming in M11)</button>
+                </>
+              ) : <p className="muted">Loading details…</p>}
+            </section>
+          )}
+          <section>
+            <h2>Tehsils ranked ({dayName(lead)})</h2>
+            <table className="rank">
+              <thead><tr><th>Tehsil</th><th>Next 4 days</th><th>Main reason</th></tr></thead>
+              <tbody>
+                {rows.map((r) => {
+                  const d = r.days.find((x) => x.lead_days === lead);
+                  return (
+                    <tr key={r.tehsil_id} className={r.tehsil_id === selected ? "sel" : ""} onClick={() => setSelected(r.tehsil_id)}>
+                      <td><b>{r.tehsil}</b><br /><span className="tiny">{r.district}</span></td>
+                      <td style={{ whiteSpace: "nowrap" }}>{r.days.map((x) => <i key={x.date} className="chip" title={`${dayName(x.lead_days)}: ${LEVEL_LABEL[x.level]}`} style={{ background: LEVEL_COLORS[x.level], outline: x.lead_days === lead ? "2px solid #111" : "none" }} />)}</td>
+                      <td className="tiny">{d?.drivers[0] ?? ""}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </section>
+          <section>
+            <h2>Alerts sent ({risk?.replay ? "replay" : "live"})</h2>
+            {alerts.length === 0 && <p className="muted">No alerts yet for this mode.</p>}
+            {alerts.slice(0, 20).map((a) => (
+              <div key={a.id} className="facility">
+                <span><i className="chip" style={{ background: LEVEL_COLORS[a.level as Level] }} />{a.tehsil_id.split("__")[1].replace(/_/g, " ")} · {a.valid_date}</span>
+                <span className="tiny">lead {a.lead_days}d · sent to {a.sent_to}</span>
+              </div>
+            ))}
+          </section>
+        </aside>
+      </div>
+    </div>
+  );
+}

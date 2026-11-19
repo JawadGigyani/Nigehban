@@ -170,6 +170,7 @@ def test_api_flow(db, cipher, monkeypatch):
     monkeypatch.setattr(api, "get_cipher", lambda: cipher)
     app = create_app()
     app.dependency_overrides[get_session] = lambda: db
+    app.dependency_overrides[api._board_token] = lambda: None  # board login tested in test_ui_api
     client = TestClient(app)
     r = client.post("/subscriptions", json={"channel": "web_inbox", "address": "inbox-api", "language": "en",
                                             "tehsil_ids": ["buner__gagra"]})

@@ -123,6 +123,10 @@ class RiskService:
         self.locator = locator
         self.rivers = rivers  # RiverMonitor or None
         self._cache: dict[tuple[dt.date, bool], list[TehsilRiskForecast]] = {}
+        import threading
+
+        self._locks: dict = {}
+        self._locks_guard = threading.Lock()
 
     @classmethod
     def from_data_dir(cls, data_dir: Path) -> RiskService:
@@ -168,6 +172,16 @@ class RiskService:
 
         issue = issue or dt.datetime.now(PKT).date()
         key = (issue, replay)
+        with self._lock_for(key):  # concurrent requests share one computation
+            return self._forecast_locked(key, issue, replay)
+
+    def _lock_for(self, key):
+        import threading
+
+        with self._locks_guard:
+            return self._locks.setdefault(key, threading.Lock())
+
+    def _forecast_locked(self, key, issue: dt.date, replay: bool) -> list[TehsilRiskForecast]:
         if key not in self._cache:
             if replay:
                 rows = self.hydromet.replay_features(issue)

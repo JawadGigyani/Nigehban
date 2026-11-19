@@ -1,0 +1,14 @@
+{
+  "name": "Nigehban: flash-flood early warning",
+  "short_name": "Nigehban",
+  "description": "Flash-flood risk, alerts and safety advice for northern Khyber Pakhtunkhwa",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f5f0",
+  "theme_color": "#0b5d6b",
+  "dir": "rtl",
+  "lang": "ur",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
