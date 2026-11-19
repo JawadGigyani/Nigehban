@@ -104,3 +104,12 @@ def test_shipped_artifact_is_consistent():
     model = RiskModel.load()
     frame = pd.DataFrame([meta["feature_medians"]])
     assert 0 <= model.predict(frame)[0] <= 1
+
+
+def test_lead_specific_levels_override_era5_levels():
+    model = _toy_model()
+    model.lead_thresholds = {1: {RiskLevel.MODERATE: 0.01, RiskLevel.HIGH: 0.02, RiskLevel.VERY_HIGH: 0.03}}
+    assert model.level(0.025) is RiskLevel.LOW  # ERA5 levels (moderate at 0.05) without a lead
+    assert model.level(0.025, lead_days=1) is RiskLevel.HIGH
+    assert model.level(0.025, lead_days=0) is RiskLevel.HIGH  # lead 0 uses lead 1
+    assert model.level(0.025, lead_days=3) is RiskLevel.LOW  # no lead-3 entry: ERA5 levels

@@ -1,0 +1,62 @@
+{
+  "swat_kalam": {
+    "lat": 35.37,
+    "lon": 72.59,
+    "mean_jjas_2022": 77.8,
+    "offset_km": 11.1
+  },
+  "swat_bahrain": {
+    "lat": 35.105,
+    "lon": 72.495,
+    "mean_jjas_2022": 136.1,
+    "offset_km": 12.0
+  },
+  "swat_khwazakhela": {
+    "lat": 34.835,
+    "lon": 72.37,
+    "mean_jjas_2022": 155.6,
+    "offset_km": 14.4
+  },
+  "swat_mingora": {
+    "lat": 34.765,
+    "lon": 72.275,
+    "mean_jjas_2022": 167.3,
+    "offset_km": 9.2
+  },
+  "swat_barikot": {
+    "lat": 34.68,
+    "lon": 72.1,
+    "mean_jjas_2022": 171.6,
+    "offset_km": 9.2
+  },
+  "swat_chakdara": {
+    "lat": 34.645,
+    "lon": 71.925,
+    "mean_jjas_2022": 177.1,
+    "offset_km": 9.2
+  },
+  "panjkora_timergara": {
+    "lat": 34.73,
+    "lon": 71.74,
+    "mean_jjas_2022": 73.8,
+    "offset_km": 14.4
+  },
+  "indus_besham": {
+    "lat": 34.83,
+    "lon": 72.88,
+    "mean_jjas_2022": 4449.2,
+    "offset_km": 11.1
+  },
+  "kunhar_balakot": {
+    "lat": 34.448,
+    "lon": 73.45,
+    "mean_jjas_2022": 133.8,
+    "offset_km": 14.4
+  },
+  "barandu_daggar": {
+    "lat": 34.46,
+    "lon": 72.58,
+    "mean_jjas_2022": 14.8,
+    "offset_km": 10.7
+  }
+}

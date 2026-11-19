@@ -1,0 +1,21 @@
+{
+  "note": "Probability thresholds per lead day, tuned on archived ECMWF/GFS/ICON forecasts (Jun-Sep 2024-2025) for 8 / target / 0.5 false alerts per tehsil-season. Lead 0 uses lead 1.",
+  "target_false_alerts_per_tehsil_season": 2.5,
+  "levels": {
+    "1": {
+      "moderate": 0.003695,
+      "high": 0.007471,
+      "very_high": 0.011513
+    },
+    "2": {
+      "moderate": 0.003406,
+      "high": 0.006566,
+      "very_high": 0.010619
+    },
+    "3": {
+      "moderate": 0.003594,
+      "high": 0.007043,
+      "very_high": 0.01076
+    }
+  }
+}

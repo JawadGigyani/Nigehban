@@ -133,6 +133,9 @@ class Settings(BaseSettings):
 
     # Alert policy (tuned in M5; configurable)
     alert_false_alarm_target_per_season: float = Field(default=2.5, ge=0)
+    # River flag: a tehsil is flagged when a river point serving it is forecast at or
+    # above this return period (years) of GloFAS discharge. Tuned in M7.
+    river_flag_return_period: int = Field(default=5, ge=2, le=20)
 
     # PDMA scraper
     pdma_base_url: str = "https://rms.pdma.gov.pk/ViewDSR.aspx"

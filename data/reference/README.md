@@ -78,3 +78,11 @@ OSM data © OpenStreetMap contributors (ODbL).
 Rescue 1122 stations named in news reports or on the Rescue 1122 KP site,
 placed at the town centre by `build_facilities`. Status says whether a station
 was reported or only the district service is known.
+
+## River files (M6)
+
+- `river_points.csv`: 10 river points (Swat, Panjkora, Indus, Kunhar, Barandu) and the tehsils each serves.
+- `river_points_thresholds.json`: chosen GloFAS cell and q2/q5/q10/q20 flows (Gumbel fit to Apr–Oct
+  yearly peaks 1997–2025). `river_points_cells.json`: the chosen cells; `river_yearly_peaks.csv`: the peaks.
+- Source: Copernicus GloFAS via the Open-Meteo Flood API (CC BY 4.0). GloFAS misses the Swat floods
+  that matter (see reports/m6_glofas.md), so the river flag is a secondary signal only.
