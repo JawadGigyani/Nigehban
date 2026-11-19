@@ -150,8 +150,17 @@ def tehsil_detail(tehsil_id: str, as_of: dt.datetime | None = None) -> dict:
         "rescue_1122": rows(fac[fac["kind"] == "rescue_1122"], 2),
         "health": rows(fac[fac["kind"] == "health"], 2),
         "rivers": rivers,
+        "rescue_1122_control_room": _control_room(tehsil_id),
         "note": "Shelter, Rescue 1122 and health locations are from OpenStreetMap and news reports and are unverified.",
     }
+
+
+def _control_room(tehsil_id: str) -> dict | None:
+    from backend.app.geo.contacts import district_contact
+
+    row = district_contact(tehsil_id)
+    return None if row is None else {"district": row["district"], "control_room": row["control_room"],
+                                     "district_office": row["district_office"], "source": row["source"]}
 
 
 @router.get("/places/search")

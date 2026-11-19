@@ -150,6 +150,29 @@ class Settings(BaseSettings):
     # OpenRouteService (free key) for routes to safety; without it the built-in OSM router is used.
     ors_api_key: SecretStr | None = None
 
+    # Urdu voice alerts (ElevenLabs). Only eleven_v3 / eleven_v4 support Urdu.
+    elevenlabs_api_key: SecretStr | None = Field(
+        default=None, validation_alias=AliasChoices("NIGEHBAN_ELEVENLABS_API_KEY", "ELEVENLABS_API_KEY"))
+    elevenlabs_voice_id: str = "JBFqnCBsd6RMkjVDRZzb"  # a premade multilingual voice (free tier can use premade voices)
+    elevenlabs_model: str = "eleven_v3"
+    voice_max_chars: int = Field(default=600, ge=50, le=5000)
+
+    # SMS through the free open-source "SMS Gateway for Android" app (a phone + SIM sends the SMS).
+    # Cloud mode: https://api.sms-gate.app/3rdparty/v1 ; local mode: http://<phone-ip>:8080
+    sms_gateway_url: str = "https://api.sms-gate.app/3rdparty/v1"
+    sms_gateway_username: str | None = None
+    sms_gateway_password: SecretStr | None = None
+
+    # WhatsApp Cloud API (Meta). Free only for a test number and up to 5 verified recipients.
+    whatsapp_token: SecretStr | None = None
+    whatsapp_phone_number_id: str | None = None
+    whatsapp_template: str | None = None  # approved template with one body parameter; else plain text
+
+    # Rate limits for public endpoints (requests per minute per client IP).
+    rate_limit_chat_per_min: int = 8
+    rate_limit_default_per_min: int = 60
+    rate_limit_chat_per_day_global: int = 1500  # protects the free LLM quota
+
     # PDMA scraper
     pdma_base_url: str = "https://rms.pdma.gov.pk/ViewDSR.aspx"
     pdma_request_interval_s: float = Field(default=2.0, ge=1.0)

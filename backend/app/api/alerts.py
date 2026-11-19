@@ -112,7 +112,8 @@ def inbox(subscription_id: str, session: Session = Depends(get_session)) -> dict
     return {"subscription_id": sub.id, "language": sub.language, "alerts": [
         {"id": a.id, "tehsil_id": a.tehsil_id, "level": a.level, "valid_date": str(a.valid_date),
          "issued_at": a.issued_at.isoformat(), "lead_days": a.lead_days, "message": getattr(a, text_field),
-         "replay": a.replay, "citations": [{"ref": r, "label": citation_label(r, kb)} for r in a.citations]}
+         "replay": a.replay, "audio_url": f"/audio/{a.audio_key}.mp3" if a.audio_key else None,
+         "citations": [{"ref": r, "label": citation_label(r, kb)} for r in a.citations]}
         for a in rows]}
 
 

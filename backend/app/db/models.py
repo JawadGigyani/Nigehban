@@ -49,6 +49,7 @@ class AlertRow(SQLModel, table=True):
     message_en: str = ""
     message_ur_roman: str = ""
     lead_days: int = 0  # how far ahead the alert was issued
+    audio_key: str = ""  # Urdu voice file (data/audio/<key>.mp3), empty when voice is off
     citations: list[str] = Field(default_factory=list, sa_column=Column(JSON, nullable=False))
     sent_to_count: int = 0
     replay: bool = False  # produced in replay mode, not live

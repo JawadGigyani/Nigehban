@@ -80,6 +80,11 @@ class AlertComposer:
             for item in doc_items(self.context.kb.search("flash flood move to higher ground streams livestock", k=2)):
                 bundle.add(item)
         bundle.add(HELPLINES)
+        from backend.app.geo.contacts import contact_evidence
+
+        local = contact_evidence(f.tehsil_id)
+        if local is not None:
+            bundle.add(local)
         return bundle
 
     def compose(self, candidate: AlertCandidate) -> ComposedAlert:

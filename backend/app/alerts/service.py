@@ -43,6 +43,9 @@ def get_alert_engine() -> AlertEngine:
     village_tehsil = dict(zip(context.gazetteer["place_id"], context.gazetteer["tehsil_id"], strict=True))
     village_tehsil.update(zip(context.villages["village_id"], context.villages["tehsil_id"], strict=True))
     in_scope = {t for t, v in context.tehsils.items() if v["in_scope"]}
+    from backend.app.alerts.voice import VoiceService
+
     return AlertEngine(risk, AlertComposer(LLMService.from_settings(settings), context), build_channels(settings),
                        make_cipher(settings), village_tehsil, in_scope,
-                       RiskLevel(settings.alert_min_level), settings.alert_max_lead_days)
+                       RiskLevel(settings.alert_min_level), settings.alert_max_lead_days,
+                       VoiceService.from_settings(settings))
