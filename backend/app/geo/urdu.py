@@ -18,7 +18,7 @@ PATH = Path(__file__).resolve().parents[3] / "data" / "reference" / "urdu_names.
 def _names() -> dict[str, str]:
     if not PATH.is_file():
         return {}
-    with PATH.open(encoding="utf-8", newline="") as fh:
+    with PATH.open(encoding="utf-8-sig", newline="") as fh:  # BOM-tolerant (Excel)
         return {r["id"]: r["name_ur"] for r in csv.DictReader(fh)}
 
 
