@@ -1,0 +1,68 @@
+{
+  "version": "v1",
+  "trained_at": "2026-11-19T02:32:11+00:00",
+  "model_kind": "logistic",
+  "features": [
+    "log_precip_cell_max",
+    "log_precip_3d",
+    "log_precip_max_1h",
+    "log_precip_7d_antecedent",
+    "soil_moisture_0_7",
+    "log_population",
+    "log_high_villages"
+  ],
+  "monotone": {
+    "precip_sum": 1,
+    "precip_cell_max": 1,
+    "precip_max_1h": 1,
+    "precip_3d": 1,
+    "precip_7d_antecedent": 1,
+    "soil_moisture_0_7": 1,
+    "soil_moisture_7_28": 1,
+    "log_precip_sum": 1,
+    "log_precip_cell_max": 1,
+    "log_precip_max_1h": 1,
+    "log_precip_3d": 1,
+    "log_precip_7d_antecedent": 1
+  },
+  "feature_medians": {
+    "log_precip_cell_max": 1.2237754316221157,
+    "log_precip_3d": 2.0216800048212886,
+    "log_precip_max_1h": 0.6418538861723948,
+    "log_precip_7d_antecedent": 3.01754268781784,
+    "soil_moisture_0_7": 0.285,
+    "log_population": 12.3020598688161,
+    "log_high_villages": 2.70805020110221
+  },
+  "calibration": {
+    "method": "platt",
+    "a": 0.861642105198519,
+    "b": -6.038570593148119
+  },
+  "levels": {
+    "moderate": {
+      "probability": 0.00431,
+      "target_false_alerts_per_tehsil_season": 8.0,
+      "hit_rate": 0.708,
+      "false_alerts_per_tehsil_season": 8.0
+    },
+    "high": {
+      "probability": 0.0119,
+      "target_false_alerts_per_tehsil_season": 2.5,
+      "hit_rate": 0.416,
+      "false_alerts_per_tehsil_season": 2.49
+    },
+    "very_high": {
+      "probability": 0.02732,
+      "target_false_alerts_per_tehsil_season": 0.5,
+      "hit_rate": 0.101,
+      "false_alerts_per_tehsil_season": 0.48
+    }
+  },
+  "period": "Jun-Sep 2019-2025",
+  "tehsils": 48,
+  "rows": 40992,
+  "training_rows": 40119,
+  "positives": 89,
+  "fallback": false
+}

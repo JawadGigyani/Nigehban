@@ -81,6 +81,9 @@ Generated {dt.date.today()} by `python -m pipelines.terrain.qa`.
   30 m run for Swat alone is possible with
   `python -m pipelines.terrain.fetch_dem --res 30 --bbox 72.0 34.6 72.9 35.9`
   and the same build script (Colab if needed).
+- Swat village bands use a 30 m run (Copernicus GLO-30, `--tag swat30`, merged by
+  `pipelines.terrain.merge_detail`); it agreed with 90 m for 92% of Swat villages and moved
+  the rest mostly up a band (narrow side streams). Tehsil statics stay at 90 m everywhere.
 - Flow routing with pysheds (pits and depressions filled, flats resolved, D8).
 - HAND reference streams: cells draining at least 10 km². Drainage density uses 1 km².
 - Village band: lowest HAND within about 180 m of the village point (5 × 5 cells),
