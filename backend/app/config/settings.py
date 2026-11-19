@@ -168,6 +168,16 @@ class Settings(BaseSettings):
     whatsapp_phone_number_id: str | None = None
     whatsapp_template: str | None = None  # approved template with one body parameter; else plain text
 
+    # Twilio (free trial credit): SMS to verified numbers, and the WhatsApp Sandbox for testing.
+    # When set, Twilio is used for SMS and WhatsApp instead of the adapters above.
+    twilio_account_sid: str | None = None
+    twilio_auth_token: SecretStr | None = None
+    twilio_sms_from: str | None = None  # your Twilio phone number, e.g. +1415...
+    twilio_whatsapp_from: str = "+14155238886"  # Twilio's shared WhatsApp Sandbox number
+
+    # NASA Earthdata token for IMERG satellite rain (urs.earthdata.nasa.gov -> Generate Token)
+    earthdata_token: SecretStr | None = None
+
     # Rate limits for public endpoints (requests per minute per client IP).
     rate_limit_chat_per_min: int = 8
     rate_limit_default_per_min: int = 60
