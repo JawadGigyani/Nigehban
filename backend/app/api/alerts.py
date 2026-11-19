@@ -116,7 +116,13 @@ def inbox(subscription_id: str, session: Session = Depends(get_session)) -> dict
         for a in rows]}
 
 
-@router.get("/alerts")
+def _board_token(authorization: str | None = Header(default=None)) -> None:
+    from backend.app.api.risk import check_board_token
+
+    check_board_token(authorization)
+
+
+@router.get("/alerts", dependencies=[Depends(_board_token)])
 def recent_alerts(limit: int = 50, replay: bool | None = None, session: Session = Depends(get_session)) -> list[dict]:
     query = select(AlertRow).order_by(AlertRow.issued_at.desc()).limit(min(limit, 500))
     if replay is not None:

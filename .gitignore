@@ -33,3 +33,6 @@ node_modules/
 Thumbs.db
 .vscode/
 .idea/
+
+# Frontend build info
+*.tsbuildinfo
