@@ -16,7 +16,7 @@ from backend.app.contracts.enums import ChannelName, Language, RiskLevel
 
 class SubscriptionCreate(Contract):
     channel: ChannelName
-    address: str = Field(min_length=1, max_length=512)  # phone, chat id or push endpoint
+    address: str = Field(min_length=1, max_length=2048)  # phone, chat id, or web-push subscription JSON
     language: Language = Language.UR
     tehsil_ids: tuple[str, ...] = ()
     village_ids: tuple[str, ...] = ()
@@ -41,5 +41,7 @@ class Alert(Contract):
     reason_codes: tuple[str, ...] = ()
     message_ur: str
     message_en: str
+    message_ur_roman: str = ""
+    lead_days: int = Field(default=0, ge=0, le=3)
     citations: tuple[str, ...] = ()
     sent_to_count: int = Field(default=0, ge=0)

@@ -136,6 +136,17 @@ class Settings(BaseSettings):
     # River flag: a tehsil is flagged when a river point serving it is forecast at or
     # above this return period (years) of GloFAS discharge. Tuned in M7.
     river_flag_return_period: int = Field(default=5, ge=2, le=20)
+    # Alert rules: alert at this level or above, for lead days up to alert_max_lead.
+    alert_min_level: str = "high"
+    alert_max_lead_days: int = Field(default=2, ge=0, le=3)
+    # Protects POST /internal/run-cycle (required in production; the cron job sends it).
+    internal_token: SecretStr | None = None
+    # Web push (VAPID). Generate with: python -m backend.app.alerts.channels --vapid
+    vapid_public_key: str | None = None
+    vapid_private_key: SecretStr | None = None
+    vapid_subject: str = "mailto:alerts@nigehban.invalid"
+    # Telegram: private development channel only (Telegram is blocked in Pakistan).
+    telegram_bot_token: SecretStr | None = None
 
     # PDMA scraper
     pdma_base_url: str = "https://rms.pdma.gov.pk/ViewDSR.aspx"
