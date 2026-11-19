@@ -39,7 +39,10 @@ class ContactCipher:
 
     @staticmethod
     def normalise(address: str) -> str:
-        return "".join(address.split()).lower()
+        """Phone numbers and ids: no spaces, lower case. Web-push JSON keeps its case (keys are base64)."""
+
+        compact = "".join(address.split())
+        return compact if compact.startswith("{") else compact.lower()
 
     def encrypt(self, address: str) -> str:
         return self._fernet.encrypt(self.normalise(address).encode()).decode()

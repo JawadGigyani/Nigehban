@@ -47,6 +47,8 @@ class AlertRow(SQLModel, table=True):
     reason_codes: list[str] = Field(default_factory=list, sa_column=Column(JSON, nullable=False))
     message_ur: str = ""
     message_en: str = ""
+    message_ur_roman: str = ""
+    lead_days: int = 0  # how far ahead the alert was issued
     citations: list[str] = Field(default_factory=list, sa_column=Column(JSON, nullable=False))
     sent_to_count: int = 0
     replay: bool = False  # produced in replay mode, not live

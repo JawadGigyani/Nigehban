@@ -16,9 +16,11 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
+    from backend.app.api.alerts import router as alerts_router
     from backend.app.api.chat import router as chat_router
 
     app.include_router(chat_router)
+    app.include_router(alerts_router)
 
     @app.get("/health")
     def health() -> dict[str, str]:

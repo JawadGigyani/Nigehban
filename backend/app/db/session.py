@@ -18,6 +18,10 @@ def make_engine(database_url: str) -> Engine:
         path = database_url.removeprefix("sqlite:///")
         if path and path != ":memory:":
             Path(path).parent.mkdir(parents=True, exist_ok=True)
+        else:  # one shared connection, so every thread sees the same in-memory database
+            from sqlalchemy.pool import StaticPool
+
+            kwargs["poolclass"] = StaticPool
     else:
         kwargs["pool_pre_ping"] = True
     return create_engine(database_url, **kwargs)

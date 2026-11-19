@@ -155,6 +155,11 @@ def build_graph(llm, context) -> Any:
             focus = (f"\nThe model's level for the day asked about is {LEVEL_WORDS[expected]} "
                      f"(stated_level must be \"{expected.value}\"). In the reply, write the level as "
                      f"\"{LEVEL_NAMES[lang][expected.value]}\".")
+        if lang is Language.UR and bundle.tehsil_id:
+            from backend.app.geo.urdu import place_ur
+
+            if place_ur(bundle.tehsil_id):
+                focus += f"\nIn Urdu, write the tehsil and district exactly as \"{place_ur(bundle.tehsil_id)}\"."
         if u.intent in ("small_talk", "out_of_scope"):
             focus += ("\nReply in one or two friendly sentences: you are Nigehban, you give flash-flood risk "
                       "for tehsils in northern KP for today and the next 3 days, safety advice from PDMA and "
