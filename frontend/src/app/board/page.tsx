@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import RiskMap, { type MapMarker } from "@/components/RiskMap";
-import { api, ApiError, LEVEL_COLORS, LEVEL_ORDER, type Level, type RiskResponse, type TehsilDetail } from "@/lib/api";
+import { api, ApiError, LEVEL_COLORS, LEVEL_ORDER, type Advisory, type Level, type RiskResponse, type TehsilDetail } from "@/lib/api";
 
 const LEVEL_LABEL: Record<Level, string> = { low: "Low", moderate: "Moderate", high: "High", very_high: "Very high" };
 const PRESETS: { label: string; asOf: string | null }[] = [
@@ -55,6 +55,8 @@ export default function BoardPage() {
   const [alerts, setAlerts] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [draft, setDraft] = useState<Advisory | null>(null);
+  const [drafting, setDrafting] = useState(false);
 
   useEffect(() => {
     document.documentElement.lang = "en";
@@ -112,6 +114,20 @@ export default function BoardPage() {
     ];
   }, [detail]);
 
+  const makeDraft = async (ids: string[]) => {
+    if (!token || ids.length === 0) return;
+    setDrafting(true);
+    setError(null);
+    try {
+      setDraft(await api.advisory(token, ids.slice(0, 12), asOf));
+    } catch (e) {
+      setError(e instanceof ApiError ? e.message : "Could not draft the advisory.");
+    } finally {
+      setDrafting(false);
+    }
+  };
+  const highIds = rows.filter((r) => { const d = r.days.find((x) => x.lead_days === lead); return d && (d.level === "high" || d.level === "very_high"); }).map((r) => r.tehsil_id);
+
   if (!checked) return null;
   if (!token) return <Login onToken={setToken} />;
 
@@ -154,7 +170,10 @@ export default function BoardPage() {
                 <div key={l} className="kpi" style={{ borderTop: `4px solid ${LEVEL_COLORS[l]}` }}><b>{counts[l]}</b>{LEVEL_LABEL[l]}</div>
               ))}
             </div>
-            <p className="tiny" style={{ marginBottom: 0 }}>Tehsils by level for {dayName(lead)}. Levels come from the risk model and fixed thresholds only.</p>
+            <p className="tiny" style={{ marginBottom: 8 }}>Tehsils by level for {dayName(lead)}. Levels come from the risk model and fixed thresholds only.</p>
+            <button className="btn" disabled={drafting || highIds.length === 0} onClick={() => makeDraft(highIds)}>
+              {drafting ? "Drafting…" : `Draft advisory for high-risk tehsils (${Math.min(highIds.length, 12)})`}
+            </button>
           </section>
           {sel && (
             <section>
@@ -185,7 +204,7 @@ export default function BoardPage() {
                     <p key={r.point_id} className="tiny">{r.name}: {r.series.map((s) => `${s.discharge.toFixed(0)}`).join(" → ")} m³/s (2-yr flow {r.q2.toFixed(0)})</p>
                   ))}
                   <p className="tiny">{detail.note}</p>
-                  <button className="btn secondary" disabled title="Arrives with the advisory module (M11)">Draft advisory (coming in M11)</button>
+                  <button className="btn secondary" disabled={drafting} onClick={() => makeDraft([sel.tehsil_id])}>{drafting ? "Drafting…" : "Draft advisory for this tehsil"}</button>
                 </>
               ) : <p className="muted">Loading details…</p>}
             </section>
@@ -220,6 +239,40 @@ export default function BoardPage() {
           </section>
         </aside>
       </div>
+      {draft && (
+        <div className="modal" role="dialog" aria-modal="true" onClick={() => setDraft(null)}>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="row" style={{ justifyContent: "space-between" }}>
+              <b>Advisory draft {draft.checked ? "(actions checked against the evidence)" : "(template actions)"}</b>
+              <div className="row">
+                <button className="btn secondary" onClick={() => navigator.clipboard?.writeText(draft.markdown)}>Copy text</button>
+                <button className="btn secondary" onClick={() => window.print()}>Print</button>
+                <button className="btn" onClick={() => setDraft(null)}>Close</button>
+              </div>
+            </div>
+            <article className="advisory">
+              <h2>{draft.title}</h2>
+              <p><b>Date:</b> {draft.date} · <b>Area:</b> {draft.area.join(", ")}</p>
+              <h3>Risk (Nigehban risk model)</h3>
+              <table className="rank">
+                <thead><tr><th>Tehsil</th>{draft.risk[0]?.days.map((d) => <th key={d.date}>{d.date.slice(5)}</th>)}</tr></thead>
+                <tbody>{draft.risk.map((r) => (
+                  <tr key={r.tehsil_id}><td>{r.tehsil}</td>{r.days.map((d) => (
+                    <td key={d.date}><i className="chip" style={{ background: LEVEL_COLORS[d.level] }} />{LEVEL_LABEL[d.level]}{d.river_flag ? " (river)" : ""}</td>))}</tr>
+                ))}</tbody>
+              </table>
+              <h3>Recommended actions</h3>
+              <ol>{draft.actions.map((a, i) => <li key={i}>{a.text}</li>)}</ol>
+              <h3>Message for the public</h3>
+              <p>{draft.public_message_en}</p>
+              <p className="ur" dir="rtl">{draft.public_message_ur}</p>
+              <h3>Sources</h3>
+              <ul>{draft.sources.map((x) => <li key={x}>{x}</li>)}</ul>
+              <p className="draft-footer">{draft.footer}</p>
+            </article>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

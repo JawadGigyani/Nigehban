@@ -5,6 +5,8 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   api,
   ApiError,
+  type GeoCheck,
+  type SafeRoute,
   type ChatResult,
   type InboxAlert,
   type Lang,
@@ -158,8 +160,72 @@ function RiskTab({ lang, place, setPlace, asOf }: { lang: Lang; place: Place | n
           <p className="muted" style={{ marginBottom: 0 }}>☎ {t.call_1122}</p>
         </div>
       )}
+      <SafetyCard lang={lang} place={place} asOf={asOf} />
       <p className="tiny">{t.disclaimer}</p>
     </>
+  );
+}
+
+
+function SafetyCard({ lang, place, asOf }: { lang: Lang; place: Place | null; asOf: string | null }) {
+  const t = T[lang];
+  const [check, setCheck] = useState<GeoCheck | null>(null);
+  const [route, setRoute] = useState<SafeRoute | null>(null);
+  const [point, setPoint] = useState<[number, number] | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
+
+  const run = async (lat: number, lon: number) => {
+    setBusy(true); setMsg(null); setRoute(null); setPoint([lat, lon]);
+    try { setCheck(await api.geoCheck(lat, lon, asOf)); } catch (e) { setMsg(e instanceof ApiError ? e.message : t.error); }
+    finally { setBusy(false); }
+  };
+  const here = () => {
+    if (!("geolocation" in navigator)) { setMsg(t.no_gps); return; }
+    navigator.geolocation.getCurrentPosition((p) => run(p.coords.latitude, p.coords.longitude), () => setMsg(t.no_gps),
+      { enableHighAccuracy: true, timeout: 15000 });
+  };
+  const findRoute = async () => {
+    if (!point) return;
+    setBusy(true); setMsg(null);
+    try { setRoute(await api.route(point[0], point[1], "walk")); } catch (e) { setMsg(e instanceof ApiError ? e.message : t.error); }
+    finally { setBusy(false); }
+  };
+  const tone = check?.advice === "move_away" ? "lvl-very_high" : check?.advice === "be_ready" ? "lvl-high" : "";
+  return (
+    <div className="card">
+      <h2>{t.safety}</h2>
+      <div className="row">
+        <button className="btn" onClick={here} disabled={busy}>{t.check_here}</button>
+        {place?.lat !== undefined && place?.lon !== undefined && (
+          <button className="btn secondary" onClick={() => run(place.lat!, place.lon!)} disabled={busy}>{t.check_place}</button>
+        )}
+      </div>
+      {busy && <p className="muted">{t.loading}</p>}
+      {check && (
+        <div className={`banner ${tone}`} style={{ marginTop: 10, color: tone ? "#fff" : undefined, background: tone ? undefined : "var(--surface-2)" }}>
+          <b>{check.advice_text[lang]}</b>
+          {check.level_today_tomorrow && <div className="tiny" style={{ color: "inherit" }}>{LEVEL_NAMES[lang][check.level_today_tomorrow]}</div>}
+        </div>
+      )}
+      {check && check.advice !== "normal" && !route && (
+        <button className="btn" style={{ marginTop: 10 }} onClick={findRoute} disabled={busy}>{t.route}</button>
+      )}
+      {route && point && (
+        <div style={{ marginTop: 10 }}>
+          <div className="facility">
+            <span>{route.destination.name || (route.destination.kind === "high_ground" ? t.high_ground : t.unnamed_shelter)} <span className="pill">{t.unverified}</span></span>
+            <span className="tiny">{(route.distance_m / 1000).toFixed(1)} {t.km} · {Math.round(route.duration_min)} {t.walk_min}</span>
+          </div>
+          {route.low_ground_share !== null && route.low_ground_share > 0.2 && <p className="muted">{t.low_ground_route}</p>}
+          <a className="btn secondary" style={{ display: "inline-block", textDecoration: "none", marginTop: 6 }} target="_blank" rel="noreferrer"
+            href={`https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&route=${point[0]}%2C${point[1]}%3B${route.destination.lat}%2C${route.destination.lon}`}>
+            {t.open_map}
+          </a>
+        </div>
+      )}
+      {msg && <p className="muted">{msg}</p>}
+    </div>
   );
 }
 

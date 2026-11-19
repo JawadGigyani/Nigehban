@@ -147,6 +147,8 @@ class Settings(BaseSettings):
     vapid_subject: str = "mailto:alerts@nigehban.invalid"
     # Telegram: private development channel only (Telegram is blocked in Pakistan).
     telegram_bot_token: SecretStr | None = None
+    # OpenRouteService (free key) for routes to safety; without it the built-in OSM router is used.
+    ors_api_key: SecretStr | None = None
 
     # PDMA scraper
     pdma_base_url: str = "https://rms.pdma.gov.pk/ViewDSR.aspx"

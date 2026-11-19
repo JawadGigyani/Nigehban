@@ -175,6 +175,9 @@ def main(argv: list[str] | None = None) -> int:
     write_raster(terrain_dir / "hand_min5.tif", hand_min, profile, nodata=float("nan"))
     write_raster(terrain_dir / "slope.tif", slope, profile, nodata=float("nan"))
     write_raster(terrain_dir / "streams.tif", hand_streams.astype("uint8"), profile, nodata=0)
+    # Upstream area of each stream cell (km², 0 elsewhere) for the riverbank danger check (M11).
+    write_raster(terrain_dir / "stream_upstream_km2.tif",
+                 np.where(hand_streams, upstream_km2, 0).astype("float32"), profile, nodata=0)
 
     # Distance to the nearest HAND stream (metres, anisotropic cells handled per row mean).
     from scipy.ndimage import distance_transform_edt
