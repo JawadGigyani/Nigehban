@@ -45,18 +45,45 @@ LATS = np.round(-89.95 + STEP * np.arange(LAT0, LAT1 + 1), 2)
 
 
 def parse_ascii(text: str) -> np.ndarray:
-    """OPeNDAP ASCII for precipitation[time][lon][lat] -> array [lon, lat] (mm/day)."""
+    """OPeNDAP ASCII for precipitation[time][lon][lat] -> array [lon, lat] on LONS x LATS (mm/day).
 
-    rows = []
+    Rows look like `precipitation.precipitation[...][precipitation.lon=71.05], v1, v2, ...` with a
+    `precipitation.lat, ...` header; values are placed by coordinate, so index offsets do not matter.
+    Older servers print `[0][i], v1, ...` rows without coordinates; those are taken in order.
+    """
+
+    lats: list[float] | None = None
+    by_lon: dict[float, list[float]] = {}
+    ordered: list[list[float]] = []
     for line in text.splitlines():
+        if line.startswith("precipitation.lat,"):
+            lats = [float(v) for v in line.split(",")[1:] if v.strip()]
+            continue
+        m = re.search(r"lon=(-?\d+(?:\.\d+)?)\],\s*(.*)$", line)
+        if m:
+            by_lon[round(float(m.group(1)), 2)] = [float(v) for v in m.group(2).split(",") if v.strip()]
+            continue
         m = re.match(r"^\s*\[0\]\[(\d+)\],\s*(.*)$", line)
         if m:
-            rows.append([float(v) for v in m.group(2).split(",") if v.strip()])
-    if not rows:
+            ordered.append([float(v) for v in m.group(2).split(",") if v.strip()])
+    if by_lon and lats:
+        grid = np.full((len(LONS), len(LATS)), np.nan)
+        lat_pos = {round(v, 2): j for j, v in enumerate(LATS)}
+        lon_pos = {round(v, 2): i for i, v in enumerate(LONS)}
+        for lon, values in by_lon.items():
+            i = lon_pos.get(lon)
+            if i is None:
+                continue
+            for lat, value in zip(lats, values, strict=False):
+                j = lat_pos.get(round(lat, 2))
+                if j is not None:
+                    grid[i, j] = value
+    elif ordered:
+        grid = np.array(ordered, dtype=float)
+    else:
         raise ImergError("No precipitation values in the OPeNDAP response.")
-    arr = np.array(rows, dtype=float)
-    arr[arr < 0] = np.nan  # fill values
-    return arr
+    grid[grid < 0] = np.nan  # fill values
+    return grid
 
 
 class ImergClient:
@@ -74,7 +101,7 @@ class ImergClient:
         product, pattern = PRODUCTS[run]
         name = pattern.format(d=day.strftime("%Y%m%d"))
         return (f"{BASE}/{product}/{day:%Y}/{day:%m}/{name}.ascii?"
-                f"precipitation[0:0][{LON0}:{LON1}][{LAT0}:{LAT1}]")
+                f"precipitation[0:0][{LON0 - 1}:{LON1 + 1}][{LAT0 - 1}:{LAT1 + 1}]")
 
     def day(self, day: dt.date, run: str = "final") -> np.ndarray | None:
         """Grid [lon, lat] in mm for the local box, or None if the file does not exist yet."""
