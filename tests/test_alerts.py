@@ -214,3 +214,16 @@ def test_urdu_place_names_are_fixed_and_checked():
     assert any("another district" in e for e in errors)  # Bannu instead of Buner
     misspelled = draft.model_copy(update={"message_ur": "گرا، بونیر میں خطرہ زیادہ ہے۔"})
     assert any("name the tehsil" in e for e in check_draft(misspelled, bundle, "high", "buner__gagra"))
+
+
+def test_sms_text_is_one_plain_part():
+    import datetime as dt
+
+    from backend.app.alerts.cycle import sms_text
+    from backend.app.db import AlertRow
+
+    a = AlertRow(tehsil_id="mansehra__baffa_pakhal", level="very_high", valid_date=dt.date(2025, 8, 15))
+    for lang in ("en", "ur", "ur_roman"):
+        text = sms_text(a, lang)
+        assert len(text) <= 160 and text.isascii() and "1122" in text
+    assert "VERY HIGH" in sms_text(a, "en") and "BOHAT ZYADA" in sms_text(a, "ur")
