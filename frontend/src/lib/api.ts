@@ -65,6 +65,42 @@ export interface Place {
   tehsil_id: string;
   label_ur: string | null;
   tehsil?: string;
+  lat?: number;
+  lon?: number;
+}
+
+export interface GeoCheck {
+  tehsil_id: string;
+  in_danger_zone: boolean;
+  reasons: string[];
+  level_today_tomorrow: Level | null;
+  river_flag: boolean;
+  advice: "move_away" | "be_ready" | "stay_alert" | "normal";
+  advice_text: Record<Lang, string>;
+}
+
+export interface SafeRoute {
+  engine: string;
+  destination: { id: string; kind: string; name: string; subtype: string; lat: number; lon: number };
+  distance_m: number;
+  duration_min: number;
+  geometry: { type: "LineString"; coordinates: [number, number][] };
+  low_ground_share: number | null;
+  notes: string[];
+}
+
+export interface Advisory {
+  title: string;
+  date: string;
+  area: string[];
+  risk: { tehsil_id: string; tehsil: string; days: { date: string; level: Level; river_flag: boolean }[] }[];
+  actions: { text: string; refs: string[] }[];
+  public_message_en: string;
+  public_message_ur: string;
+  sources: string[];
+  footer: string;
+  checked: boolean;
+  markdown: string;
 }
 
 export interface ChatResult {
@@ -138,6 +174,12 @@ export const api = {
     request<{ token: string; expires_at: number }>("/board/login", { method: "POST", body: JSON.stringify({ password }) }),
   alerts: (token: string, replay?: boolean) =>
     request<any[]>(`/alerts?limit=100${replay === undefined ? "" : `&replay=${replay}`}`, {}, token),
+  geoCheck: (lat: number, lon: number, asOf?: string | null) =>
+    request<GeoCheck>("/geo/check", { method: "POST", body: JSON.stringify({ lat, lon, as_of: asOf ?? null }) }),
+  route: (lat: number, lon: number, mode: "walk" | "drive" = "walk") =>
+    request<SafeRoute>("/route/shelter", { method: "POST", body: JSON.stringify({ lat, lon, mode }) }),
+  advisory: (token: string, tehsilIds: string[], asOf?: string | null) =>
+    request<Advisory>("/advisories/draft", { method: "POST", body: JSON.stringify({ tehsil_ids: tehsilIds, as_of: asOf ?? null }) }, token),
   runCycle: (asOf: string | null) =>
     request<any>("/internal/run-cycle", { method: "POST", body: JSON.stringify({ as_of: asOf }) }),
 };

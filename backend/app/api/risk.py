@@ -163,8 +163,9 @@ def places_search(q: str = Query(min_length=2, max_length=60), limit: int = 12) 
     out, seen = [], set()
     for name, tehsil_id in ctx._tehsil_names.items():
         if key in name:
+            t = ctx.tehsils[tehsil_id]
             out.append({"type": "tehsil", "id": tehsil_id, "name": name.title(), "tehsil_id": tehsil_id,
-                        "label_ur": place_ur(tehsil_id)})
+                        "label_ur": place_ur(tehsil_id), "lat": t["lat"], "lon": t["lon"]})
             seen.add(tehsil_id)
     g = ctx.gazetteer
     names = g["name"].str.lower()
@@ -172,7 +173,8 @@ def places_search(q: str = Query(min_length=2, max_length=60), limit: int = 12) 
     for r in hits.head(limit).itertuples(index=False):
         out.append({"type": "village", "id": r.place_id, "name": r.name, "tehsil_id": r.tehsil_id,
                     "label_ur": r.name_ur if isinstance(r.name_ur, str) else None,
-                    "tehsil": r.tehsil_id.split("__")[1].replace("_", " ").title()})
+                    "tehsil": r.tehsil_id.split("__")[1].replace("_", " ").title(),
+                    "lat": float(r.lat), "lon": float(r.lon)})
     return out[:limit]
 
 
