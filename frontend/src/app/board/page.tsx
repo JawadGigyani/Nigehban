@@ -197,6 +197,9 @@ export default function BoardPage() {
                     <div key={f.id} className="facility"><span>{f.name || f.subtype} <span className="pill">{f.kind === "high_ground" ? "higher ground" : f.subtype}</span></span><span className="tiny">{f.km} km</span></div>
                   ))}
                   <b style={{ fontSize: 13 }}>Rescue 1122</b>
+                  {detail.rescue_1122_control_room && (
+                    <p className="tiny" style={{ margin: "2px 0" }}>District control room ({detail.rescue_1122_control_room.district}): <b>{detail.rescue_1122_control_room.control_room}</b> · office {detail.rescue_1122_control_room.district_office} · official directory</p>
+                  )}
                   {detail.rescue_1122.map((f) => (
                     <div key={f.id} className="facility"><span>{f.name}</span><span className="tiny">{f.km} km · {f.subtype || "unverified"}</span></div>
                   ))}

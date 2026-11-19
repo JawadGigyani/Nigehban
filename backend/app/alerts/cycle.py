@@ -40,7 +40,7 @@ class CycleReport:
 class AlertEngine:
     def __init__(self, risk_service, composer, channels: dict, cipher: ContactCipher | None,
                  village_tehsil: dict[str, str], in_scope: set[str],
-                 min_level: RiskLevel = RiskLevel.HIGH, max_lead: int = 2) -> None:
+                 min_level: RiskLevel = RiskLevel.HIGH, max_lead: int = 2, voice=None) -> None:
         self.risk = risk_service
         self.composer = composer
         self.channels = channels
@@ -49,6 +49,7 @@ class AlertEngine:
         self.in_scope = in_scope
         self.min_level = min_level
         self.max_lead = max_lead
+        self.voice = voice  # VoiceService or None
 
     def run(self, session: Session, as_of: dt.datetime | None = None, deliver: bool = True) -> CycleReport:
         now = dt.datetime.now(PKT)
@@ -86,6 +87,11 @@ class AlertEngine:
                        message_ur=composed.message_ur, message_en=composed.message_en,
                        message_ur_roman=composed.message_ur_roman, citations=list(composed.citations),
                        replay=replay)
+        if self.voice is not None and self.voice.enabled:
+            try:
+                row.audio_key = self.voice.speak(composed.message_ur)
+            except Exception as exc:  # voice is optional; the text alert still goes out
+                log.warning("voice failed: %s", str(exc)[:120])
         session.add(row)
         session.flush()
         return row
@@ -103,7 +109,8 @@ class AlertEngine:
             channel = self.channels.get(ChannelName(sub.channel))
             try:
                 address = self.cipher.decrypt(sub.address_encrypted) if self.cipher else ""
-                result = channel.send(address, text)
+                audio = f"/audio/{alert.audio_key}.mp3" if alert.audio_key else None
+                result = channel.send(address, text, audio)
             except Exception as exc:  # one failed contact never stops the cycle
                 log.warning("delivery failed on %s: %s", sub.channel, exc.__class__.__name__)
                 result = None

@@ -123,6 +123,12 @@ class AgentContext:
             for item in doc_items(self.kb.search(u.search_query or "flash flood safety", k=k)):
                 bundle.add(item)
         bundle.add(HELPLINES)
+        if tehsil_id:
+            from backend.app.geo.contacts import contact_evidence
+
+            local = contact_evidence(tehsil_id)
+            if local is not None:
+                bundle.add(local)
 
 
 class ChatAgent:

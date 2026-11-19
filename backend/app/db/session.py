@@ -29,6 +29,27 @@ def make_engine(database_url: str) -> Engine:
 
 def init_db(engine: Engine) -> None:
     SQLModel.metadata.create_all(engine)
+    _add_missing_columns(engine)
+
+
+def _add_missing_columns(engine: Engine) -> None:
+    """Tiny forward-only migration: add columns that newer code expects (SQLite and Postgres)."""
+
+    from sqlalchemy import inspect, text
+
+    inspector = inspect(engine)
+    with engine.begin() as conn:
+        for table in SQLModel.metadata.sorted_tables:
+            if not inspector.has_table(table.name):
+                continue
+            existing = {c["name"] for c in inspector.get_columns(table.name)}
+            for column in table.columns:
+                if column.name in existing:
+                    continue
+                ddl_type = column.type.compile(dialect=engine.dialect)
+                default = column.default.arg if column.default is not None and not callable(column.default.arg) else None
+                literal = "''" if isinstance(default, str) else ("0" if isinstance(default, (int, bool)) else "NULL")
+                conn.execute(text(f'ALTER TABLE {table.name} ADD COLUMN {column.name} {ddl_type} DEFAULT {literal}'))
 
 
 @lru_cache(maxsize=1)

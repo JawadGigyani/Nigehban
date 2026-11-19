@@ -54,6 +54,7 @@ export interface TehsilDetail {
   shelters: Facility[];
   rescue_1122: Facility[];
   health: Facility[];
+  rescue_1122_control_room: { district: string; control_room: string; district_office: string; source: string } | null;
   rivers: { point_id: string; name: string; q2: number; q5: number; series: { date: string; discharge: number; return_period: number }[] }[];
   note: string;
 }
@@ -124,6 +125,7 @@ export interface InboxAlert {
   lead_days: number;
   message: string;
   replay: boolean;
+  audio_url: string | null;
   citations: { ref: string; label: string }[];
 }
 
@@ -180,6 +182,8 @@ export const api = {
     request<SafeRoute>("/route/shelter", { method: "POST", body: JSON.stringify({ lat, lon, mode }) }),
   advisory: (token: string, tehsilIds: string[], asOf?: string | null) =>
     request<Advisory>("/advisories/draft", { method: "POST", body: JSON.stringify({ tehsil_ids: tehsilIds, as_of: asOf ?? null }) }, token),
+  config: () => request<{ voice: boolean; webpush_public_key: string | null; sms: boolean; whatsapp: boolean }>("/config"),
+  tts: (text: string) => request<{ audio_url: string }>("/tts", { method: "POST", body: JSON.stringify({ text }) }),
   runCycle: (asOf: string | null) =>
     request<any>("/internal/run-cycle", { method: "POST", body: JSON.stringify({ as_of: asOf }) }),
 };

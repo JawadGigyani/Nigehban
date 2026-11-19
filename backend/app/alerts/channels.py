@@ -5,7 +5,11 @@
   user's inbox in the web app (GET /inbox/{subscription_id}).
 - webpush: browser push with VAPID keys (works on Android Chrome and installed PWAs).
 - telegram: private development channel only (Telegram is blocked in Pakistan).
-- whatsapp, sms: stubs until a provider is chosen; they report "not configured".
+- sms: the free open-source "SMS Gateway for Android" app (an Android phone + SIM sends the
+  SMS; cloud mode https://api.sms-gate.app or local mode on the phone). Carrier SMS charges and
+  limits apply to the SIM.
+- whatsapp: Meta WhatsApp Cloud API. Free only with Meta's test number and up to 5 verified
+  recipients; real use needs an approved template and is paid per message in Pakistan.
 
     python -m backend.app.alerts.channels --vapid   # print a new VAPID key pair for .env
 """
@@ -87,6 +91,60 @@ class TelegramChannel:
             return DeliveryResult(ok=False, channel=self.name, error=exc.__class__.__name__)
 
 
+class SmsGatewayChannel:
+    """SMS through the SMS Gateway for Android app (https://docs.sms-gate.app)."""
+
+    name = ChannelName.SMS
+
+    def __init__(self, base_url: str, username: str | None, password: str | None) -> None:
+        self.base_url = base_url.rstrip("/")
+        self.username, self.password = username, password
+
+    def send(self, address: str, text: str, audio_url: str | None = None) -> DeliveryResult:
+        if not (self.username and self.password):
+            return DeliveryResult(ok=False, channel=self.name, error="sms gateway not configured")
+        phone = address if address.startswith("+") else "+92" + address.lstrip("0")
+        # Cloud mode uses /messages; the phone's local server uses /message.
+        path = "/message" if ":8080" in self.base_url else "/messages"
+        try:
+            r = httpx.post(f"{self.base_url}{path}", auth=(self.username, self.password), timeout=20,
+                           json={"textMessage": {"text": text[:900]}, "phoneNumbers": [phone], "ttl": 6 * 3600})
+            if r.status_code in (200, 201, 202):
+                return DeliveryResult(ok=True, channel=self.name, provider_message_id=str(r.json().get("id", "")))
+            return DeliveryResult(ok=False, channel=self.name, error=f"HTTP {r.status_code}: {r.text[:120]}")
+        except (httpx.HTTPError, ValueError) as exc:
+            return DeliveryResult(ok=False, channel=self.name, error=exc.__class__.__name__)
+
+
+class WhatsAppChannel:
+    """WhatsApp Cloud API: template message when configured, else plain text (24-hour window only)."""
+
+    name = ChannelName.WHATSAPP
+
+    def __init__(self, token: str | None, phone_number_id: str | None, template: str | None) -> None:
+        self.token, self.phone_number_id, self.template = token, phone_number_id, template
+
+    def send(self, address: str, text: str, audio_url: str | None = None) -> DeliveryResult:
+        if not (self.token and self.phone_number_id):
+            return DeliveryResult(ok=False, channel=self.name, error="whatsapp not configured")
+        to = address.lstrip("+")
+        if self.template:
+            body = {"messaging_product": "whatsapp", "to": to, "type": "template",
+                    "template": {"name": self.template, "language": {"code": "ur"},
+                                 "components": [{"type": "body", "parameters": [{"type": "text", "text": text[:1000]}]}]}}
+        else:
+            body = {"messaging_product": "whatsapp", "to": to, "type": "text", "text": {"body": text[:4000]}}
+        try:
+            r = httpx.post(f"https://graph.facebook.com/v21.0/{self.phone_number_id}/messages", json=body,
+                           headers={"Authorization": f"Bearer {self.token}"}, timeout=20)
+            data = r.json()
+            if r.status_code == 200 and data.get("messages"):
+                return DeliveryResult(ok=True, channel=self.name, provider_message_id=data["messages"][0].get("id"))
+            return DeliveryResult(ok=False, channel=self.name, error=str(data.get("error", {}).get("message"))[:160])
+        except (httpx.HTTPError, ValueError) as exc:
+            return DeliveryResult(ok=False, channel=self.name, error=exc.__class__.__name__)
+
+
 class StubChannel:
     def __init__(self, name: ChannelName) -> None:
         self.name = name
@@ -102,8 +160,10 @@ def build_channels(settings) -> dict[ChannelName, object]:
         ChannelName.WEB_INBOX: WebInboxChannel(),
         ChannelName.WEBPUSH: WebPushChannel(secret(settings.vapid_private_key), settings.vapid_subject),
         ChannelName.TELEGRAM: TelegramChannel(secret(settings.telegram_bot_token)),
-        ChannelName.WHATSAPP: StubChannel(ChannelName.WHATSAPP),
-        ChannelName.SMS: StubChannel(ChannelName.SMS),
+        ChannelName.WHATSAPP: WhatsAppChannel(secret(settings.whatsapp_token), settings.whatsapp_phone_number_id,
+                                              settings.whatsapp_template),
+        ChannelName.SMS: SmsGatewayChannel(settings.sms_gateway_url, settings.sms_gateway_username,
+                                           secret(settings.sms_gateway_password)),
     }
 
 

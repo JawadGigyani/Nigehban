@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
+  API_URL,
   api,
   ApiError,
   type GeoCheck,
@@ -313,6 +314,7 @@ function AlertsTab({ lang, deviceId, places, setPlaces, subId, setSubId }: {
             <span className="tiny">{a.valid_date}{a.replay ? " · demo" : ""}</span>
           </div>
           <p>{a.message}</p>
+          {a.audio_url && <audio controls preload="none" src={`${API_URL}${a.audio_url}`} style={{ width: "100%" }} />}
           <p className="tiny">{T[lang].sources}: {a.citations.map((c) => c.label).filter((v, i, s) => s.indexOf(v) === i).join(" · ")}</p>
         </div>
       ))}
@@ -320,8 +322,22 @@ function AlertsTab({ lang, deviceId, places, setPlaces, subId, setSubId }: {
   );
 }
 
+function ListenButton({ text, label }: { text: string; label: string }) {
+  const [url, setUrl] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  if (url) return <audio controls autoPlay src={url} style={{ width: "100%", marginTop: 6 }} />;
+  return (
+    <button className="btn secondary" style={{ padding: "4px 10px", marginTop: 6 }} disabled={busy}
+      onClick={async () => { setBusy(true); try { const r = await api.tts(text); setUrl(`${API_URL}${r.audio_url}`); } catch { /* voice optional */ } finally { setBusy(false); } }}>
+      🔊 {label}
+    </button>
+  );
+}
+
 function AskTab({ lang, place, asOf }: { lang: Lang; place: Place | null; asOf: string | null }) {
   const t = T[lang];
+  const [voice, setVoice] = useState(false);
+  useEffect(() => { api.config().then((c) => setVoice(c.voice)).catch(() => setVoice(false)); }, []);
   const [items, setItems] = useState<{ role: "user" | "bot"; text: string; result?: ChatResult }[]>([]);
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
@@ -357,6 +373,7 @@ function AskTab({ lang, place, asOf }: { lang: Lang; place: Place | null; asOf: 
             {m.result && m.result.actions.length > 0 && (
               <ul className="reasons">{m.result.actions.map((a, j) => <li key={j}>{a.text}</li>)}</ul>
             )}
+            {m.result && voice && lang === "ur" && <ListenButton text={m.text} label={t.listen} />}
             {m.result && (
               <div className="tiny" style={{ marginTop: 6 }}>
                 {m.result.checked ? "✓ " + t.checked : t.not_checked}
