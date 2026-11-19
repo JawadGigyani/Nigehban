@@ -102,9 +102,12 @@ class VillageExposure(Contract):
     """One row of `data/reference/village_exposure.csv`. Bands only, never depths."""
 
     village_id: str = Field(min_length=1)
-    hand_m: float
+    hand_m: float  # height above the nearest stream at the village point (m)
+    hand_min_m: float | None = None  # lowest HAND within about 180 m (what the band uses)
     exposure_band: ExposureBand
     dist_to_stream_m: float = Field(ge=0)
+    upstream_area_km2: float | None = Field(default=None, ge=0)  # catchment of the nearest stream
+    tehsil_id: str | None = None
 
 
 class RiverPointThresholds(Contract):

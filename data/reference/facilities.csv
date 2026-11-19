@@ -1,0 +1,750 @@
+facility_id,kind,subtype,shelter_priority,name,name_ur,lat,lon,tehsil_id,hand_min_m,exposure_band,verified,source
+osm:n6498318585,shelter,school,1.0,targhaw,,34.646352,71.667542,bajaur__barang,25.5,low,False,osm
+osm:n5037950421,health,hospital,,Agency Head Quarter Hospital Khar,,34.724023,71.503961,bajaur__khar,40.0,low,False,osm
+osm:n5037400622,shelter,government,1.0,,,34.72835,71.513903,bajaur__khar,34.7,low,False,osm
+osm:w688727733,health,hospital,,Emergency,,34.830364,73.064461,battagram__allai,0.0,high,False,osm
+osm:n6459953754,health,hospital,,Rooghantoon THQ,,34.830024,73.064581,battagram__allai,0.0,high,False,osm
+osm:w700414952,police,police,,Allai police station,,34.836002,73.057903,battagram__allai,0.0,high,False,osm
+osm:n6459963325,police,police,,Banna Police Station,,34.835801,73.057564,battagram__allai,0.0,high,False,osm
+osm:n6482862015,shelter,place_of_worship,2.0,,,34.819876,73.079361,battagram__allai,6.8,medium,False,osm
+osm:n6482880066,shelter,place_of_worship,2.0,,,34.818296,73.072658,battagram__allai,63.7,low,False,osm
+osm:n6482882704,shelter,place_of_worship,2.0,,,34.817909,73.075329,battagram__allai,60.6,low,False,osm
+osm:n6482885629,shelter,place_of_worship,2.0,,,34.817407,73.075736,battagram__allai,65.8,low,False,osm
+osm:n6482885640,shelter,place_of_worship,2.0,,,34.819531,73.075404,battagram__allai,18.8,low,False,osm
+osm:n6482885641,shelter,place_of_worship,2.0,,,34.819734,73.077487,battagram__allai,18.8,low,False,osm
+osm:n6482888642,shelter,place_of_worship,2.0,,,34.819454,73.071154,battagram__allai,35.9,low,False,osm
+osm:n6482888792,shelter,place_of_worship,2.0,,,34.821275,73.077309,battagram__allai,0.0,high,False,osm
+osm:n6482888902,shelter,place_of_worship,2.0,,,34.822437,73.076651,battagram__allai,0.0,high,False,osm
+osm:n6482888958,shelter,place_of_worship,2.0,,,34.821313,73.074503,battagram__allai,0.0,high,False,osm
+osm:n6543240326,shelter,place_of_worship,2.0,,,34.859005,73.21059,battagram__allai,773.0,low,False,osm
+osm:n6543240333,shelter,place_of_worship,2.0,,,34.85992,73.219645,battagram__allai,857.0,low,False,osm
+osm:n6543240336,shelter,place_of_worship,2.0,,,34.83981,73.272946,battagram__allai,51.5,low,False,osm
+osm:n6543240345,shelter,place_of_worship,2.0,,,34.819263,73.317506,battagram__allai,0.0,high,False,osm
+osm:n6564956354,shelter,place_of_worship,2.0,,,34.821357,73.079338,battagram__allai,0.0,high,False,osm
+osm:n6564977209,shelter,place_of_worship,2.0,,,34.816708,73.070145,battagram__allai,91.5,low,False,osm
+osm:n6565111215,shelter,place_of_worship,2.0,,,34.762344,73.073114,battagram__allai,962.2,low,False,osm
+osm:n6568948544,shelter,place_of_worship,2.0,,,34.825646,73.030144,battagram__allai,358.2,low,False,osm
+osm:n6568948545,shelter,place_of_worship,2.0,,,34.825178,73.03254,battagram__allai,592.3,low,False,osm
+osm:n6568948612,shelter,place_of_worship,2.0,,,34.827306,73.034649,battagram__allai,571.8,low,False,osm
+osm:n6568948614,shelter,place_of_worship,2.0,,,34.830159,73.032043,battagram__allai,405.4,low,False,osm
+osm:n6568948678,shelter,place_of_worship,2.0,,,34.829538,73.038324,battagram__allai,575.7,low,False,osm
+osm:n6568948679,shelter,place_of_worship,2.0,,,34.831262,73.037738,battagram__allai,533.0,low,False,osm
+osm:n6574840384,shelter,place_of_worship,2.0,,,34.819671,73.087685,battagram__allai,0.0,high,False,osm
+osm:n6574850115,shelter,place_of_worship,2.0,,,34.824693,73.083633,battagram__allai,96.8,low,False,osm
+osm:n6574900085,shelter,place_of_worship,2.0,,,34.820256,73.091097,battagram__allai,0.0,high,False,osm
+osm:n6574991052,shelter,place_of_worship,2.0,,,34.82613,73.06607,battagram__allai,0.0,high,False,osm
+osm:n6574991053,shelter,place_of_worship,2.0,,,34.823132,73.067695,battagram__allai,21.5,low,False,osm
+osm:n6574991054,shelter,place_of_worship,2.0,,,34.823661,73.071375,battagram__allai,0.0,high,False,osm
+osm:n6577218869,shelter,place_of_worship,2.0,,,34.81654,73.00908,battagram__allai,393.6,low,False,osm
+osm:n6577452518,shelter,place_of_worship,2.0,,,34.791978,73.006458,battagram__allai,559.2,low,False,osm
+osm:n6577452519,shelter,place_of_worship,2.0,,,34.788688,72.995222,battagram__allai,509.9,low,False,osm
+osm:n6577452559,shelter,place_of_worship,2.0,,,34.812252,72.970051,battagram__allai,41.9,low,False,osm
+osm:w700189589,shelter,community_centre,1.0,,,34.818946,73.079064,battagram__allai,28.6,low,False,osm
+osm:w700189596,shelter,community_centre,1.0,,,34.819672,73.078509,battagram__allai,11.3,low,False,osm
+osm:w700189604,shelter,community_centre,1.0,,,34.819812,73.076385,battagram__allai,18.8,low,False,osm
+osm:w700189607,shelter,community_centre,1.0,,,34.819147,73.074424,battagram__allai,46.7,low,False,osm
+osm:w700414954,shelter,college,1.0,Allai College,,34.831564,73.062638,battagram__allai,0.0,high,False,osm
+osm:w688722999,shelter,government,1.0,Assistant Commisionar Offices,,34.829795,73.064385,battagram__allai,0.0,high,False,osm
+osm:n6565135185,shelter,place_of_worship,2.0,Bagla masjid,,34.806055,73.061316,battagram__allai,572.9,low,False,osm
+osm:w687866076,shelter,place_of_worship,2.0,Banday,,34.835045,73.049982,battagram__allai,9.3,low,False,osm
+osm:w688729756,shelter,place_of_worship,2.0,Banne Madrasa,,34.831583,73.064697,battagram__allai,0.0,high,False,osm
+osm:n6562008732,shelter,place_of_worship,2.0,Bar kalay,,34.815206,73.091128,battagram__allai,0.0,high,False,osm
+osm:w688730757,shelter,place_of_worship,2.0,Bazar Jumat,,34.830278,73.056003,battagram__allai,15.9,low,False,osm
+osm:w769576085,shelter,place_of_worship,2.0,Bilal Masjid,مسجد بلال,34.826429,73.047256,battagram__allai,167.1,low,False,osm
+osm:n6543240361,shelter,place_of_worship,2.0,Darigai mosque,,34.823139,73.377402,battagram__allai,0.0,high,False,osm
+osm:w684808456,shelter,place_of_worship,2.0,Dormanao Jumat,,34.82379,73.069401,battagram__allai,0.0,high,False,osm
+osm:n6578926067,shelter,place_of_worship,2.0,Drab,,34.797663,72.974033,battagram__allai,279.6,low,False,osm
+osm:w687868467,shelter,school,1.0,GHS Pokal,,34.815714,73.083117,battagram__allai,71.4,low,False,osm
+osm:w687868518,shelter,school,1.0,GHS Pokal,,34.815802,73.083666,battagram__allai,71.4,low,False,osm
+osm:w680599770,shelter,school,1.0,GPS,,34.817715,73.075446,battagram__allai,60.6,low,False,osm
+osm:w826979810,shelter,school,1.0,GPS,,34.839502,73.068505,battagram__allai,189.6,low,False,osm
+osm:n6561933574,shelter,school,1.0,GPS Jabba,,34.824588,73.179465,battagram__allai,0.0,high,False,osm
+osm:n6482895268,shelter,school,1.0,GPS Onai,,34.814029,73.07285,battagram__allai,178.2,low,False,osm
+osm:n6561928868,shelter,school,1.0,GPS Qala  Gantar,,34.86522,73.147847,battagram__allai,130.0,low,False,osm
+osm:n6562008733,shelter,place_of_worship,2.0,Gatu jumaat,,34.815946,73.090419,battagram__allai,0.0,high,False,osm
+osm:w700189626,shelter,community_centre,1.0,Hujra Taj Muhammad khan,,34.819706,73.079222,battagram__allai,6.8,medium,False,osm
+osm:w700414955,shelter,public,1.0,Islamia Public high school and college,,34.830152,73.065349,battagram__allai,0.0,high,False,osm
+osm:w684970747,shelter,place_of_worship,2.0,Jamia Masjid Shohada,,34.828632,73.175353,battagram__allai,0.0,high,False,osm
+osm:w769583100,shelter,place_of_worship,2.0,Kolotay Masjid,,34.830678,73.050848,battagram__allai,38.5,low,False,osm
+osm:n6543275462,shelter,place_of_worship,2.0,Kopra mosque,,34.773106,73.060807,battagram__allai,997.7,low,False,osm
+osm:n6845069735,shelter,place_of_worship,2.0,Kot  Mosque,,34.912412,73.158481,battagram__allai,303.6,low,False,osm
+osm:n6562008730,shelter,place_of_worship,2.0,Koz kalay,,34.817064,73.089797,battagram__allai,0.0,high,False,osm
+osm:n6562008731,shelter,place_of_worship,2.0,Manz kalay,,34.816738,73.090613,battagram__allai,0.0,high,False,osm
+osm:n6543240350,shelter,place_of_worship,2.0,Marya Mosque,,34.814475,73.333072,battagram__allai,0.0,high,False,osm
+osm:n9805993737,shelter,place_of_worship,2.0,Masjid,,34.784238,73.154024,battagram__allai,957.8,low,False,osm
+osm:w680683053,shelter,place_of_worship,2.0,Masjid e Tooba,,34.854433,73.129973,battagram__allai,0.0,high,False,osm
+osm:w679906278,shelter,place_of_worship,2.0,Pokal Jamia Masjid,,34.819506,73.075375,battagram__allai,18.8,low,False,osm
+osm:n6561928867,shelter,place_of_worship,2.0,Qala masjid,,34.866461,73.145562,battagram__allai,93.0,low,False,osm
+osm:n6565135184,shelter,place_of_worship,2.0,Raoo masjid,,34.810855,73.0571,battagram__allai,430.3,low,False,osm
+osm:w688725420,shelter,place_of_worship,2.0,Roghantoon Jumat,,34.830431,73.06456,battagram__allai,0.0,high,False,osm
+osm:n6543240366,shelter,place_of_worship,2.0,Sar kas mosque,,34.833805,73.401225,battagram__allai,0.0,high,False,osm
+osm:n6543240356,shelter,place_of_worship,2.0,Satoul Mosque,,34.813941,73.360749,battagram__allai,0.0,high,False,osm
+osm:w684803271,shelter,place_of_worship,2.0,Spedar,,34.819245,73.063205,battagram__allai,256.5,low,False,osm
+osm:w687866265,shelter,place_of_worship,2.0,Tablighi Markaz,,34.828486,73.060009,battagram__allai,0.0,high,False,osm
+osm:n4730073290,health,clinic,,Insaf Clinic,,34.643839,73.068805,battagram__batagram,85.0,low,False,osm
+osm:n9498650778,health,hospital,,Taha Medical & Diagnostic Center,,34.791485,72.930331,battagram__batagram,7.8,medium,False,osm
+osm:w261671814,shelter,school,1.0,,,34.594947,73.051864,battagram__batagram,0.0,high,False,osm
+osm:w970984486,shelter,school,1.0,"Al Syed Garden Public School & College, Battagram",,34.676202,73.029068,battagram__batagram,0.0,high,False,osm
+osm:w260744774,shelter,school,1.0,Boys High School,,34.618337,73.077347,battagram__batagram,0.0,high,False,osm
+osm:n4542988168,shelter,place_of_worship,2.0,Darul Uloom Ishaatul Islam,,34.674618,72.992934,battagram__batagram,0.0,high,False,osm
+osm:n7629222727,shelter,school,1.0,GHS Bilandkot,,34.598162,72.972217,battagram__batagram,264.0,low,False,osm
+osm:w459565460,shelter,school,1.0,Government Centennial Model High School Battagram,,34.674542,73.033034,battagram__batagram,12.5,low,False,osm
+osm:w260744791,shelter,college,1.0,Government Degree College Battagram,,34.651086,73.055767,battagram__batagram,0.0,high,False,osm
+osm:w261671818,shelter,school,1.0,Government High School Bandigo,,34.594931,73.051621,battagram__batagram,0.0,high,False,osm
+osm:w459564417,shelter,university,1.0,Hazara University Sub-Campus Battagram,,34.677193,73.03377,battagram__batagram,0.0,high,False,osm
+osm:n4730072490,shelter,community_centre,1.0,Jabri,,34.645277,73.075796,battagram__batagram,155.8,low,False,osm
+osm:w459811003,shelter,school,1.0,Karakoram Highway,,34.677861,73.02199,battagram__batagram,0.0,high,False,osm
+osm:n4574683943,shelter,place_of_worship,2.0,Landey Jumat,,34.674317,72.988889,battagram__batagram,0.0,high,False,osm
+osm:n4555492672,shelter,government,1.0,NADRA Office,,34.676134,73.008163,battagram__batagram,0.0,high,False,osm
+osm:w871109999,shelter,school,1.0,Pace Institute of I.T Battagram,,34.675599,73.028427,battagram__batagram,0.0,high,False,osm
+osm:w459343036,shelter,school,1.0,Sir Syed Institute of Learning & Motivation Battagram,,34.678057,73.014462,battagram__batagram,0.0,high,False,osm
+osm:w459811002,shelter,place_of_worship,2.0,Tableeghi Markaz Battagram,,34.678266,73.016807,battagram__batagram,0.0,high,False,osm
+osm:n4988266210,health,clinic,,Dr. Noor Muhammad Medical Centre,,34.587223,72.449074,buner__daggar,4.8,high,False,osm
+osm:w509632859,health,clinic,,Dr. Noor Muhammad Medical Centre,,34.587201,72.448984,buner__daggar,4.8,high,False,osm
+osm:w509632857,health,hospital,,Government Hospital Pacha Kalay,,34.586451,72.447737,buner__daggar,6.2,medium,False,osm
+osm:w845970549,police,police,,Elum Police Station,,34.571524,72.396717,buner__daggar,30.6,low,False,osm
+osm:w845977564,police,police,,Ilum Ghar Police Station,,34.611559,72.370178,buner__daggar,404.8,low,False,osm
+osm:w509746125,police,police,,Polcie Station Pirbaba,,34.598668,72.45358,buner__daggar,0.0,high,False,osm
+osm:w787091545,police,police,,Sar Thana,,34.605872,72.289163,buner__daggar,277.7,low,False,osm
+osm:n4989250956,shelter,place_of_worship,2.0,,,34.586052,72.448859,buner__daggar,6.2,medium,False,osm
+osm:n11900537585,shelter,place_of_worship,2.0,,,34.540409,72.436083,buner__daggar,1.4,high,False,osm
+osm:w959161793,shelter,school,1.0,,,34.584473,72.445852,buner__daggar,6.2,medium,False,osm
+osm:w1127425818,shelter,government,1.0,,,34.50559,72.467976,buner__daggar,42.2,low,False,osm
+osm:w889482487,shelter,place_of_worship,2.0,Abubakr Sadiq Mosque,,34.591556,72.451075,buner__daggar,7.4,medium,False,osm
+osm:w509738713,shelter,school,1.0,Al Farooq School & College,,34.584356,72.445255,buner__daggar,2.3,high,False,osm
+osm:w510155560,shelter,place_of_worship,2.0,Allah Akbar Mosque,,34.59581,72.451894,buner__daggar,3.3,high,False,osm
+osm:w460787626,shelter,place_of_worship,2.0,Allah o Akbar Masjid,,34.497372,72.39591,buner__daggar,0.0,high,False,osm
+osm:n4988266202,shelter,place_of_worship,2.0,Bilal Masjid,مسجد بلال,34.58752,72.449537,buner__daggar,6.6,medium,False,osm
+osm:w509632858,shelter,place_of_worship,2.0,Bilal Masjid,مسجد بلال,34.587438,72.449675,buner__daggar,6.6,medium,False,osm
+osm:w460798575,shelter,place_of_worship,2.0,Faisal Masjid,,34.505999,72.39882,buner__daggar,0.0,high,False,osm
+osm:w509829849,shelter,school,1.0,Government High Secodary School for Girls Jawkhela,,34.584398,72.449114,buner__daggar,9.5,low,False,osm
+osm:w509741538,shelter,school,1.0,Government High Secondary School for Boys Jawkhela,,34.582919,72.448,buner__daggar,11.6,low,False,osm
+osm:n13123086874,shelter,school,1.0,Government Primary School Bhai Kalay,,34.578472,72.436774,buner__daggar,0.0,high,False,osm
+osm:w509830909,shelter,school,1.0,Government Primary School Pacha Kalay,,34.589356,72.450036,buner__daggar,6.5,medium,False,osm
+osm:n11900518800,shelter,place_of_worship,2.0,Grand Mosque Pirabai,,34.528403,72.437715,buner__daggar,1.0,high,False,osm
+osm:w460796514,shelter,place_of_worship,2.0,Janazgah Angapur,,34.498969,72.392222,buner__daggar,2.2,high,False,osm
+osm:n11900533140,shelter,place_of_worship,2.0,Jumma Masjid,,34.541559,72.434274,buner__daggar,0.9,high,False,osm
+osm:w460797427,shelter,place_of_worship,2.0,Landai Masjid,,34.501591,72.407071,buner__daggar,0.0,high,False,osm
+osm:w890129967,shelter,place_of_worship,2.0,Madinah Mosque,,34.597417,72.452082,buner__daggar,1.5,high,False,osm
+osm:w460794891,shelter,place_of_worship,2.0,Masjid Ar  Rahman,,34.497843,72.397373,buner__daggar,6.4,medium,False,osm
+osm:w509746123,shelter,place_of_worship,2.0,Pirbaba Masjid,,34.601436,72.454495,buner__daggar,0.0,high,False,osm
+osm:w889482216,shelter,place_of_worship,2.0,Shaheedano baba Janazgah,,34.592073,72.451009,buner__daggar,7.4,medium,False,osm
+osm:w509741537,shelter,government,1.0,Tehsil Gadezi Pirbaba Pacha Kalay,,34.58721,72.4499,buner__daggar,6.6,medium,False,osm
+osm:w460795743,shelter,place_of_worship,2.0,gulshan Masjid,,34.498114,72.400293,buner__daggar,0.6,high,False,osm
+osm:n14067937689,shelter,community_centre,1.0,حجرہ عیسیٰ اور مالک خان انغاپور بونیر,,34.498816,72.398791,buner__daggar,2.8,high,False,osm
+osm:w696103141,shelter,university,1.0,,,34.477834,72.490454,buner__gagra,14.2,low,False,osm
+osm:w696103142,shelter,university,1.0,,,34.477883,72.489944,buner__gagra,13.3,low,False,osm
+osm:w696103143,shelter,university,1.0,,,34.478311,72.49028,buner__gagra,14.2,low,False,osm
+osm:w696103144,shelter,university,1.0,,,34.478339,72.490553,buner__gagra,14.2,low,False,osm
+osm:w696103145,shelter,university,1.0,,,34.478378,72.489852,buner__gagra,13.3,low,False,osm
+osm:w510105621,shelter,college,1.0,Government Degree College Daggar,,34.479024,72.486046,buner__gagra,10.9,low,False,osm
+osm:w1318438037,shelter,school,1.0,Government Primary School Shamnal Chagharzai,,34.568168,72.617053,buner__gagra,0.0,high,False,osm
+osm:n13371507871,shelter,place_of_worship,2.0,Madinah Masjid,,34.466804,72.529437,buner__gagra,52.1,low,False,osm
+osm:w1126941533,shelter,university,1.0,University of Buner,,34.47901,72.490027,buner__gagra,14.2,low,False,osm
+osm:n4515618490,police,police,,Muhammad Ali house,,34.187095,72.507492,buner__khado_khel,0.0,high,False,osm
+osm:n4991920697,shelter,place_of_worship,2.0,Bilal Masjid,مسجد بلال,34.411565,72.468623,buner__mandanr,26.4,low,False,osm
+osm:n4003644278,health,hospital,,,,35.85177,71.788622,lower_chitral__chitral,27.7,low,False,osm
+osm:n11139029905,health,clinic,,,,35.745761,71.794994,lower_chitral__chitral,118.5,low,False,osm
+osm:n9913026717,health,hospital,,BHU Broze,,35.748848,71.785416,lower_chitral__chitral,0.0,high,False,osm
+osm:n9913031217,health,clinic,,Dr. Tamara Kamal Clinic,,35.829552,71.787722,lower_chitral__chitral,0.0,high,False,osm
+osm:n4863341921,police,police,,Chitral Police station,,35.854294,71.789992,lower_chitral__chitral,0.0,high,False,osm
+osm:w1275475679,police,police,,Chitral Scouts Mess,,35.69267,71.672021,lower_chitral__chitral,0.0,high,False,osm
+osm:w1275475680,police,police,,Chitral Scouts Post,,35.692574,71.67186,lower_chitral__chitral,0.0,high,False,osm
+osm:w1275475682,police,police,,Chitral Scouts Post,,35.692451,71.672289,lower_chitral__chitral,0.0,high,False,osm
+osm:w1275475683,police,police,,Chitral Scouts Post,,35.692056,71.67215,lower_chitral__chitral,0.0,high,False,osm
+osm:w1275475681,police,police,,Chitral Scuots Ppost,,35.692257,71.671978,lower_chitral__chitral,0.0,high,False,osm
+osm:n747660061,police,police,,Foreigners Registration Office,,35.853727,71.789315,lower_chitral__chitral,12.8,low,False,osm
+osm:w1285849340,police,police,,POLICE REST HOUSE,,35.700023,71.691901,lower_chitral__chitral,0.0,high,False,osm
+osm:n4004136814,police,police,,Police,,35.885415,71.797523,lower_chitral__chitral,0.0,high,False,osm
+osm:n3999019890,police,police,,Police Check Post,,35.735379,71.77444,lower_chitral__chitral,0.0,high,False,osm
+osm:w1275477726,police,police,,Police Station,,35.69473,71.675586,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285847629,rescue_1122,government,,rescue 1122,,35.699436,71.689762,lower_chitral__chitral,0.0,high,False,osm
+osm:n3997426410,shelter,school,1.0,,,35.661738,71.760118,lower_chitral__chitral,0.0,high,False,osm
+osm:n3997426411,shelter,school,1.0,,,35.662636,71.760621,lower_chitral__chitral,29.4,low,False,osm
+osm:n3998462428,shelter,school,1.0,,,35.642373,71.709788,lower_chitral__chitral,4.1,high,False,osm
+osm:n3998462429,shelter,school,1.0,,,35.642602,71.704812,lower_chitral__chitral,0.0,high,False,osm
+osm:n3998751057,shelter,school,1.0,,,35.711388,71.763749,lower_chitral__chitral,87.3,low,False,osm
+osm:n3998751058,shelter,school,1.0,,,35.714255,71.762159,lower_chitral__chitral,12.5,low,False,osm
+osm:n3999113090,shelter,school,1.0,,,35.746057,71.771135,lower_chitral__chitral,134.3,low,False,osm
+osm:n3999153922,shelter,school,1.0,,,35.727832,71.785455,lower_chitral__chitral,3.4,high,False,osm
+osm:n4000090825,shelter,school,1.0,,,35.737937,71.782175,lower_chitral__chitral,0.0,high,False,osm
+osm:n4000090826,shelter,school,1.0,,,35.738106,71.783177,lower_chitral__chitral,0.0,high,False,osm
+osm:n4000113987,shelter,school,1.0,,,35.751928,71.7956,lower_chitral__chitral,0.0,high,False,osm
+osm:n4000137960,shelter,school,1.0,,,35.764355,71.781102,lower_chitral__chitral,17.5,low,False,osm
+osm:n4000137961,shelter,school,1.0,,,35.766148,71.781011,lower_chitral__chitral,0.0,high,False,osm
+osm:n4000192559,shelter,school,1.0,,,35.791114,71.779905,lower_chitral__chitral,0.0,high,False,osm
+osm:n4000192560,shelter,school,1.0,,,35.794819,71.781539,lower_chitral__chitral,0.0,high,False,osm
+osm:n4000192561,shelter,school,1.0,,,35.79605,71.782034,lower_chitral__chitral,3.9,high,False,osm
+osm:n4000340696,shelter,school,1.0,,,35.799498,71.782217,lower_chitral__chitral,4.3,high,False,osm
+osm:n4000340697,shelter,school,1.0,,,35.805772,71.794885,lower_chitral__chitral,188.5,low,False,osm
+osm:n4000396157,shelter,school,1.0,,,35.80771,71.78766,lower_chitral__chitral,206.2,low,False,osm
+osm:n4000507451,shelter,school,1.0,,,35.785672,71.761422,lower_chitral__chitral,127.0,low,False,osm
+osm:n4000507452,shelter,school,1.0,,,35.785938,71.761624,lower_chitral__chitral,0.0,high,False,osm
+osm:n4000507453,shelter,school,1.0,,,35.788133,71.765535,lower_chitral__chitral,0.0,high,False,osm
+osm:n4000507454,shelter,school,1.0,,,35.789555,71.758687,lower_chitral__chitral,0.0,high,False,osm
+osm:n4000639132,shelter,school,1.0,,,35.813295,71.780098,lower_chitral__chitral,21.7,low,False,osm
+osm:n4001891587,shelter,school,1.0,,,35.826759,71.767505,lower_chitral__chitral,0.0,high,False,osm
+osm:n4002015924,shelter,school,1.0,,,35.829462,71.787971,lower_chitral__chitral,0.0,high,False,osm
+osm:n4002015925,shelter,school,1.0,,,35.830753,71.787482,lower_chitral__chitral,0.0,high,False,osm
+osm:n4002443891,shelter,school,1.0,,,35.830081,71.771614,lower_chitral__chitral,41.1,low,False,osm
+osm:n4002443892,shelter,school,1.0,,,35.831155,71.768251,lower_chitral__chitral,55.2,low,False,osm
+osm:n4002443893,shelter,school,1.0,,,35.832494,71.768216,lower_chitral__chitral,70.0,low,False,osm
+osm:n4002443894,shelter,school,1.0,,,35.832694,71.768284,lower_chitral__chitral,70.0,low,False,osm
+osm:n4002443895,shelter,school,1.0,,,35.833347,71.784757,lower_chitral__chitral,0.0,high,False,osm
+osm:n4002443896,shelter,school,1.0,,,35.838151,71.767205,lower_chitral__chitral,108.2,low,False,osm
+osm:n4002443897,shelter,school,1.0,,,35.83961,71.768331,lower_chitral__chitral,62.5,low,False,osm
+osm:n4002775145,shelter,school,1.0,,,35.840798,71.78417,lower_chitral__chitral,22.7,low,False,osm
+osm:n4002775146,shelter,school,1.0,,,35.843892,71.782819,lower_chitral__chitral,12.9,low,False,osm
+osm:n4003757628,shelter,school,1.0,,,35.860028,71.795431,lower_chitral__chitral,45.7,low,False,osm
+osm:n4003757629,shelter,school,1.0,,,35.860058,71.791843,lower_chitral__chitral,9.0,low,False,osm
+osm:n4003886378,shelter,school,1.0,,,35.86504,71.80866,lower_chitral__chitral,0.0,high,False,osm
+osm:n4003933484,shelter,school,1.0,,,35.864895,71.799109,lower_chitral__chitral,0.0,high,False,osm
+osm:n4003997592,shelter,school,1.0,,,35.872575,71.800532,lower_chitral__chitral,0.0,high,False,osm
+osm:n4003997593,shelter,school,1.0,,,35.87352,71.80161,lower_chitral__chitral,0.0,high,False,osm
+osm:n4004136815,shelter,school,1.0,,,35.88397,71.793628,lower_chitral__chitral,3.0,high,False,osm
+osm:n4004136816,shelter,school,1.0,,,35.88519,71.795298,lower_chitral__chitral,2.2,high,False,osm
+osm:n4004136817,shelter,school,1.0,,,35.886981,71.797427,lower_chitral__chitral,0.0,high,False,osm
+osm:n4004228527,shelter,school,1.0,,,35.890295,71.799559,lower_chitral__chitral,1.4,high,False,osm
+osm:n4006861656,shelter,school,1.0,,,35.912813,71.805292,lower_chitral__chitral,145.9,low,False,osm
+osm:n4006885626,shelter,school,1.0,,,35.92446,71.812409,lower_chitral__chitral,0.0,high,False,osm
+osm:n4006885627,shelter,school,1.0,,,35.924706,71.815185,lower_chitral__chitral,0.0,high,False,osm
+osm:n4006981253,shelter,school,1.0,,,35.935627,71.811402,lower_chitral__chitral,0.0,high,False,osm
+osm:n4009198694,shelter,school,1.0,,,35.916338,71.844319,lower_chitral__chitral,0.0,high,False,osm
+osm:n4009198695,shelter,school,1.0,,,35.918971,71.845035,lower_chitral__chitral,0.0,high,False,osm
+osm:n4009198696,shelter,school,1.0,,,35.919399,71.845377,lower_chitral__chitral,0.0,high,False,osm
+osm:n4009251654,shelter,school,1.0,,,35.931455,71.876996,lower_chitral__chitral,0.0,high,False,osm
+osm:n4009302951,shelter,school,1.0,,,35.936659,71.886169,lower_chitral__chitral,0.0,high,False,osm
+osm:n4010494059,shelter,school,1.0,,,35.94146,71.8998,lower_chitral__chitral,0.0,high,False,osm
+osm:n4010534387,shelter,school,1.0,,,35.93831,71.921506,lower_chitral__chitral,0.0,high,False,osm
+osm:n4010534388,shelter,school,1.0,,,35.939408,71.925259,lower_chitral__chitral,0.0,high,False,osm
+osm:n4010534689,shelter,school,1.0,,,35.940018,71.927487,lower_chitral__chitral,0.0,high,False,osm
+osm:n4010534690,shelter,school,1.0,,,35.94357,71.933886,lower_chitral__chitral,10.5,low,False,osm
+osm:n4010534691,shelter,school,1.0,,,35.945613,71.940226,lower_chitral__chitral,0.0,high,False,osm
+osm:n4010534692,shelter,school,1.0,,,35.946882,71.942391,lower_chitral__chitral,0.0,high,False,osm
+osm:n4010628815,shelter,school,1.0,,,35.975468,71.960574,lower_chitral__chitral,36.1,low,False,osm
+osm:n4010628816,shelter,school,1.0,,,35.978413,71.960507,lower_chitral__chitral,36.1,low,False,osm
+osm:n4010721530,shelter,school,1.0,,,35.967291,71.96499,lower_chitral__chitral,0.0,high,False,osm
+osm:n5751028622,shelter,place_of_worship,2.0,,,35.715281,71.769818,lower_chitral__chitral,0.0,high,False,osm
+osm:n6045856085,shelter,place_of_worship,2.0,,,35.798153,71.654618,lower_chitral__chitral,0.0,high,False,osm
+osm:w397236586,shelter,school,1.0,,,35.789789,71.764067,lower_chitral__chitral,0.0,high,False,osm
+osm:w397236915,shelter,school,1.0,,,35.789612,71.758704,lower_chitral__chitral,0.0,high,False,osm
+osm:w397450066,shelter,school,1.0,,,35.835027,71.774712,lower_chitral__chitral,0.0,high,False,osm
+osm:w1275475693,shelter,place_of_worship,2.0,,,35.69388,71.674556,lower_chitral__chitral,0.0,high,False,osm
+osm:w1275475698,shelter,place_of_worship,2.0,,,35.69371,71.674941,lower_chitral__chitral,0.0,high,False,osm
+osm:w1275481821,shelter,place_of_worship,2.0,,,35.691984,71.67012,lower_chitral__chitral,0.0,high,False,osm
+osm:w1275492754,shelter,place_of_worship,2.0,,,35.695585,71.678222,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285831908,shelter,place_of_worship,2.0,,,35.698148,71.683361,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285849116,shelter,place_of_worship,2.0,,,35.699985,71.691566,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285852580,shelter,place_of_worship,2.0,,,35.7022,71.698794,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285857356,shelter,place_of_worship,2.0,,,35.706395,71.70561,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285858605,shelter,place_of_worship,2.0,,,35.708847,71.702932,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285864645,shelter,place_of_worship,2.0,,,35.715925,71.705079,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285865544,shelter,place_of_worship,2.0,,,35.727985,71.711356,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285871533,shelter,place_of_worship,2.0,,,35.687592,71.664267,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285877361,shelter,place_of_worship,2.0,,,35.684891,71.66126,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285914128,shelter,place_of_worship,2.0,,,35.666286,71.618566,lower_chitral__chitral,0.0,high,False,osm
+osm:w1287927495,shelter,place_of_worship,2.0,,,35.68475,71.642698,lower_chitral__chitral,0.0,high,False,osm
+osm:w1287939330,shelter,place_of_worship,2.0,,,35.688244,71.671607,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285874039,shelter,community_centre,1.0,Bashaleni,,35.686197,71.662123,lower_chitral__chitral,8.5,low,False,osm
+osm:n6007215506,shelter,government,1.0,Chitral Sports Board Office,,35.853238,71.78885,lower_chitral__chitral,24.6,low,False,osm
+osm:n4002443889,shelter,college,1.0,College,,35.83522,71.78461,lower_chitral__chitral,6.2,medium,False,osm
+osm:n4003757627,shelter,college,1.0,College,,35.857598,71.792081,lower_chitral__chitral,0.0,high,False,osm
+osm:n4004136813,shelter,college,1.0,College,,35.88733,71.798508,lower_chitral__chitral,0.0,high,False,osm
+osm:n4006861655,shelter,college,1.0,College,,35.916142,71.813814,lower_chitral__chitral,6.3,medium,False,osm
+osm:n5234315222,shelter,government,1.0,Deputy Commissioner Office (DCO),,35.850045,71.782098,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285857493,shelter,school,1.0,Elemenatary girls school bonthar,,35.709438,71.705923,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285850822,shelter,school,1.0,GGHSS,,35.703257,71.698822,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285843652,shelter,school,1.0,GOV Primary School,,35.698301,71.685291,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285854833,shelter,school,1.0,GPS SchoolHouse,,35.705214,71.701253,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285850177,shelter,school,1.0,Gov Kalash Primary School,,35.702006,71.696036,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285872011,shelter,school,1.0,Gov kalash primary school karakal,,35.687505,71.663638,lower_chitral__chitral,7.6,medium,False,osm
+osm:w1275493072,shelter,school,1.0,Goverment Girls High School,,35.69618,71.67869,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285831872,shelter,school,1.0,Goverment High School,,35.698109,71.683002,lower_chitral__chitral,0.0,high,False,osm
+osm:w1275481484,shelter,school,1.0,Goverment Primary School,,35.69185,71.671146,lower_chitral__chitral,0.0,high,False,osm
+osm:w357282959,shelter,place_of_worship,2.0,Jamia Masjid,جامع مسجد,35.85559,71.789628,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285863067,shelter,community_centre,1.0,Jashta Khan,,35.714617,71.70274,lower_chitral__chitral,25.7,low,False,osm
+osm:w1285875348,shelter,community_centre,1.0,Jashta Khan,,35.686657,71.66194,lower_chitral__chitral,8.5,low,False,osm
+osm:w1285845072,shelter,school,1.0,Madrassa,,35.699161,71.688043,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285862067,shelter,school,1.0,Madrassa,,35.714039,71.702843,lower_chitral__chitral,22.2,low,False,osm
+osm:w1285914334,shelter,school,1.0,Mikani School,,35.674832,71.628797,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285855735,shelter,government,1.0,PTCL Exchange,,35.704613,71.699746,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285921196,shelter,school,1.0,Primary School,,35.682664,71.646224,lower_chitral__chitral,0.0,high,False,osm
+osm:w1287927410,shelter,school,1.0,School,,35.68426,71.645747,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285846445,shelter,government,1.0,TMA House,,35.699571,71.689392,lower_chitral__chitral,0.0,high,False,osm
+osm:n3625998344,shelter,place_of_worship,2.0,Tablighi Markaz,,35.846024,71.78235,lower_chitral__chitral,15.1,low,False,osm
+osm:w1287640093,shelter,school,1.0,Tarbiyah Education Academy Chumurkone Chitral,,35.791192,71.778773,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285832037,shelter,government,1.0,Village Council Office,,35.697953,71.683407,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285852517,shelter,government,1.0,Wild Life Office,,35.702396,71.698849,lower_chitral__chitral,0.0,high,False,osm
+osm:w1285860271,shelter,school,1.0,primary school,,35.711674,71.704701,lower_chitral__chitral,0.0,high,False,osm
+osm:n9912988219,health,clinic,,Basic Health Unit Kesu,,35.628707,71.793268,lower_chitral__drosh,0.0,high,False,osm
+osm:n3993237038,health,hospital,,Hospital,,35.48026,71.74111,lower_chitral__drosh,0.0,high,False,osm
+osm:w1338822377,health,hospital,,Hospital,,35.480262,71.74111,lower_chitral__drosh,0.0,high,False,osm
+osm:n3996641267,police,police,,Police check post,,35.636717,71.886759,lower_chitral__drosh,21.3,low,False,osm
+osm:n3993106251,shelter,school,1.0,,,35.434678,71.745135,lower_chitral__drosh,0.0,high,False,osm
+osm:n3993311598,shelter,college,1.0,,,35.504681,71.734163,lower_chitral__drosh,47.3,low,False,osm
+osm:n3993413302,shelter,school,1.0,,,35.519997,71.758295,lower_chitral__drosh,0.0,high,False,osm
+osm:n3993463926,shelter,school,1.0,,,35.516751,71.741316,lower_chitral__drosh,62.0,low,False,osm
+osm:n3994637875,shelter,school,1.0,,,35.524714,71.757414,lower_chitral__drosh,0.0,high,False,osm
+osm:n3994680058,shelter,school,1.0,,,35.515194,71.786925,lower_chitral__drosh,0.0,high,False,osm
+osm:n3994763124,shelter,school,1.0,,,35.47276,71.805158,lower_chitral__drosh,0.0,high,False,osm
+osm:n3994941758,shelter,school,1.0,,,35.550264,71.771467,lower_chitral__drosh,49.1,low,False,osm
+osm:n3994941759,shelter,school,1.0,,,35.550822,71.77639,lower_chitral__drosh,0.0,high,False,osm
+osm:n3994941760,shelter,school,1.0,,,35.553393,71.780786,lower_chitral__drosh,7.1,medium,False,osm
+osm:n3995241208,shelter,school,1.0,,,35.587148,71.820207,lower_chitral__drosh,4.6,high,False,osm
+osm:n3995330271,shelter,school,1.0,,,35.59199,71.828276,lower_chitral__drosh,0.0,high,False,osm
+osm:n3995330272,shelter,school,1.0,,,35.593448,71.829769,lower_chitral__drosh,5.7,medium,False,osm
+osm:n3995397017,shelter,school,1.0,,,35.599815,71.820491,lower_chitral__drosh,169.1,low,False,osm
+osm:n3995457493,shelter,school,1.0,,,35.598764,71.835394,lower_chitral__drosh,9.1,low,False,osm
+osm:n3995457494,shelter,school,1.0,,,35.599044,71.835198,lower_chitral__drosh,9.1,low,False,osm
+osm:n3996641268,shelter,school,1.0,,,35.636622,71.886188,lower_chitral__drosh,15.6,low,False,osm
+osm:n3996641269,shelter,school,1.0,,,35.639371,71.889126,lower_chitral__drosh,6.6,medium,False,osm
+osm:n3996679857,shelter,school,1.0,,,35.667762,71.922543,lower_chitral__drosh,2.6,high,False,osm
+osm:n3996679858,shelter,school,1.0,,,35.674612,71.925384,lower_chitral__drosh,0.0,high,False,osm
+osm:n3996695939,shelter,school,1.0,,,35.71132,71.945971,lower_chitral__drosh,20.9,low,False,osm
+osm:n3996730559,shelter,school,1.0,,,35.757151,72.01452,lower_chitral__drosh,0.0,high,False,osm
+osm:n3996730560,shelter,school,1.0,,,35.762121,72.019451,lower_chitral__drosh,0.0,high,False,osm
+osm:n3996965025,shelter,school,1.0,,,35.774822,72.030769,lower_chitral__drosh,0.0,high,False,osm
+osm:n3997253261,shelter,school,1.0,,,35.632607,71.800111,lower_chitral__drosh,109.4,low,False,osm
+osm:n3997253262,shelter,school,1.0,,,35.632707,71.796456,lower_chitral__drosh,25.3,low,False,osm
+osm:n3997253263,shelter,school,1.0,,,35.633373,71.792671,lower_chitral__drosh,0.0,high,False,osm
+osm:n3997253264,shelter,school,1.0,,,35.636265,71.798588,lower_chitral__drosh,31.6,low,False,osm
+osm:w396884921,shelter,school,1.0,,,35.644428,71.792271,lower_chitral__drosh,48.7,low,False,osm
+osm:n3993106250,shelter,school,1.0,Govt High School,,35.434865,71.744303,lower_chitral__drosh,0.0,high,False,osm
+osm:w992737349,shelter,place_of_worship,2.0,Madaklasht JK.2,,35.776985,72.03108,lower_chitral__drosh,0.0,high,False,osm
+osm:n3994729007,shelter,school,1.0,Primary School,,35.499384,71.790864,lower_chitral__drosh,0.0,high,False,osm
+osm:n4007456166,health,hospital,,Hospital,,35.996935,71.577566,lower_chitral__lotkoh,0.0,high,False,osm
+osm:n4007015146,shelter,school,1.0,,,35.976997,71.814736,lower_chitral__lotkoh,0.0,high,False,osm
+osm:n4007045127,shelter,school,1.0,,,35.991084,71.815216,lower_chitral__lotkoh,84.1,low,False,osm
+osm:n4007082854,shelter,school,1.0,,,35.986591,71.806387,lower_chitral__lotkoh,0.0,high,False,osm
+osm:n4007082855,shelter,school,1.0,,,35.986719,71.805059,lower_chitral__lotkoh,0.0,high,False,osm
+osm:n4007085939,shelter,school,1.0,,,35.993246,71.801794,lower_chitral__lotkoh,6.8,medium,False,osm
+osm:n4007373483,shelter,school,1.0,,,35.996573,71.634823,lower_chitral__lotkoh,0.0,high,False,osm
+osm:n4010763222,shelter,school,1.0,,,35.979387,71.969858,lower_chitral__lotkoh,43.4,low,False,osm
+osm:w397928384,shelter,school,1.0,"Government middle School krinj, Bohtuli",,35.984835,71.812479,lower_chitral__lotkoh,27.2,low,False,osm
+osm:w968357597,shelter,school,1.0,"Govt Primary School Krinj, Bohtuli Chitral",,35.984786,71.812877,lower_chitral__lotkoh,27.2,low,False,osm
+osm:n6216645300,police,police,,leavies,,34.631762,71.877769,lower_dir__adenzai,0.0,high,False,osm
+osm:n6216645294,police,police,,police station khadagzo,,34.641754,71.885671,lower_dir__adenzai,4.6,high,False,osm
+osm:n6216647287,shelter,school,1.0,,,34.629798,71.825028,lower_dir__adenzai,4.5,high,False,osm
+osm:w302775379,shelter,university,1.0,University of Malakand,,34.66925,72.061241,lower_dir__adenzai,15.9,low,False,osm
+osm:n6984327890,shelter,school,1.0,government Girl's school,,34.625354,71.855974,lower_dir__adenzai,12.3,low,False,osm
+osm:w1499070331,health,hospital,,BHU Hayaseri,,34.917017,71.827348,lower_dir__balambat,29.3,low,False,osm
+osm:w1500307592,police,police,,Hayaserai Police Station,,34.921361,71.825408,lower_dir__balambat,35.9,low,False,osm
+osm:w448400734,shelter,school,1.0,,,34.84433,71.830753,lower_dir__balambat,0.0,high,False,osm
+osm:w1525034262,shelter,school,1.0,,,34.91832,71.825978,lower_dir__balambat,29.2,low,False,osm
+osm:w1525034264,shelter,school,1.0,,,34.918105,71.825507,lower_dir__balambat,26.1,low,False,osm
+osm:w1525034271,shelter,school,1.0,,,34.918019,71.826257,lower_dir__balambat,29.2,low,False,osm
+osm:w1525034272,shelter,school,1.0,,,34.917936,71.826178,lower_dir__balambat,29.2,low,False,osm
+osm:w1525034273,shelter,school,1.0,,,34.917895,71.826041,lower_dir__balambat,29.2,low,False,osm
+osm:w1525034274,shelter,school,1.0,,,34.91785,71.825915,lower_dir__balambat,29.2,low,False,osm
+osm:w1525034275,shelter,school,1.0,,,34.917783,71.825772,lower_dir__balambat,26.1,low,False,osm
+osm:w1525034276,shelter,school,1.0,,,34.917588,71.825623,lower_dir__balambat,26.1,low,False,osm
+osm:w1525381844,shelter,place_of_worship,2.0,,,34.900578,71.837662,lower_dir__balambat,41.2,low,False,osm
+osm:w361454151,shelter,university,1.0,Abdul Wali Khan University,,34.840453,71.827845,lower_dir__balambat,15.8,low,False,osm
+osm:w1499813688,shelter,place_of_worship,2.0,Ahli-Hadith Masjid,,34.920318,71.834604,lower_dir__balambat,46.3,low,False,osm
+osm:w1499083465,shelter,place_of_worship,2.0,Bahrain Mosque,,34.907333,71.831181,lower_dir__balambat,0.0,high,False,osm
+osm:w1499538840,shelter,place_of_worship,2.0,Bar Kaly Masjid,,34.924385,71.836602,lower_dir__balambat,99.0,low,False,osm
+osm:w1525381848,shelter,place_of_worship,2.0,Bilal Masjid,,34.912314,71.829144,lower_dir__balambat,4.5,high,False,osm
+osm:w1499539489,shelter,place_of_worship,2.0,Chinargharai Mosque,,34.915929,71.830413,lower_dir__balambat,26.2,low,False,osm
+osm:w1499077634,shelter,school,1.0,GGHS Hayaseri,,34.919083,71.830732,lower_dir__balambat,34.6,low,False,osm
+osm:w1501531546,shelter,school,1.0,GHS Sangolai,گورنمنٹ ھائی سکول سنگولئ,34.899543,71.800658,lower_dir__balambat,208.1,low,False,osm
+osm:w1525034290,shelter,school,1.0,GHSS Hayaseri,,34.918306,71.825764,lower_dir__balambat,26.1,low,False,osm
+osm:w1499467141,shelter,school,1.0,GPS No.1 Sherkhany,,34.903446,71.833691,lower_dir__balambat,9.7,low,False,osm
+osm:w1501531547,shelter,school,1.0,GPS Sangolai Payeen,,34.899482,71.80027,lower_dir__balambat,208.1,low,False,osm
+osm:w1499523812,shelter,school,1.0,Govt Girls Primary School Hayaseri,,34.91752,71.826189,lower_dir__balambat,29.2,low,False,osm
+osm:w1499467444,shelter,school,1.0,"Govt. Middle School Kaladag, Sherkhany",,34.903006,71.832826,lower_dir__balambat,19.3,low,False,osm
+osm:w1525034250,shelter,college,1.0,Hayaseri College,,34.918898,71.825445,lower_dir__balambat,27.9,low,False,osm
+osm:w1525034289,shelter,college,1.0,Hayaseri College,,34.918841,71.825481,lower_dir__balambat,27.9,low,False,osm
+osm:w1499022958,shelter,school,1.0,IOPHS Hayaseri,,34.915623,71.829971,lower_dir__balambat,22.8,low,False,osm
+osm:w1499523811,shelter,place_of_worship,2.0,Jamia Masjid Hayaseri,,34.917708,71.826273,lower_dir__balambat,29.2,low,False,osm
+osm:w1500307591,shelter,place_of_worship,2.0,Kandaro Mosque,,34.92163,71.825412,lower_dir__balambat,35.9,low,False,osm
+osm:w1499086589,shelter,place_of_worship,2.0,Madani Masjid,,34.90736,71.796258,lower_dir__balambat,242.7,low,False,osm
+osm:w1499089003,shelter,place_of_worship,2.0,Madrasa Tafheem-ul-Quran Hundak,,34.906112,71.798684,lower_dir__balambat,205.6,low,False,osm
+osm:w1499538841,shelter,place_of_worship,2.0,Masjid Tawheed Nagar,,34.923876,71.83235,lower_dir__balambat,58.6,low,False,osm
+osm:w1517351846,shelter,place_of_worship,2.0,Mosque,,34.919264,71.832763,lower_dir__balambat,36.6,low,False,osm
+osm:w1499082442,shelter,place_of_worship,2.0,Sherkhany Mosque,,34.905276,71.822949,lower_dir__balambat,37.5,low,False,osm
+osm:w1500309564,shelter,place_of_worship,2.0,Usman Bin Affan Mosque,,34.920736,71.830354,lower_dir__balambat,41.0,low,False,osm
+osm:w1499468484,shelter,place_of_worship,2.0,جامع مسجد اسد کلے,,34.918302,71.829992,lower_dir__balambat,32.5,low,False,osm
+osm:w1500307587,shelter,place_of_worship,2.0,مسجد الله اكبر,,34.922173,71.823555,lower_dir__balambat,38.7,low,False,osm
+osm:w1507374345,shelter,place_of_worship,2.0,Masjid Abdullah Bin Masood,,34.927663,71.825113,lower_dir__lalqila,62.0,low,False,osm
+osm:n9249726606,shelter,college,1.0,ISLAMIA COLLEGE JANDOOL SADBARKALY,,34.915079,71.680317,lower_dir__samarbagh,26.8,low,False,osm
+osm:w676090801,health,hospital,,,,34.829601,71.844267,lower_dir__timergara,11.7,low,False,osm
+osm:w676090802,health,hospital,,,,34.829299,71.844044,lower_dir__timergara,9.2,low,False,osm
+osm:w676090803,health,hospital,,,,34.829155,71.843981,lower_dir__timergara,12.7,low,False,osm
+osm:w1525034249,shelter,place_of_worship,2.0,Adda Masjid,,34.822172,71.838219,lower_dir__timergara,5.3,medium,False,osm
+osm:n5308585725,shelter,government,1.0,Revenue Office,,34.825017,71.843022,lower_dir__timergara,0.0,high,False,osm
+osm:n3659265186,shelter,place_of_worship,2.0,Tableeghi Markaz,,34.829316,71.839574,lower_dir__timergara,4.9,high,False,osm
+osm:w1232495486,shelter,place_of_worship,2.0,Tableghi Markaz,,34.829225,71.839549,lower_dir__timergara,4.9,high,False,osm
+osm:n5312407027,health,hospital,,DHQ Hospital Btk,,34.612027,71.959769,malakand__bat_khela,22.6,low,False,osm
+osm:n5312465421,health,hospital,,DHQ Hospital Btk,,34.61094,71.957915,malakand__bat_khela,22.6,low,False,osm
+osm:n7039265485,health,clinic,,Dr. Haneef-u-llah,,34.616194,71.82468,malakand__bat_khela,11.6,low,False,osm
+osm:n6867245685,health,clinic,,Dr. bakhtzada,,34.62035,71.811443,malakand__bat_khela,13.9,low,False,osm
+osm:n6216645287,police,police,,Levies Post,,34.632169,71.795577,malakand__bat_khela,10.6,low,False,osm
+osm:n6434454315,shelter,college,1.0,Dheri Ground,,34.610082,72.020007,malakand__bat_khela,7.3,medium,False,osm
+osm:n6918615287,shelter,government,1.0,District sectrate office,,34.607375,71.951922,malakand__bat_khela,22.6,low,False,osm
+osm:w446778323,shelter,school,1.0,Govt Middle School Kama Agra,,34.599254,71.708565,malakand__bat_khela,18.0,low,False,osm
+osm:w446778322,shelter,school,1.0,Islamia Public School Kama Agra,,34.598494,71.71033,malakand__bat_khela,15.9,low,False,osm
+osm:n4440126137,shelter,place_of_worship,2.0,Landai Jummat,,34.593017,71.705547,malakand__bat_khela,4.5,high,False,osm
+osm:n5312404121,shelter,school,1.0,MASJID-E-AQSAA (مسجداقصیٰ),,34.610154,71.956607,malakand__bat_khela,19.3,low,False,osm
+osm:n5312436428,shelter,community_centre,1.0,Old Levi Post,,34.610945,71.957927,malakand__bat_khela,22.6,low,False,osm
+osm:n6989436587,shelter,government,1.0,Passport office,,34.60522,71.953737,malakand__bat_khela,28.9,low,False,osm
+osm:n5312436430,shelter,college,1.0,RAHMAN PARAMEDICAL COLLEGE Batkhela,,34.608651,71.957105,malakand__bat_khela,22.6,low,False,osm
+osm:n6894511685,shelter,government,1.0,Wapda office totakan,,34.619942,71.821697,malakand__bat_khela,0.0,high,False,osm
+osm:w686666902,shelter,college,1.0,commerce college,,34.63152,72.069284,malakand__bat_khela,3.5,high,False,osm
+osm:w686666775,shelter,college,1.0,degree college,,34.629409,72.070893,malakand__bat_khela,0.0,high,False,osm
+osm:w470221908,shelter,school,1.0,ground school,,34.637521,72.070796,malakand__bat_khela,1.8,high,False,osm
+osm:n4197231396,shelter,school,1.0,Army Public School Dargai Fort,,34.51543,71.896166,malakand__dargai,4.1,high,False,osm
+osm:n2781458307,shelter,school,1.0,Frontier Model School Gulmuqam,,34.486749,71.919756,malakand__dargai,27.3,low,False,osm
+osm:n2781453328,shelter,school,1.0,Government Girls Middle School Gulmuqam,,34.488642,71.918303,malakand__dargai,18.1,low,False,osm
+osm:n2781454206,shelter,school,1.0,Government Girls Primary School Gulmuqam,,34.48719,71.918643,malakand__dargai,27.3,low,False,osm
+osm:n2781463327,shelter,school,1.0,Government High School Gulmuqam,,34.485819,71.918885,malakand__dargai,24.1,low,False,osm
+osm:n2781455783,shelter,school,1.0,Government Primary School Gulmuqam,,34.487103,71.918856,malakand__dargai,27.3,low,False,osm
+osm:w736891540,shelter,school,1.0,Govet High School haryan Kot,,34.494592,71.820875,malakand__dargai,11.9,low,False,osm
+osm:n2794752877,shelter,college,1.0,Govt Degree College,,34.509103,71.909026,malakand__dargai,12.4,low,False,osm
+osm:n5421890224,shelter,college,1.0,sakhakot,,34.459547,71.909595,malakand__dargai,13.7,low,False,osm
+osm:w1208366756,health,hospital,,,,34.439465,73.216104,mansehra__baffa_pakhal,0.0,high,False,osm
+osm:w263843443,health,hospital,,Dadar Mental Hospital,,34.555555,73.254328,mansehra__baffa_pakhal,0.0,high,False,osm
+osm:n2694944942,health,hospital,,LHV Hospital Dharyaal,,34.508118,73.266246,mansehra__baffa_pakhal,69.3,low,False,osm
+osm:w307391889,shelter,place_of_worship,2.0,,,34.474134,73.279617,mansehra__baffa_pakhal,34.8,low,False,osm
+osm:w265099300,shelter,school,1.0,Army Public School,,34.465396,73.272122,mansehra__baffa_pakhal,15.2,low,False,osm
+osm:n4008772732,shelter,place_of_worship,2.0,Batrair Masjid,مسجد بٹریڑ,34.383766,73.230631,mansehra__baffa_pakhal,5.9,medium,False,osm
+osm:w307391890,shelter,place_of_worship,2.0,Darbar Pir Syed Nadir Ali Shah (Baji Sarkar),,34.474209,73.27989,mansehra__baffa_pakhal,34.8,low,False,osm
+osm:n6438122385,shelter,school,1.0,Department of Conservation Studies,,34.421245,73.253549,mansehra__baffa_pakhal,54.1,low,False,osm
+osm:n6438122485,shelter,school,1.0,Examination section,,34.419936,73.250953,mansehra__baffa_pakhal,72.6,low,False,osm
+osm:w263843446,shelter,school,1.0,Government High School Daryal,,34.508282,73.266098,mansehra__baffa_pakhal,69.3,low,False,osm
+osm:w263843447,shelter,school,1.0,Government High School Daryal,,34.508696,73.266604,mansehra__baffa_pakhal,59.5,low,False,osm
+osm:w262947268,shelter,school,1.0,Government Higher Secondary School Kotli Bara,,34.513979,73.210227,mansehra__baffa_pakhal,0.0,high,False,osm
+osm:n4575890295,shelter,school,1.0,Govt Centennial Model High School Dadar,,34.551963,73.257089,mansehra__baffa_pakhal,33.3,low,False,osm
+osm:n4575917495,shelter,school,1.0,Govt Girls Middle School Dadar,,34.554767,73.260111,mansehra__baffa_pakhal,71.4,low,False,osm
+osm:n4576030789,shelter,school,1.0,Govt Primery School Dadar Jadeed,,34.552094,73.256537,mansehra__baffa_pakhal,14.4,low,False,osm
+osm:n4575890296,shelter,school,1.0,Govt Primery School Dadar Qadeem,,34.5536,73.272103,mansehra__baffa_pakhal,217.3,low,False,osm
+osm:w265099310,shelter,university,1.0,Hazara University,ہزارہ یونیورسٹی,34.42006,73.250568,mansehra__baffa_pakhal,62.2,low,False,osm
+osm:w352131716,shelter,place_of_worship,2.0,Hu Mosque,,34.422342,73.246402,mansehra__baffa_pakhal,49.4,low,False,osm
+osm:w1232715834,shelter,place_of_worship,2.0,Jamia masjid mujahidabad,,34.446128,73.228387,mansehra__baffa_pakhal,26.3,low,False,osm
+osm:w262947273,shelter,place_of_worship,2.0,Mosque Kotli Bala,,34.515257,73.215838,mansehra__baffa_pakhal,0.0,high,False,osm
+osm:n4575976100,shelter,school,1.0,Muslim Public School,,34.552405,73.258567,mansehra__baffa_pakhal,48.0,low,False,osm
+osm:n4576030989,shelter,school,1.0,Pakistan Public School Dadar,,34.548129,73.25448,mansehra__baffa_pakhal,16.3,low,False,osm
+osm:n6417384285,shelter,college,1.0,Smart Institute of Information Technology,,34.4289,73.251618,mansehra__baffa_pakhal,44.8,low,False,osm
+osm:w1232715613,shelter,school,1.0,govt primary school,,34.446559,73.227704,mansehra__baffa_pakhal,26.3,low,False,osm
+osm:w1232716330,shelter,place_of_worship,2.0,jamia masjid abubakar ra,,34.447857,73.230935,mansehra__baffa_pakhal,31.3,low,False,osm
+osm:n4305472895,shelter,school,1.0,school of law,,34.417549,73.249588,mansehra__baffa_pakhal,88.7,low,False,osm
+osm:w792162174,shelter,place_of_worship,2.0,مسجد بٹریڑ,مسجد بٹریڑ,34.383766,73.230616,mansehra__baffa_pakhal,5.9,medium,False,osm
+osm:n3522665221,police,police,,Police Station,تھانہ,34.547281,73.350757,mansehra__bala_kot,0.0,high,False,osm
+osm:n3778985555,shelter,place_of_worship,2.0,,,34.904081,73.648149,mansehra__bala_kot,4.5,high,False,osm
+osm:n4579917089,shelter,school,1.0,,,34.550999,73.353296,mansehra__bala_kot,0.0,high,False,osm
+osm:n5030321422,shelter,place_of_worship,2.0,,,34.630069,73.436668,mansehra__bala_kot,0.0,high,False,osm
+osm:n10023560964,shelter,place_of_worship,2.0,,,34.66105,73.496087,mansehra__bala_kot,0.0,high,False,osm
+osm:n5030309124,shelter,government,1.0,FWO rest house,,34.772128,73.523531,mansehra__bala_kot,0.0,high,False,osm
+osm:n11066077692,shelter,place_of_worship,2.0,"Faizan e Haidar e Karrar, Haidari Muhalla, Magra, Josacha, Balakot",,34.535843,73.373964,mansehra__bala_kot,437.1,low,False,osm
+osm:n5030321921,shelter,government,1.0,Frontier works Guest House,,34.635541,73.336406,mansehra__bala_kot,175.6,low,False,osm
+osm:w263412807,health,clinic,,BHU Basic Health Centre,,34.561434,73.156664,mansehra__mansehra,181.1,low,False,osm
+osm:w263268586,health,clinic,,Behavioral Health Unit Jalgali,,34.56784,73.19054,mansehra__mansehra,392.9,low,False,osm
+osm:n14201197901,health,hospital,,Fauji Foundation Hospital,,34.316523,73.210219,mansehra__mansehra,36.1,low,False,osm
+osm:w228886837,health,hospital,,Rural Health Centre Chattar Plain,,34.610928,73.121374,mansehra__mansehra,24.0,low,False,osm
+osm:n4008794045,shelter,school,1.0,,,34.381309,73.235478,mansehra__mansehra,40.4,low,False,osm
+osm:w228887667,shelter,school,1.0,,,34.61201,73.11909,mansehra__mansehra,34.3,low,False,osm
+osm:w261689739,shelter,school,1.0,,,34.585254,73.150259,mansehra__mansehra,56.0,low,False,osm
+osm:w263005914,shelter,place_of_worship,2.0,,,34.550278,73.180296,mansehra__mansehra,174.0,low,False,osm
+osm:w263412952,shelter,school,1.0,,,34.560145,73.142299,mansehra__mansehra,66.6,low,False,osm
+osm:w687272486,shelter,place_of_worship,2.0,,,34.552724,73.154812,mansehra__mansehra,127.7,low,False,osm
+osm:w1562163516,shelter,place_of_worship,2.0,,,34.583207,73.131719,mansehra__mansehra,11.2,low,False,osm
+osm:w1562163517,shelter,place_of_worship,2.0,,,34.580616,73.131138,mansehra__mansehra,11.5,low,False,osm
+osm:n4305867591,shelter,school,1.0,Dewli Battal,,34.564203,73.154204,mansehra__mansehra,216.0,low,False,osm
+osm:w263268587,shelter,place_of_worship,2.0,Eid Gah Jalgali,,34.562596,73.190035,mansehra__mansehra,554.8,low,False,osm
+osm:w263268592,shelter,school,1.0,Government Girls Medial School Jalgali,,34.562649,73.190549,mansehra__mansehra,554.8,low,False,osm
+osm:w263268593,shelter,school,1.0,Government Girls Primary School Jalgali,,34.561959,73.186909,mansehra__mansehra,649.3,low,False,osm
+osm:w263005912,shelter,school,1.0,Government Girls Primary School Karmang,,34.549374,73.180991,mansehra__mansehra,174.6,low,False,osm
+osm:w263268594,shelter,school,1.0,Government High School Jalgali,,34.563039,73.189844,mansehra__mansehra,567.8,low,False,osm
+osm:w261689741,shelter,school,1.0,Government Higher Secondary School Battal,,34.584962,73.150365,mansehra__mansehra,64.3,low,False,osm
+osm:w263005913,shelter,school,1.0,Government Middle School Karmang Bala,,34.549959,73.180482,mansehra__mansehra,162.3,low,False,osm
+osm:w263268595,shelter,school,1.0,Government Primary School Jalgali,,34.56362,73.189056,mansehra__mansehra,579.8,low,False,osm
+osm:w263412856,shelter,school,1.0,Government Primary School Karmang Bala,,34.554651,73.170473,mansehra__mansehra,220.9,low,False,osm
+osm:n4305966789,shelter,school,1.0,"Govt primary school Dewli,Battal",,34.564421,73.154286,mansehra__mansehra,216.0,low,False,osm
+osm:w263412858,shelter,school,1.0,High School Ahl Battal,,34.557333,73.15809,mansehra__mansehra,164.1,low,False,osm
+osm:w263005915,shelter,place_of_worship,2.0,Mosque Chinara,,34.549175,73.182661,mansehra__mansehra,190.1,low,False,osm
+osm:w263412863,shelter,place_of_worship,2.0,Mosque Karmang,,34.552255,73.172357,mansehra__mansehra,184.1,low,False,osm
+osm:n2947316710,shelter,college,1.0,Pakistan Scouts Cadet College Batrasi,,34.39675,73.315436,mansehra__mansehra,86.8,low,False,osm
+osm:w687271936,shelter,school,1.0,luqman public school,,34.55654,73.157938,mansehra__mansehra,147.4,low,False,osm
+osm:n13808049773,shelter,place_of_worship,2.0,جامع مسجد تبلیغی مرکز مانسہرہ,,34.345475,73.197753,mansehra__mansehra,5.1,medium,False,osm
+osm:n5130357522,health,hospital,,Basic Health Unit Arbora,,34.458889,73.056529,mansehra__oghi,19.2,low,False,osm
+osm:w981330264,shelter,school,1.0,,,34.483602,72.932396,mansehra__oghi,0.0,high,False,osm
+osm:w981330265,shelter,school,1.0,,,34.483783,72.932063,mansehra__oghi,0.0,high,False,osm
+osm:w981827177,shelter,school,1.0,,,34.485875,72.943747,mansehra__oghi,229.7,low,False,osm
+osm:w981330266,shelter,school,1.0,Government Boys Higher Secondary School,,34.483659,72.932274,mansehra__oghi,0.0,high,False,osm
+osm:w981827178,shelter,school,1.0,Government Girl's Primary School,,34.48585,72.943671,mansehra__oghi,229.7,low,False,osm
+osm:n5130387062,shelter,school,1.0,Government Girls Middle school Arbora,,34.461437,73.058738,mansehra__oghi,42.8,low,False,osm
+osm:n8088893704,shelter,place_of_worship,2.0,Lilownai Jama'ai Masjid,,34.9567,72.644141,shangla__alpuri,0.0,high,False,osm
+osm:w417316871,health,hospital,,Tehsil hospital besham,,34.922913,72.877681,shangla__bisham,0.0,high,False,osm
+osm:n11118664805,police,police,,,,34.915682,72.870493,shangla__bisham,0.0,high,False,osm
+osm:n5525187022,shelter,community_centre,1.0,Kerai Pukhton valley,,34.921475,72.85089,shangla__bisham,655.7,low,False,osm
+osm:n5525187023,shelter,community_centre,1.0,Kerai Pukhton valley,,34.921163,72.848793,shangla__bisham,610.5,low,False,osm
+osm:n5525186822,shelter,community_centre,1.0,Kerai the Pukhton valley,,34.925426,72.855963,shangla__bisham,546.1,low,False,osm
+osm:n6738167885,health,hospital,,Hakeem Molvi Wali Ullah,,34.680083,72.746976,shangla__martoong,0.0,high,False,osm
+osm:w454012663,fire,fire_station,,,,34.753732,72.356248,swat__babuzai,2.2,high,False,osm
+osm:n4447667920,health,clinic,,,,34.771404,72.364122,swat__babuzai,0.0,high,False,osm
+osm:n4470163728,health,hospital,,,,34.760649,72.358674,swat__babuzai,2.9,high,False,osm
+osm:n4470163729,health,hospital,,,,34.760907,72.357571,swat__babuzai,1.4,high,False,osm
+osm:n4470163734,health,clinic,,,,34.757676,72.356354,swat__babuzai,1.2,high,False,osm
+osm:n4470163736,health,clinic,,,,34.757472,72.356944,swat__babuzai,3.6,high,False,osm
+osm:n4470163754,health,clinic,,,,34.754532,72.355801,swat__babuzai,0.0,high,False,osm
+osm:n4470170231,health,clinic,,,,34.759104,72.36067,swat__babuzai,12.8,low,False,osm
+osm:w450094918,health,hospital,,,,34.757776,72.358975,swat__babuzai,6.4,medium,False,osm
+osm:w454012664,health,clinic,,,,34.756199,72.355415,swat__babuzai,0.0,high,False,osm
+osm:n8867366614,health,hospital,,"BHU Meragai , Chinar Bagh",,34.707007,72.455002,swat__babuzai,0.0,high,False,osm
+osm:n4964219317,health,hospital,,King Hospital,کنگ ہسپتال,34.753917,72.355407,swat__babuzai,0.0,high,False,osm
+osm:n4452956634,health,clinic,,Munir First AID Clinic Parn,,34.76519,72.376829,swat__babuzai,14.1,low,False,osm
+osm:w450094154,health,hospital,,Saidu Group of Teaching Hospital,,34.749601,72.355867,swat__babuzai,3.0,high,False,osm
+osm:n4447665138,health,clinic,,Showkat & Hussain Clinic,,34.769067,72.371384,swat__babuzai,3.5,high,False,osm
+osm:n4964214533,health,hospital,,Swat Hospital,سوات ہسپتال,34.752745,72.355625,swat__babuzai,0.0,high,False,osm
+osm:n4447626928,police,police,,District Police Office Swat,,34.765345,72.359735,swat__babuzai,1.6,high,False,osm
+osm:n4447626929,police,police,,Mingora Police Station,,34.770392,72.359687,swat__babuzai,0.0,high,False,osm
+osm:n8280575231,police,police,,Police Training School,پولیس ٹریننگ اسکول,34.789944,72.347399,swat__babuzai,6.8,medium,False,osm
+osm:n4907795559,police,police,,Rahim Abad Police Station,,34.769836,72.338544,swat__babuzai,5.3,medium,False,osm
+osm:n4924836807,police,police,,Tahir Abad,,34.786996,72.358527,swat__babuzai,14.9,low,False,osm
+osm:n4447600615,shelter,place_of_worship,2.0,,,34.765051,72.371544,swat__babuzai,0.0,high,False,osm
+osm:n4447604427,shelter,place_of_worship,2.0,,,34.762311,72.373906,swat__babuzai,0.0,high,False,osm
+osm:n4447613519,shelter,place_of_worship,2.0,,,34.767921,72.370907,swat__babuzai,1.9,high,False,osm
+osm:n4447613524,shelter,place_of_worship,2.0,,,34.770979,72.364491,swat__babuzai,0.0,high,False,osm
+osm:n4447613525,shelter,place_of_worship,2.0,,,34.772602,72.362214,swat__babuzai,2.8,high,False,osm
+osm:n4447613531,shelter,place_of_worship,2.0,,,34.76949,72.354521,swat__babuzai,0.0,high,False,osm
+osm:n4447614248,shelter,place_of_worship,2.0,,,34.76315,72.358465,swat__babuzai,2.4,high,False,osm
+osm:n4460599369,shelter,place_of_worship,2.0,,,34.765149,72.372906,swat__babuzai,4.6,high,False,osm
+osm:n4470146310,shelter,place_of_worship,2.0,,,34.76552,72.359541,swat__babuzai,1.6,high,False,osm
+osm:n4470163710,shelter,place_of_worship,2.0,,,34.759647,72.354946,swat__babuzai,0.0,high,False,osm
+osm:n4470163732,shelter,university,1.0,,,34.759961,72.357517,swat__babuzai,4.2,high,False,osm
+osm:n4470163733,shelter,university,1.0,,,34.758097,72.356887,swat__babuzai,3.6,high,False,osm
+osm:n4896486374,shelter,university,1.0,,,34.784567,72.358959,swat__babuzai,14.3,low,False,osm
+osm:n4900735582,shelter,place_of_worship,2.0,,,34.770059,72.36705,swat__babuzai,0.0,high,False,osm
+osm:n4927220122,shelter,place_of_worship,2.0,,,34.779117,72.362703,swat__babuzai,20.9,low,False,osm
+osm:n4927220123,shelter,place_of_worship,2.0,,,34.776493,72.362837,swat__babuzai,18.3,low,False,osm
+osm:n5651844496,shelter,place_of_worship,2.0,,,34.786605,72.351786,swat__babuzai,13.8,low,False,osm
+osm:n8523280795,shelter,place_of_worship,2.0,,,34.764642,72.364597,swat__babuzai,5.4,medium,False,osm
+osm:w450094150,shelter,university,1.0,,,34.755809,72.3573,swat__babuzai,5.1,medium,False,osm
+osm:w450094915,shelter,college,1.0,,,34.755156,72.358293,swat__babuzai,7.8,medium,False,osm
+osm:w450094920,shelter,school,1.0,,,34.760632,72.360322,swat__babuzai,10.0,low,False,osm
+osm:w450094925,shelter,government,1.0,,,34.763873,72.361274,swat__babuzai,5.8,medium,False,osm
+osm:w458499730,shelter,government,1.0,,,34.75963,72.359419,swat__babuzai,6.7,medium,False,osm
+osm:w1130836777,shelter,place_of_worship,2.0,,,34.733059,72.530162,swat__babuzai,0.0,high,False,osm
+osm:w1426867284,shelter,school,1.0,,,34.756915,72.293534,swat__babuzai,3.7,high,False,osm
+osm:w1426867285,shelter,school,1.0,,,34.756996,72.293513,swat__babuzai,3.7,high,False,osm
+osm:w1426867286,shelter,school,1.0,,,34.757034,72.293625,swat__babuzai,3.7,high,False,osm
+osm:n4470163735,shelter,place_of_worship,2.0,Allahu Akbar Masjid,اللہ اکبر مسجد,34.757472,72.35735,swat__babuzai,3.6,high,False,osm
+osm:n8867366612,shelter,place_of_worship,2.0,Chinar Bagh Masjid,,34.706781,72.456666,swat__babuzai,0.0,high,False,osm
+osm:n4447613521,shelter,place_of_worship,2.0,Farooq Azam Masjid,فاروق اعظم مسجد,34.76529,72.367665,swat__babuzai,0.0,high,False,osm
+osm:n5186531975,shelter,place_of_worship,2.0,Gali Dabba Masjid,,34.774066,72.360634,swat__babuzai,8.8,low,False,osm
+osm:w1273593901,shelter,school,1.0,Government High School No. 3 Mula Baba,,34.770645,72.35819,swat__babuzai,0.0,high,False,osm
+osm:n8867366613,shelter,school,1.0,"Govt Middle School  Meragai, Chinar bagh",,34.707162,72.454533,swat__babuzai,0.0,high,False,osm
+osm:w455316590,shelter,place_of_worship,2.0,Islamic Center(Sunni Preaching),,34.769822,72.312061,swat__babuzai,2.1,high,False,osm
+osm:w449089840,shelter,college,1.0,Khepal Kor Foundation Ground,,34.767335,72.361193,swat__babuzai,0.0,high,False,osm
+osm:n4460583450,shelter,college,1.0,Khpal Koor Foundation,,34.766952,72.362031,swat__babuzai,0.0,high,False,osm
+osm:n4969934907,shelter,place_of_worship,2.0,Malak Masjid,ملک مسجد,34.765141,72.366147,swat__babuzai,0.0,high,False,osm
+osm:n4907785252,shelter,government,1.0,National Database Autority of Pakistan,,34.770006,72.33969,swat__babuzai,3.4,high,False,osm
+osm:w1015097639,shelter,place_of_worship,2.0,Preaching Centre/Tabligh,,34.76699,72.358163,swat__babuzai,0.0,high,False,osm
+osm:w450094153,shelter,college,1.0,Saidu Medical College,,34.751474,72.355959,swat__babuzai,2.3,high,False,osm
+osm:n4860803893,shelter,place_of_worship,2.0,Star Market Mosque,,34.770902,72.359096,swat__babuzai,0.0,high,False,osm
+osm:w921654829,shelter,school,1.0,Swat Public School,,34.771252,72.331151,swat__babuzai,0.0,high,False,osm
+osm:w509385085,shelter,college,1.0,Swat University Ground,,34.765784,72.358853,swat__babuzai,0.0,high,False,osm
+osm:n4462971592,shelter,school,1.0,The Learner School,,34.760002,72.383355,swat__babuzai,0.0,high,False,osm
+osm:n6986752685,shelter,government,1.0,Wapda office,,34.762495,72.358437,swat__babuzai,2.9,high,False,osm
+osm:w1353997259,health,hospital,,Madyan hospital,,35.134087,72.531714,swat__bahrain,22.1,low,False,osm
+osm:n12013813505,shelter,place_of_worship,2.0,,,35.124382,72.59405,swat__bahrain,0.0,high,False,osm
+osm:w1159106972,shelter,place_of_worship,2.0,,,35.144596,72.535058,swat__bahrain,0.0,high,False,osm
+osm:n8274075318,shelter,place_of_worship,2.0,Bilal Masjid,مسجد بلال,35.170434,72.531857,swat__bahrain,0.0,high,False,osm
+osm:n8280575828,shelter,school,1.0,Hira School,,35.441551,72.601656,swat__bahrain,0.0,high,False,osm
+osm:n12013465210,shelter,place_of_worship,2.0,Makki,,35.221609,72.633929,swat__bahrain,0.0,high,False,osm
+osm:n8274090017,shelter,community_centre,1.0,Satal,,35.180172,72.536322,swat__bahrain,0.0,high,False,osm
+osm:n6185612687,shelter,college,1.0,CADIT COLLAGE Road SWAT,,34.885014,72.441197,swat__charbagh,23.9,low,False,osm
+osm:n8280878418,police,police,,Kanju Police Station,,34.806574,72.34481,swat__kabal,22.3,low,False,osm
+osm:w451943110,police,police,,kabal thana,,34.792444,72.287644,swat__kabal,29.3,low,False,osm
+osm:n5896088285,rescue_1122,,,,,34.798375,72.29673,swat__kabal,0.0,high,False,osm
+osm:w451942572,shelter,school,1.0,,,34.79316,72.2895,swat__kabal,27.6,low,False,osm
+osm:w451942920,shelter,government,1.0,,,34.792741,72.288659,swat__kabal,29.8,low,False,osm
+osm:n14279890272,shelter,school,1.0,Aim School Ground,,34.816052,72.364615,swat__kabal,31.2,low,False,osm
+osm:n14279890271,shelter,school,1.0,Aim Schools - Almadinah Islamic Model Schools,,34.816429,72.364578,swat__kabal,31.2,low,False,osm
+osm:n9712298460,shelter,school,1.0,Government Primary School Katyar,,34.879222,72.241755,swat__kabal,12.8,low,False,osm
+osm:n8280928817,shelter,school,1.0,"Government Primary School, Sharifabad",,34.766194,72.258828,swat__kabal,47.9,low,False,osm
+osm:w451951445,shelter,school,1.0,Govt High School,,34.935648,72.209324,swat__kabal,79.6,low,False,osm
+osm:w451943907,shelter,school,1.0,High School for boys kabal,,34.794805,72.293408,swat__kabal,20.1,low,False,osm
+osm:w451942700,shelter,college,1.0,Kabal Degree College,,34.791657,72.289215,swat__kabal,25.2,low,False,osm
+osm:w451943908,shelter,school,1.0,kabal secondry,,34.795253,72.29256,swat__kabal,26.2,low,False,osm
+osm:w446741558,health,hospital,,Civil Hospital,,35.481257,72.585049,swat__kalam,0.0,high,False,osm
+osm:n4439806256,police,police,,Kalam Police,,35.482299,72.585879,swat__kalam,0.0,high,False,osm
+osm:w491297297,shelter,place_of_worship,2.0,,,35.568648,72.422511,swat__kalam,0.0,high,False,osm
+osm:n8280844218,health,hospital,,Ahmad Hospital,,34.939778,72.427657,swat__matta_kharirai,59.3,low,False,osm
+osm:n9727629256,health,hospital,,Sikandar Medical Infirmary,,34.928031,72.411839,swat__matta_kharirai,16.8,low,False,osm
+osm:n8280566117,police,police,,Kalkot Police Station,,35.074297,72.477684,swat__matta_kharirai,0.0,high,False,osm
+osm:n8280566217,shelter,community_centre,1.0,DureshKhela,,35.000551,72.453298,swat__matta_kharirai,17.1,low,False,osm
+osm:w451941988,shelter,place_of_worship,2.0,Jamigh Masjid,,35.026678,72.443777,swat__matta_kharirai,34.6,low,False,osm
+osm:n5266225021,shelter,school,1.0,Kids Foundation school kalakot,,35.074018,72.477449,swat__matta_kharirai,0.0,high,False,osm
+osm:w1296244953,shelter,school,1.0,Government Degree College,,34.989971,72.348027,swat__matta_sebujni,1.8,high,False,osm
+osm:n8280562618,shelter,school,1.0,Government School,,34.870232,72.412745,swat__matta_sebujni,0.0,high,False,osm
+osm:n8280844219,shelter,school,1.0,Government School,,34.895215,72.412449,swat__matta_sebujni,30.8,low,False,osm
+osm:w775126675,health,hospital,,,,35.202555,71.878751,upper_dir__dir,0.0,high,False,osm
+osm:n7231518379,health,hospital,,District Headquarter Hospital,,35.202478,71.878764,upper_dir__dir,0.0,high,False,osm
+osm:n6534025095,health,hospital,,Sahara Hospital,,35.202703,71.877467,upper_dir__dir,0.0,high,False,osm
+osm:n7231518380,shelter,place_of_worship,2.0,Dar-ul- Uloom,دارالعلوم,35.202844,71.877683,upper_dir__dir,0.0,high,False,osm
+osm:n6534025195,shelter,government,1.0,Government Forest Office,,35.166276,71.89196,upper_dir__dir,0.0,high,False,osm
+osm:n6095870585,shelter,school,1.0,Government School Katan,,35.126582,72.001219,upper_dir__dir,0.0,high,False,osm
+osm:n6095943886,shelter,school,1.0,Government School Katan,,35.132118,72.003747,upper_dir__dir,0.0,high,False,osm
+osm:n6095897397,shelter,place_of_worship,2.0,KATAN Mosque,,35.127735,71.999304,upper_dir__dir,17.4,low,False,osm
+osm:n4439844941,police,police,,,,35.276584,72.005275,upper_dir__kalkot,0.0,high,False,osm
+osm:n6534025385,police,police,,Check Post,,35.253343,72.0063,upper_dir__kalkot,0.0,high,False,osm
+osm:n6534025088,police,police,,Patrak Police Station,,35.34401,72.060476,upper_dir__kalkot,2.6,high,False,osm
+osm:n6534025089,shelter,school,1.0,Government School,,35.344338,72.054119,upper_dir__kalkot,0.0,high,False,osm
+osm:n6534025198,shelter,school,1.0,Government School,,34.934465,72.012877,upper_dir__khall,0.0,high,False,osm
+manual:rescue1122:swat:saidu_sharif,rescue_1122,station reported,,Rescue 1122 Saidu Sharif,,34.759,72.35701,swat__babuzai,,,False,news/official page; town-centre location; https://www.dawn.com (Charbagh station opening report)
+manual:rescue1122:swat:matta,rescue_1122,station reported,,Rescue 1122 Matta,,34.92558,72.41443,swat__matta_kharirai,,,False,news/official page; town-centre location; https://www.dawn.com (Charbagh station opening report)
+manual:rescue1122:swat:kabal,rescue_1122,station reported,,Rescue 1122 Kabal,,34.79109,72.28449,swat__kabal,,,False,news/official page; town-centre location; https://www.dawn.com (Charbagh station opening report)
+manual:rescue1122:swat:barikot,rescue_1122,station reported,,Rescue 1122 Barikot,,34.678,72.22377,swat__barikot,,,False,news/official page; town-centre location; https://www.dawn.com (Charbagh station opening report)
+manual:rescue1122:swat:khwazakhela,rescue_1122,station reported,,Rescue 1122 Khwazakhela,,34.93632,72.46929,swat__khwaza_khela,,,False,news/official page; town-centre location; https://www.dawn.com (Charbagh station opening report)
+manual:rescue1122:swat:bahrain,rescue_1122,station reported,,Rescue 1122 Bahrain,,35.20926,72.5485,swat__bahrain,,,False,news/official page; town-centre location; https://www.dawn.com (Charbagh station opening report)
+manual:rescue1122:swat:charbagh,rescue_1122,station reported,,Rescue 1122 Charbagh,,34.83621,72.44317,swat__charbagh,,,False,news/official page; town-centre location; https://www.dawn.com (Charbagh station opening report)
+manual:rescue1122:bajaur:khar,rescue_1122,station reported,,Rescue 1122 Khar,,34.7361,71.52739,bajaur__khar,,,False,news/official page; town-centre location; https://www.zameen.com/news/bajaur-to-have-rescue-1122-services.html
+manual:rescue1122:lower_dir:timergara,rescue_1122,district service; station location not confirmed,,Rescue 1122 Timergara,,34.82908,71.84269,lower_dir__timergara,,,False,news/official page; town-centre location; https://rescuekp.gov.pk/site/page/18
+manual:rescue1122:upper_dir:dir,rescue_1122,district service; station location not confirmed,,Rescue 1122 Dir,,35.20801,71.87798,upper_dir__dir,,,False,news/official page; town-centre location; https://rescuekp.gov.pk/site/page/18
+manual:rescue1122:mansehra:mansehra,rescue_1122,district service; station location not confirmed,,Rescue 1122 Mansehra,,34.32869,73.19931,mansehra__mansehra,,,False,news/official page; town-centre location; https://rescuekp.gov.pk/site/page/18
+manual:rescue1122:malakand:batkhela,rescue_1122,district service; station location not confirmed,,Rescue 1122 Batkhela,,34.61343,71.96774,malakand__bat_khela,,,False,news/official page; town-centre location; https://rescuekp.gov.pk/site/page/18
+manual:rescue1122:buner:daggar,rescue_1122,district service; station location not confirmed,,Rescue 1122 Daggar,,34.51058,72.48491,buner__daggar,,,False,news/official page; town-centre location; https://dawn.com/news/1473362
+manual:rescue1122:shangla:alpuri,rescue_1122,district service; station location not confirmed,,Rescue 1122 Alpuri,,34.92043,72.63256,shangla__alpuri,,,False,news/official page; town-centre location; https://dawn.com/news/1473362
+manual:rescue1122:battagram:battagram,rescue_1122,district service; station location not confirmed,,Rescue 1122 Battagram,,34.67856,73.02812,battagram__batagram,,,False,news/official page; town-centre location; https://rescuekp.gov.pk/site/page/18
+high_ground:osm:n11244918862,high_ground,serves 1 high-exposure villages within 3 km,3,Bar Chamer Kand,,34.72873,71.20261,bajaur__bar_chamarkand,50.2,low,False,derived from DEM (M3); no known building
+high_ground:gn:1111568,high_ground,serves 3 high-exposure villages within 3 km,3,Mian Khan Darra,,34.60404,71.60169,bajaur__barang,81.9,low,False,derived from DEM (M3); no known building
+high_ground:gn:9276850,high_ground,serves 3 high-exposure villages within 3 km,3,Sanki,,34.62205,71.62313,bajaur__barang,96.7,low,False,derived from DEM (M3); no known building
+high_ground:gn:1175119,high_ground,serves 1 high-exposure villages within 3 km,3,Qambar,,34.62158,71.60744,bajaur__barang,25.2,low,False,derived from DEM (M3); no known building
+high_ground:osm:n13483235927,high_ground,serves 9 high-exposure villages within 3 km,3,Sheikh Meno,,34.71903,71.48566,bajaur__khar,18.4,low,False,derived from DEM (M3); no known building
+high_ground:gn:9274366,high_ground,serves 9 high-exposure villages within 3 km,3,Bilalabad,,34.72279,71.494,bajaur__khar,39.5,low,False,derived from DEM (M3); no known building
+high_ground:gn:1107103,high_ground,serves 8 high-exposure villages within 3 km,3,Damano Shah,,34.69538,71.44504,bajaur__khar,16.5,low,False,derived from DEM (M3); no known building
+high_ground:osm:n13502657426,high_ground,serves 4 high-exposure villages within 3 km,3,Kammar Sar,,34.77769,71.42362,bajaur__mamund,18.7,low,False,derived from DEM (M3); no known building
+high_ground:osm:n13502657427,high_ground,serves 4 high-exposure villages within 3 km,3,Soba,,34.77871,71.41764,bajaur__mamund,24.9,low,False,derived from DEM (M3); no known building
+high_ground:gn:1353087,high_ground,serves 4 high-exposure villages within 3 km,3,Lerflowzoo,,34.7838,71.41996,bajaur__mamund,32.7,low,False,derived from DEM (M3); no known building
+high_ground:osm:n13483300807,high_ground,serves 1 high-exposure villages within 3 km,3,Zargarai,,34.68691,71.29875,bajaur__nawagai,16.1,low,False,derived from DEM (M3); no known building
+high_ground:osm:n13483300864,high_ground,serves 1 high-exposure villages within 3 km,3,Kharyan,,34.66095,71.27843,bajaur__nawagai,23.9,low,False,derived from DEM (M3); no known building
+high_ground:gn:9274328,high_ground,serves 1 high-exposure villages within 3 km,3,Gud Khel,,34.6669,71.31358,bajaur__nawagai,36.7,low,False,derived from DEM (M3); no known building
+high_ground:gn:1346836,high_ground,serves 8 high-exposure villages within 3 km,3,Kandaro,,34.83903,71.5687,bajaur__salarzai,15.5,low,False,derived from DEM (M3); no known building
+high_ground:gn:1111843,high_ground,serves 8 high-exposure villages within 3 km,3,Sangu Dherai,,34.8531,71.54734,bajaur__salarzai,37.8,low,False,derived from DEM (M3); no known building
+high_ground:gn:1111883,high_ground,serves 7 high-exposure villages within 3 km,3,Raidauno,,34.82818,71.57222,bajaur__salarzai,17.9,low,False,derived from DEM (M3); no known building
+high_ground:gn:1111440,high_ground,serves 8 high-exposure villages within 3 km,3,Mazdak,,34.74726,71.72352,bajaur__utman_khel,20.3,low,False,derived from DEM (M3); no known building
+high_ground:gn:1111436,high_ground,serves 8 high-exposure villages within 3 km,3,Kochak,,34.73644,71.71622,bajaur__utman_khel,57.0,low,False,derived from DEM (M3); no known building
+high_ground:gn:1111923,high_ground,serves 7 high-exposure villages within 3 km,3,Garangi,,34.79055,71.67034,bajaur__utman_khel,31.7,low,False,derived from DEM (M3); no known building
+high_ground:osm:n2634491256,high_ground,serves 14 high-exposure villages within 3 km,3,Dumrai,,34.82482,73.0876,battagram__allai,72.8,low,False,derived from DEM (M3); no known building
+high_ground:osm:n2634491259,high_ground,serves 12 high-exposure villages within 3 km,3,Pokal,,34.81953,73.07546,battagram__allai,18.8,low,False,derived from DEM (M3); no known building
+high_ground:osm:n6624881980,high_ground,serves 12 high-exposure villages within 3 km,3,Deshwaal,,34.84022,73.11867,battagram__allai,36.5,low,False,derived from DEM (M3); no known building
+high_ground:osm:n2642668576,high_ground,serves 8 high-exposure villages within 3 km,3,Gijbori,,34.65266,72.98631,battagram__batagram,50.1,low,False,derived from DEM (M3); no known building
+high_ground:gn:1482353,high_ground,serves 7 high-exposure villages within 3 km,3,Lohiamaira,,34.63995,72.99166,battagram__batagram,38.6,low,False,derived from DEM (M3); no known building
+high_ground:osm:n2644624270,high_ground,serves 6 high-exposure villages within 3 km,3,Landi Shah Tikrai,,34.61573,73.00764,battagram__batagram,20.1,low,False,derived from DEM (M3); no known building
+high_ground:gn:11414850,high_ground,serves 8 high-exposure villages within 3 km,3,Mandarra,,34.51528,72.4181,buner__daggar,45.2,low,False,derived from DEM (M3); no known building
+high_ground:osm:n4989275687,high_ground,serves 6 high-exposure villages within 3 km,3,Gata Maira,,34.58727,72.45499,buner__daggar,17.2,low,False,derived from DEM (M3); no known building
+high_ground:gn:1482241,high_ground,serves 6 high-exposure villages within 3 km,3,Tahsil,,34.5049,72.4655,buner__daggar,31.6,low,False,derived from DEM (M3); no known building
+high_ground:osm:w1126947011,high_ground,serves 5 high-exposure villages within 3 km,3,Sunigram Kalay,,34.48708,72.48402,buner__gagra,15.7,low,False,derived from DEM (M3); no known building
+high_ground:gn:1384725,high_ground,serves 5 high-exposure villages within 3 km,3,Tor Gat Sunigram,,34.48712,72.48309,buner__gagra,15.7,low,False,derived from DEM (M3); no known building
+high_ground:osm:n4989734668,high_ground,serves 5 high-exposure villages within 3 km,3,Sunigram,,34.48774,72.48436,buner__gagra,16.8,low,False,derived from DEM (M3); no known building
+high_ground:gn:1171632,high_ground,serves 1 high-exposure villages within 3 km,3,Maghdarra,,34.2156,72.46522,buner__khado_khel,73.0,low,False,derived from DEM (M3); no known building
+high_ground:osm:n8883973195,high_ground,serves 1 high-exposure villages within 3 km,3,Mughdara,,34.21558,72.46524,buner__khado_khel,73.0,low,False,derived from DEM (M3); no known building
+high_ground:osm:n4809773228,high_ground,serves 0 high-exposure villages within 3 km,3,Chinglai,,34.3188,72.51285,buner__khado_khel,17.2,low,False,derived from DEM (M3); no known building
+high_ground:gn:1420592,high_ground,serves 13 high-exposure villages within 3 km,3,Shawai,,34.40346,72.60827,buner__mandanr,18.3,low,False,derived from DEM (M3); no known building
+high_ground:gn:11783963,high_ground,serves 13 high-exposure villages within 3 km,3,New Sethi,,34.41539,72.63194,buner__mandanr,23.5,low,False,derived from DEM (M3); no known building
+high_ground:gn:1481884,high_ground,serves 13 high-exposure villages within 3 km,3,Bejnai Maira,,34.42501,72.63477,buner__mandanr,43.9,low,False,derived from DEM (M3); no known building
+high_ground:gn:1383865,high_ground,serves 3 high-exposure villages within 3 km,3,Bararri,,34.69241,72.0492,lower_dir__adenzai,111.5,low,False,derived from DEM (M3); no known building
+high_ground:gn:1383735,high_ground,serves 2 high-exposure villages within 3 km,3,Kuanpur,,34.77379,72.07634,lower_dir__adenzai,16.1,low,False,derived from DEM (M3); no known building
+high_ground:gn:1383852,high_ground,serves 2 high-exposure villages within 3 km,3,Shah Alam Baba,,34.72971,72.08192,lower_dir__adenzai,17.4,low,False,derived from DEM (M3); no known building
+high_ground:gn:1111062,high_ground,serves 3 high-exposure villages within 3 km,3,Damamo Banda,,34.88039,71.89166,lower_dir__balambat,112.2,low,False,derived from DEM (M3); no known building
+high_ground:gn:1111113,high_ground,serves 2 high-exposure villages within 3 km,3,Rani,,34.85887,71.92178,lower_dir__balambat,21.9,low,False,derived from DEM (M3); no known building
+high_ground:gn:1111111,high_ground,serves 2 high-exposure villages within 3 km,3,Khushmuqam,,34.85612,71.94364,lower_dir__balambat,58.9,low,False,derived from DEM (M3); no known building
+high_ground:gn:1110932,high_ground,serves 4 high-exposure villages within 3 km,3,Kumbar,,34.96084,71.81466,lower_dir__lalqila,16.2,low,False,derived from DEM (M3); no known building
+high_ground:osm:n11244467376,high_ground,serves 4 high-exposure villages within 3 km,3,Kumber Maidan,,34.9593,71.81457,lower_dir__lalqila,35.1,low,False,derived from DEM (M3); no known building
+high_ground:gn:1110899,high_ground,serves 4 high-exposure villages within 3 km,3,Daru,,34.97013,71.82196,lower_dir__lalqila,35.7,low,False,derived from DEM (M3); no known building
+high_ground:gn:1447071,high_ground,serves 5 high-exposure villages within 3 km,3,Katasar,,34.81322,71.71898,lower_dir__munda,50.5,low,False,derived from DEM (M3); no known building
+high_ground:gn:1111255,high_ground,serves 4 high-exposure villages within 3 km,3,Ghazi Baba Ziarat,,34.79625,71.79082,lower_dir__munda,26.8,low,False,derived from DEM (M3); no known building
+high_ground:gn:1111261,high_ground,serves 4 high-exposure villages within 3 km,3,Mainari Tangi,,34.78547,71.7702,lower_dir__munda,27.6,low,False,derived from DEM (M3); no known building
+high_ground:gn:9269256,high_ground,serves 4 high-exposure villages within 3 km,3,Sangipara Qala,,34.92714,71.6165,lower_dir__samarbagh,27.0,low,False,derived from DEM (M3); no known building
+high_ground:gn:1111773,high_ground,serves 4 high-exposure villages within 3 km,3,Baqar,,34.92265,71.613,lower_dir__samarbagh,54.7,low,False,derived from DEM (M3); no known building
+high_ground:osm:n12556154229,high_ground,serves 4 high-exposure villages within 3 km,3,Sra Shah,,34.93506,71.60855,lower_dir__samarbagh,59.5,low,False,derived from DEM (M3); no known building
+high_ground:gn:1111252,high_ground,serves 2 high-exposure villages within 3 km,3,Sado,,34.7882,71.81191,lower_dir__timergara,21.5,low,False,derived from DEM (M3); no known building
+high_ground:gn:1447022,high_ground,serves 2 high-exposure villages within 3 km,3,Rehan Kot,,34.78774,71.81456,lower_dir__timergara,26.6,low,False,derived from DEM (M3); no known building
+high_ground:gn:1111253,high_ground,serves 2 high-exposure villages within 3 km,3,Shaikh Banda,,34.7852,71.81282,lower_dir__timergara,53.1,low,False,derived from DEM (M3); no known building
+high_ground:gn:10353433,high_ground,serves 5 high-exposure villages within 3 km,3,Ghundi,,34.61091,71.81845,malakand__bat_khela,30.1,low,False,derived from DEM (M3); no known building
+high_ground:gn:1447002,high_ground,serves 3 high-exposure villages within 3 km,3,Shagai,,34.60635,71.81468,malakand__bat_khela,15.1,low,False,derived from DEM (M3); no known building
+high_ground:gn:10353388,high_ground,serves 2 high-exposure villages within 3 km,3,Sor Mor,,34.63155,71.78065,malakand__bat_khela,102.6,low,False,derived from DEM (M3); no known building
+high_ground:osm:n2794728414,high_ground,serves 5 high-exposure villages within 3 km,3,Sakhakot,,34.45739,71.90838,malakand__dargai,16.6,low,False,derived from DEM (M3); no known building
+high_ground:gn:1334424,high_ground,serves 5 high-exposure villages within 3 km,3,Gul Maqam,,34.48544,71.91667,malakand__dargai,24.8,low,False,derived from DEM (M3); no known building
+high_ground:gn:11543459,high_ground,serves 2 high-exposure villages within 3 km,3,Gulosha,,34.43819,71.89668,malakand__dargai,17.8,low,False,derived from DEM (M3); no known building
+high_ground:gn:1389650,high_ground,serves 17 high-exposure villages within 3 km,3,Seri Kamshi,,34.60342,73.24886,mansehra__baffa_pakhal,65.9,low,False,derived from DEM (M3); no known building
+high_ground:gn:1406541,high_ground,serves 13 high-exposure villages within 3 km,3,Purana Bhogar Mang,,34.58018,73.25618,mansehra__baffa_pakhal,20.1,low,False,derived from DEM (M3); no known building
+high_ground:gn:1406530,high_ground,serves 13 high-exposure villages within 3 km,3,Bagh,,34.60342,73.26508,mansehra__baffa_pakhal,69.2,low,False,derived from DEM (M3); no known building
+high_ground:gn:10997391,high_ground,serves 7 high-exposure villages within 3 km,3,Chitta Katha,,34.86646,73.60782,mansehra__bala_kot,76.7,low,False,derived from DEM (M3); no known building
+high_ground:gn:10994197,high_ground,serves 6 high-exposure villages within 3 km,3,Shahotar,,34.52147,73.35738,mansehra__bala_kot,22.4,low,False,derived from DEM (M3); no known building
+high_ground:gn:1406422,high_ground,serves 6 high-exposure villages within 3 km,3,Batkarar,,34.51611,73.35351,mansehra__bala_kot,25.4,low,False,derived from DEM (M3); no known building
+high_ground:gn:11413352,high_ground,serves 10 high-exposure villages within 3 km,3,Shand Gran,,34.36765,72.83879,mansehra__darband,40.6,low,False,derived from DEM (M3); no known building
+high_ground:gn:1378889,high_ground,serves 10 high-exposure villages within 3 km,3,Akarharal,,34.36946,72.83834,mansehra__darband,54.6,low,False,derived from DEM (M3); no known building
+high_ground:osm:n745365484,high_ground,serves 10 high-exposure villages within 3 km,3,Kihāra,,34.37007,72.83903,mansehra__darband,56.7,low,False,derived from DEM (M3); no known building
+high_ground:osm:n11523279814,high_ground,serves 10 high-exposure villages within 3 km,3,Karmong Tarla,,34.53373,73.19691,mansehra__mansehra,112.0,low,False,derived from DEM (M3); no known building
+high_ground:osm:n2685922779,high_ground,serves 9 high-exposure villages within 3 km,3,Kotli Bala,,34.5181,73.21337,mansehra__mansehra,29.2,low,False,derived from DEM (M3); no known building
+high_ground:osm:n2686413019,high_ground,serves 9 high-exposure villages within 3 km,3,Kund,,34.50867,73.19832,mansehra__mansehra,30.7,low,False,derived from DEM (M3); no known building
+high_ground:gn:1378820,high_ground,serves 8 high-exposure villages within 3 km,3,Ismail Bando,,34.46802,72.97812,mansehra__oghi,15.0,low,False,derived from DEM (M3); no known building
+high_ground:gn:1378783,high_ground,serves 8 high-exposure villages within 3 km,3,Dam Dheri,,34.45043,72.98507,mansehra__oghi,20.4,low,False,derived from DEM (M3); no known building
+high_ground:gn:1389440,high_ground,serves 8 high-exposure villages within 3 km,3,Kiarbal,,34.50179,73.00209,mansehra__oghi,27.7,low,False,derived from DEM (M3); no known building
+high_ground:gn:1420948,high_ground,serves 9 high-exposure villages within 3 km,3,Nagha,,34.89052,72.6241,shangla__alpuri,86.4,low,False,derived from DEM (M3); no known building
+high_ground:gn:1482308,high_ground,serves 6 high-exposure villages within 3 km,3,Koker Baba,,34.92697,72.61801,shangla__alpuri,16.0,low,False,derived from DEM (M3); no known building
+high_ground:osm:n895208104,high_ground,serves 6 high-exposure villages within 3 km,3,Kuz Karora,,34.90304,72.75369,shangla__alpuri,21.5,low,False,derived from DEM (M3); no known building
+high_ground:osm:n895188273,high_ground,serves 7 high-exposure villages within 3 km,3,Kunshai,,34.90837,72.86234,shangla__bisham,30.6,low,False,derived from DEM (M3); no known building
+high_ground:osm:n741701942,high_ground,serves 3 high-exposure villages within 3 km,3,Bar,,34.80611,72.9301,shangla__bisham,17.3,low,False,derived from DEM (M3); no known building
+high_ground:gn:1378029,high_ground,serves 3 high-exposure villages within 3 km,3,Takhta,,34.8061,72.92986,shangla__bisham,25.6,low,False,derived from DEM (M3); no known building
+high_ground:osm:n2825197635,high_ground,serves 3 high-exposure villages within 3 km,3,Chakesar,,34.78572,72.7691,shangla__chakisar,52.5,low,False,derived from DEM (M3); no known building
+high_ground:gn:1421095,high_ground,serves 2 high-exposure villages within 3 km,3,Shawai,,34.79209,72.73706,shangla__chakisar,42.1,low,False,derived from DEM (M3); no known building
+high_ground:gn:1378013,high_ground,serves 2 high-exposure villages within 3 km,3,Nati Banda,,34.79979,72.78864,shangla__chakisar,44.5,low,False,derived from DEM (M3); no known building
+high_ground:gn:1390716,high_ground,serves 1 high-exposure villages within 3 km,3,Gagar,,34.66391,72.64058,shangla__makhuzai,107.4,low,False,derived from DEM (M3); no known building
+high_ground:gn:1390503,high_ground,serves 0 high-exposure villages within 3 km,3,Agher China,,34.68687,72.57249,shangla__makhuzai,15.8,low,False,derived from DEM (M3); no known building
+high_ground:gn:1390741,high_ground,serves 0 high-exposure villages within 3 km,3,Karorai,,34.71709,72.59944,shangla__makhuzai,21.9,low,False,derived from DEM (M3); no known building
+high_ground:osm:n2832778163,high_ground,serves 4 high-exposure villages within 3 km,3,Pishlaur Derai,,34.65991,72.72357,shangla__martoong,75.5,low,False,derived from DEM (M3); no known building
+high_ground:gn:1390830,high_ground,serves 3 high-exposure villages within 3 km,3,Sabun,,34.66784,72.7434,shangla__martoong,70.2,low,False,derived from DEM (M3); no known building
+high_ground:osm:n2832778154,high_ground,serves 2 high-exposure villages within 3 km,3,Kuz Mārtung,,34.67823,72.73781,shangla__martoong,63.4,low,False,derived from DEM (M3); no known building
+high_ground:osm:n2851764150,high_ground,serves 6 high-exposure villages within 3 km,3,Kulālai,,34.71662,72.67875,shangla__puran,43.1,low,False,derived from DEM (M3); no known building
+high_ground:osm:n2851764144,high_ground,serves 5 high-exposure villages within 3 km,3,Kaikor,,34.71958,72.68891,shangla__puran,40.7,low,False,derived from DEM (M3); no known building
+high_ground:osm:n2851764151,high_ground,serves 5 high-exposure villages within 3 km,3,Kuz Hawārai,,34.72218,72.6916,shangla__puran,47.9,low,False,derived from DEM (M3); no known building
+high_ground:gn:7033618,high_ground,serves 16 high-exposure villages within 3 km,3,Gulkada,,34.76213,72.363,swat__babuzai,19.1,low,False,derived from DEM (M3); no known building
+high_ground:gn:7033612,high_ground,serves 14 high-exposure villages within 3 km,3,Mohallah Rangmala,,34.7759,72.368,swat__babuzai,28.3,low,False,derived from DEM (M3); no known building
+high_ground:gn:7033627,high_ground,serves 14 high-exposure villages within 3 km,3,Mohallah Qazi Baba,,34.7797,72.3651,swat__babuzai,36.5,low,False,derived from DEM (M3); no known building
+high_ground:osm:n12011180120,high_ground,serves 17 high-exposure villages within 3 km,3,Zorh Kalay,,35.2005,72.53752,swat__bahrain,101.2,low,False,derived from DEM (M3); no known building
+high_ground:osm:n12011180119,high_ground,serves 16 high-exposure villages within 3 km,3,Tilba,,35.20504,72.54147,swat__bahrain,34.0,low,False,derived from DEM (M3); no known building
+high_ground:gn:1478786,high_ground,serves 15 high-exposure villages within 3 km,3,Zor Kalle,,35.19636,72.5392,swat__bahrain,24.8,low,False,derived from DEM (M3); no known building
+high_ground:gn:1383843,high_ground,serves 2 high-exposure villages within 3 km,3,Zarra Khela,,34.68175,72.12973,swat__barikot,16.5,low,False,derived from DEM (M3); no known building
+high_ground:osm:n4670274712,high_ground,serves 0 high-exposure villages within 3 km,3,Natmaira,,34.65738,72.23518,swat__barikot,16.9,low,False,derived from DEM (M3); no known building
+high_ground:gn:11409965,high_ground,serves 0 high-exposure villages within 3 km,3,Hamidabad,,34.70262,72.21741,swat__barikot,17.5,low,False,derived from DEM (M3); no known building
+high_ground:gn:1420830,high_ground,serves 2 high-exposure villages within 3 km,3,Shagai,,34.82639,72.52639,swat__charbagh,28.4,low,False,derived from DEM (M3); no known building
+high_ground:gn:1420818,high_ground,serves 2 high-exposure villages within 3 km,3,Makad,,34.84444,72.50833,swat__charbagh,45.2,low,False,derived from DEM (M3); no known building
+high_ground:gn:1162063,high_ground,serves 1 high-exposure villages within 3 km,3,Zindwala,,34.83833,72.4736,swat__charbagh,81.8,low,False,derived from DEM (M3); no known building
+high_ground:gn:1384632,high_ground,serves 2 high-exposure villages within 3 km,3,Kamarbagh,,34.84033,72.43854,swat__kabal,19.4,low,False,derived from DEM (M3); no known building
+high_ground:gn:1183364,high_ground,serves 2 high-exposure villages within 3 km,3,Bara Bandai,,34.82301,72.39844,swat__kabal,21.7,low,False,derived from DEM (M3); no known building
+high_ground:gn:1481836,high_ground,serves 1 high-exposure villages within 3 km,3,Ehsanabad,,34.83031,72.27075,swat__kabal,16.0,low,False,derived from DEM (M3); no known building
+high_ground:osm:n4439819004,high_ground,serves 5 high-exposure villages within 3 km,3,Karen,,35.57101,72.42315,swat__kalam,20.1,low,False,derived from DEM (M3); no known building
+high_ground:osm:n11566117367,high_ground,serves 4 high-exposure villages within 3 km,3,Bafar,,35.52846,72.64325,swat__kalam,27.9,low,False,derived from DEM (M3); no known building
+high_ground:gn:1162883,high_ground,serves 4 high-exposure villages within 3 km,3,Ushu,,35.53071,72.64339,swat__kalam,27.9,low,False,derived from DEM (M3); no known building
+high_ground:gn:1377459,high_ground,serves 11 high-exposure villages within 3 km,3,Sangobat,,35.07136,72.50011,swat__khwaza_khela,56.9,low,False,derived from DEM (M3); no known building
+high_ground:gn:1377460,high_ground,serves 10 high-exposure villages within 3 km,3,Taudar Oho,,35.06944,72.50278,swat__khwaza_khela,51.7,low,False,derived from DEM (M3); no known building
+high_ground:osm:n11524066446,high_ground,serves 9 high-exposure villages within 3 km,3,Taude Oba,,35.06688,72.50774,swat__khwaza_khela,21.8,low,False,derived from DEM (M3); no known building
+high_ground:gn:1391116,high_ground,serves 10 high-exposure villages within 3 km,3,Kohistani Banda,,35.12222,72.39028,swat__matta_kharirai,66.2,low,False,derived from DEM (M3); no known building
+high_ground:osm:n12014282475,high_ground,serves 10 high-exposure villages within 3 km,3,Batkoo,,35.11644,72.39927,swat__matta_kharirai,91.7,low,False,derived from DEM (M3); no known building
+high_ground:gn:7443262,high_ground,serves 8 high-exposure villages within 3 km,3,Kilai,,35.1306,72.3968,swat__matta_kharirai,69.3,low,False,derived from DEM (M3); no known building
+high_ground:gn:1391039,high_ground,serves 8 high-exposure villages within 3 km,3,Roringar,,35.07222,72.32308,swat__matta_sebujni,17.5,low,False,derived from DEM (M3); no known building
+high_ground:osm:n895267139,high_ground,serves 8 high-exposure villages within 3 km,3,Serai,,35.07082,72.32213,swat__matta_sebujni,25.4,low,False,derived from DEM (M3); no known building
+high_ground:gn:1391016,high_ground,serves 7 high-exposure villages within 3 km,3,Nalkot,,35.06439,72.30597,swat__matta_sebujni,39.5,low,False,derived from DEM (M3); no known building
+high_ground:gn:11138155,high_ground,serves 7 high-exposure villages within 3 km,3,Asarmara,,35.12624,71.8114,upper_dir__barawal,53.1,low,False,derived from DEM (M3); no known building
+high_ground:osm:n11244164435,high_ground,serves 6 high-exposure villages within 3 km,3,Barawal Bandi,,35.08991,71.76399,upper_dir__barawal,20.9,low,False,derived from DEM (M3); no known building
+high_ground:gn:1373886,high_ground,serves 6 high-exposure villages within 3 km,3,Dilakal Kas,,35.09545,71.77811,upper_dir__barawal,24.7,low,False,derived from DEM (M3); no known building
+high_ground:gn:1444347,high_ground,serves 5 high-exposure villages within 3 km,3,Ghundakai,,35.1636,71.88755,upper_dir__dir,45.6,low,False,derived from DEM (M3); no known building
+high_ground:gn:1373843,high_ground,serves 5 high-exposure villages within 3 km,3,Bar Hunkar,,35.14391,71.90546,upper_dir__dir,57.9,low,False,derived from DEM (M3); no known building
+high_ground:gn:1373777,high_ground,serves 4 high-exposure villages within 3 km,3,Larra Banda,,35.20193,71.88412,upper_dir__dir,77.7,low,False,derived from DEM (M3); no known building
+high_ground:gn:1477727,high_ground,serves 6 high-exposure villages within 3 km,3,Remal,,35.33775,72.07339,upper_dir__kalkot,99.4,low,False,derived from DEM (M3); no known building
+high_ground:gn:1477733,high_ground,serves 6 high-exposure villages within 3 km,3,Bandal Khwar,,35.33747,72.04633,upper_dir__kalkot,106.8,low,False,derived from DEM (M3); no known building
+high_ground:gn:11782500,high_ground,serves 5 high-exposure villages within 3 km,3,Serai,,35.34749,72.05953,upper_dir__kalkot,39.0,low,False,derived from DEM (M3); no known building
+high_ground:gn:1383620,high_ground,serves 6 high-exposure villages within 3 km,3,Dherai,,34.93253,72.0236,upper_dir__khall,23.4,low,False,derived from DEM (M3); no known building
+high_ground:gn:1163168,high_ground,serves 6 high-exposure villages within 3 km,3,Tormung,,34.9112,72.01544,upper_dir__khall,42.5,low,False,derived from DEM (M3); no known building
+high_ground:osm:n12511042561,high_ground,serves 6 high-exposure villages within 3 km,3,Toormang,,34.91088,72.01684,upper_dir__khall,66.8,low,False,derived from DEM (M3); no known building
+high_ground:gn:1478101,high_ground,serves 3 high-exposure villages within 3 km,3,Sond,,35.16857,72.16463,upper_dir__larjam,80.7,low,False,derived from DEM (M3); no known building
+high_ground:gn:1477890,high_ground,serves 3 high-exposure villages within 3 km,3,Shumai,,35.16482,72.18046,upper_dir__larjam,82.7,low,False,derived from DEM (M3); no known building
+high_ground:osm:n11528908447,high_ground,serves 2 high-exposure villages within 3 km,3,Ushirai,,35.16299,72.11201,upper_dir__larjam,32.6,low,False,derived from DEM (M3); no known building
+high_ground:gn:11782507,high_ground,serves 5 high-exposure villages within 3 km,3,Dhok Payin,,35.31589,72.00421,upper_dir__shrengal,70.9,low,False,derived from DEM (M3); no known building
+high_ground:gn:11138005,high_ground,serves 5 high-exposure villages within 3 km,3,Maluk Payan,,35.35069,71.97155,upper_dir__shrengal,78.7,low,False,derived from DEM (M3); no known building
+high_ground:gn:1417610,high_ground,serves 2 high-exposure villages within 3 km,3,Patao Roghano Kalle,,35.38703,71.95472,upper_dir__shrengal,43.3,low,False,derived from DEM (M3); no known building
+high_ground:osm:n12009090975,high_ground,serves 6 high-exposure villages within 3 km,3,Mairah,,35.04498,71.98503,upper_dir__wari,46.0,low,False,derived from DEM (M3); no known building
+high_ground:osm:n12009091163,high_ground,serves 6 high-exposure villages within 3 km,3,Jabba,,35.03385,71.99894,upper_dir__wari,61.6,low,False,derived from DEM (M3); no known building
+high_ground:osm:n12009090974,high_ground,serves 6 high-exposure villages within 3 km,3,Serri Sultan Khel,,35.04558,71.9823,upper_dir__wari,62.2,low,False,derived from DEM (M3); no known building

@@ -56,3 +56,25 @@ the tehsil polygon, with `weight` = the cell's share of the tehsil's area
 (weights sum to 1 per tehsil; slivers under 2% are dropped). 197 rows, 80
 unique cells, 53 tehsils. Built from `tehsils.geojson` by
 `backend/app/hydromet/grid.py`.
+
+## village_exposure.csv (M3)
+
+One row per populated gazetteer place in the DEM box (10,525). `hand_m` is the
+height above the nearest stream (draining at least 10 km²) at the point;
+`hand_min_m` is the lowest value within about 180 m, which sets
+`exposure_band` (high: under 5 m next to a river draining at least 50 km²;
+medium: under 8 m; low: otherwise). Copernicus GLO-90 DEM. Bands only, never
+flood depths. See reports/m3_terrain_qa.md for the validation.
+
+## facilities.csv (M4b)
+
+Shelter candidates (OSM schools, colleges, government buildings; mosques as
+priority 2), suggested higher ground (derived from the DEM, not buildings),
+health facilities, police, fire and Rescue 1122. All `verified=false`.
+OSM data © OpenStreetMap contributors (ODbL).
+
+## rescue1122_manual.csv (M4b)
+
+Rescue 1122 stations named in news reports or on the Rescue 1122 KP site,
+placed at the town centre by `build_facilities`. Status says whether a station
+was reported or only the district service is known.

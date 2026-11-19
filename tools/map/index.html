@@ -65,6 +65,10 @@
     <label class="row"><input type="checkbox" data-layer="tehsil-label" checked> Tehsil names</label>
     <label class="row"><input type="checkbox" data-layer="places" checked> Gazetteer places</label>
     <label class="row" id="events-row" hidden><input type="checkbox" data-layer="events" checked> PDMA flood events</label>
+    <label class="row" id="exposure-row" hidden><input type="checkbox" data-layer="exposure"> Village flood exposure</label>
+    <p class="note" id="exposure-legend"><span class="sw" style="background:#d6336c"></span>high <span class="sw" style="background:#f59f00"></span>medium <span class="sw" style="background:#adb5bd"></span>low ·
+      <span class="sw" style="background:#2f9e44"></span>shelter <span class="sw" style="background:#1c7ed6"></span>high ground <span class="sw" style="background:#f03e3e"></span>1122</p>
+    <label class="row" id="facilities-row" hidden><input type="checkbox" data-layer="facilities"> Shelters, high ground, Rescue 1122 (unverified)</label>
     <p class="note">Places: <span class="dot" style="background:#e8590c"></span>OSM
       <span class="dot" style="background:#7048e8"></span>GeoNames
       <span class="dot" style="background:#2f9e44"></span>both</p>
@@ -263,6 +267,52 @@ async function load() {
     });
     if (!hits.length) results.innerHTML = '<p class="note">No match.</p>';
   });
+
+
+  // Optional layers from M3/M4b: village exposure bands and facilities.
+  Promise.all([
+    fetch(DATA + "reference/village_exposure.csv").then(r => r.ok ? r.text() : null),
+    fetch(DATA + "reference/facilities.csv").then(r => r.ok ? r.text() : null),
+  ]).then(([vx, fac]) => {
+    const toFC = rows => ({ type: "FeatureCollection", features: rows.map(r => ({ type: "Feature",
+      geometry: { type: "Point", coordinates: [+r.lon, +r.lat] }, properties: r })) });
+    if (vx) {
+      map.addSource("exposure", { type: "geojson", data: toFC(parseCSV(vx)) });
+      map.addLayer({ id: "exposure", type: "circle", source: "exposure", layout: { visibility: "none" }, paint: {
+        "circle-color": ["match", ["get", "exposure_band"], "high", "#d6336c", "medium", "#f59f00", "#adb5bd"],
+        "circle-radius": ["match", ["get", "exposure_band"], "high", 5, "medium", 4, 2.5],
+        "circle-stroke-color": "#fff", "circle-stroke-width": 0.6 } }, "tehsil-label");
+      document.getElementById("exposure-row").hidden = false;
+      map.on("click", "exposure", e => {
+        const p = e.features[0].properties;
+        new maplibregl.Popup().setLngLat(e.lngLat).setHTML(`<b>${esc(p.name)}</b> · ${esc(p.exposure_band)} exposure
+          <table class="pp"><tr><td>Tehsil</td><td>${esc(p.tehsil_id)}</td></tr>
+          <tr><td>Height above stream</td><td>${esc(p.hand_m)} m at point, ${esc(p.hand_min_m)} m lowest nearby</td></tr>
+          <tr><td>Nearest stream</td><td>${Number(p.dist_to_stream_m).toLocaleString()} m, drains ${Number(p.upstream_area_km2).toLocaleString()} km²</td></tr></table>`).addTo(map);
+      });
+    }
+    if (fac) {
+      map.addSource("facilities", { type: "geojson", data: toFC(parseCSV(fac)) });
+      map.addLayer({ id: "facilities", type: "circle", source: "facilities", layout: { visibility: "none" }, paint: {
+        "circle-color": ["match", ["get", "kind"], "shelter", "#2f9e44", "high_ground", "#1c7ed6",
+                         "rescue_1122", "#f03e3e", "health", "#7048e8", "#495057"],
+        "circle-radius": ["match", ["get", "kind"], "rescue_1122", 7, "high_ground", 6, 5],
+        "circle-stroke-color": "#fff", "circle-stroke-width": 1.5 } });
+      document.getElementById("facilities-row").hidden = false;
+      map.on("click", "facilities", e => {
+        const p = e.features[0].properties;
+        new maplibregl.Popup().setLngLat(e.lngLat).setHTML(`<b>${esc(p.name || "(no name)")}</b> · ${esc(p.kind.replace("_", " "))}
+          <table class="pp"><tr><td>Type</td><td>${esc(p.subtype)}</td></tr>
+          <tr><td>Tehsil</td><td>${esc(p.tehsil_id)}</td></tr>
+          ${p.exposure_band ? `<tr><td>Exposure</td><td>${esc(p.exposure_band)}</td></tr>` : ""}
+          <tr><td>Status</td><td>unverified</td></tr><tr><td>Source</td><td>${esc(p.source)}</td></tr></table>`).addTo(map);
+      });
+    }
+    ["exposure", "facilities"].forEach(l => {
+      map.on("mouseenter", l, () => map.getCanvas().style.cursor = "pointer");
+      map.on("mouseleave", l, () => map.getCanvas().style.cursor = "");
+    });
+  }).catch(() => {});
 
   // Optional layer: geocoded PDMA events (added in M1; private, local only).
   fetch(DATA + "events/flood_events.geojson").then(r => r.ok ? r.json() : null).then(ev => {
