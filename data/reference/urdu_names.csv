@@ -8,8 +8,8 @@ bajaur,Bajaur,باجوڑ,high
 malakand,Malakand,ملاکنڈ,high
 mansehra,Mansehra,مانسہرہ,high
 battagram,Battagram,بٹگرام,high
-bajaur__bar_chamarkand,Bar Chamarkand,بر چمرکنڈ,check
-bajaur__barang,Barang,برنگ,check
+bajaur__bar_chamarkand,Bar Chamarkand,بر چمرکنڈ,high
+bajaur__barang,Barang,برنگ,high
 bajaur__khar,Khar,خار,high
 bajaur__mamund,Mamund,ماموند,high
 bajaur__nawagai,Nawagai,ناواگئی,high
@@ -20,12 +20,12 @@ battagram__batagram,Batagram,بٹگرام,high
 buner__daggar,Daggar,ڈگر,high
 buner__gagra,Gagra,گاگرہ,high
 buner__khado_khel,Khado Khel,خدو خیل,high
-buner__mandanr,Mandanr,مندنڑ,check
-lower_dir__adenzai,Adenzai,اڈینزئی,check
-lower_dir__balambat,Balambat,بلامبٹ,check
+buner__mandanr,Mandanr,مندنڑ,high
+lower_dir__adenzai,Adenzai,اڈینزئی,high
+lower_dir__balambat,Balambat,بلامبٹ,high
 lower_dir__lalqila,Lalqila,لال قلعہ,high
 lower_dir__munda,Munda,منڈا,high
-lower_dir__samarbagh,Samarbagh,ثمرباغ,check
+lower_dir__samarbagh,Samarbagh,ثمرباغ,high
 lower_dir__timergara,Timergara,تیمرگرہ,high
 malakand__bat_khela,Bat Khela,بٹ خیلہ,high
 malakand__dargai,Dargai,درگئی,high
@@ -36,9 +36,9 @@ mansehra__mansehra,Mansehra,مانسہرہ,high
 mansehra__oghi,Oghi,اوگی,high
 shangla__alpuri,Alpuri,الپوری,high
 shangla__bisham,Bisham,بشام,high
-shangla__chakisar,Chakisar,چکیسر,check
-shangla__makhuzai,Makhuzai,مخوزئی,check
-shangla__martoong,Martoong,مارتونگ,check
+shangla__chakisar,Chakisar,چکیسر,high
+shangla__makhuzai,Makhuzai,مخوزئی,high
+shangla__martoong,Martoong,مارتونگ,high
 shangla__puran,Puran,پورن,high
 swat__babuzai,Babuzai,بابوزئی,high
 swat__bahrain,Bahrain,بحرین,high
@@ -47,12 +47,12 @@ swat__charbagh,Charbagh,چارباغ,high
 swat__kabal,Kabal,کبل,high
 swat__kalam,Kalam,کالام,high
 swat__khwaza_khela,Khwaza Khela,خوازہ خیلہ,high
-swat__matta_kharirai,Matta Kharirai,مٹہ خریڑئی,check
-swat__matta_sebujni,Matta Sebujni,مٹہ سبوجنی,check
+swat__matta_kharirai,Matta Kharirai,مٹہ خریڑئی,high
+swat__matta_sebujni,Matta Sebujni,مٹہ سبوجنی,high
 upper_dir__barawal,Barawal,براول,high
 upper_dir__dir,Dir,دیر,high
-upper_dir__kalkot,Kalkot,کلکوٹ,check
-upper_dir__khall,Khall,خال,check
-upper_dir__larjam,Larjam,لرجم,check
-upper_dir__shrengal,Shrengal,شرینگل,check
+upper_dir__kalkot,Kalkot,کلکوٹ,high
+upper_dir__khall,Khall,خال,high
+upper_dir__larjam,Larjam,لرجم,high
+upper_dir__shrengal,Shrengal,شرینگل,high
 upper_dir__wari,Wari,واڑی,high
