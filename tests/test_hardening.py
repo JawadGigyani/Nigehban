@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+
+import numpy as np
 from pathlib import Path
 
 import httpx
@@ -164,3 +166,36 @@ def test_tts_route_is_urdu_only(monkeypatch):
     assert client.post("/tts", json={"text": "سلام"}).json()["audio_url"] == "/audio/0123456789abcdef0123.mp3"
     assert client.get("/audio/../../etc.mp3").status_code == 404
     assert client.get("/config").json().keys() >= {"voice", "sms", "whatsapp"}
+
+
+def test_twilio_channel(monkeypatch):
+    from backend.app.alerts.channels import TwilioChannel
+    from backend.app.contracts import ChannelName
+
+    posts = []
+
+    def fake_post(url, data=None, auth=None, timeout=None):
+        posts.append((url, data, auth))
+        return httpx.Response(201, json={"sid": "SM1"})
+
+    monkeypatch.setattr(httpx, "post", fake_post)
+    wa = TwilioChannel(ChannelName.WHATSAPP, "AC1", "tok", "+14155238886")
+    assert wa.send("03001234567", "الرٹ").ok
+    url, data, auth = posts[0]
+    assert url.endswith("/Accounts/AC1/Messages.json") and auth == ("AC1", "tok")
+    assert data["From"] == "whatsapp:+14155238886" and data["To"] == "whatsapp:+923001234567"
+    sms = TwilioChannel(ChannelName.SMS, "AC1", "tok", "+15550001111")
+    assert sms.send("+923001234567", "x").ok and posts[1][1]["From"] == "+15550001111"
+
+
+def test_imerg_parsing_and_tehsil_weights():
+    from backend.app.hydromet.imerg import LATS, LONS, parse_ascii, tehsil_values, tehsil_weights
+
+    text = "Dataset {...}\nprecipitation.precipitation[1][2][3]\n[0][0], 1.5, -9999.9, 3\n[0][1], 0, 2, 4\n"
+    grid = parse_ascii(text)
+    assert grid.shape == (2, 3) and np.isnan(grid[0, 1]) and grid[1, 2] == 4
+    weights = tehsil_weights(ROOT / "data" / "reference" / "tehsils.geojson")
+    assert len(weights) == 48 and abs(sum(w for *_, w in weights["swat__babuzai"]) - 1) < 1e-9
+    full = np.full((len(LONS), len(LATS)), 10.0)
+    mean, cell_max = tehsil_values(full, weights)["swat__babuzai"]
+    assert mean == 10.0 and cell_max == 10.0

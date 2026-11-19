@@ -145,6 +145,31 @@ class WhatsAppChannel:
             return DeliveryResult(ok=False, channel=self.name, error=exc.__class__.__name__)
 
 
+class TwilioChannel:
+    """SMS or WhatsApp through Twilio's Messages API (trial credit works for testing).
+
+    WhatsApp uses the Sandbox number until a WhatsApp sender is approved; recipients must first
+    send the sandbox join code from their WhatsApp. Trial SMS only reach verified numbers.
+    """
+
+    def __init__(self, name: ChannelName, account_sid: str, auth_token: str, sender: str) -> None:
+        self.name, self.sid, self.token, self.sender = name, account_sid, auth_token, sender
+
+    def send(self, address: str, text: str, audio_url: str | None = None) -> DeliveryResult:
+        to = address if address.startswith("+") else "+92" + address.lstrip("0")
+        prefix = "whatsapp:" if self.name is ChannelName.WHATSAPP else ""
+        data = {"From": f"{prefix}{self.sender}", "To": f"{prefix}{to}", "Body": text[:1500]}
+        try:
+            r = httpx.post(f"https://api.twilio.com/2010-04-01/Accounts/{self.sid}/Messages.json",
+                           data=data, auth=(self.sid, self.token), timeout=20)
+            body = r.json()
+            if r.status_code in (200, 201):
+                return DeliveryResult(ok=True, channel=self.name, provider_message_id=body.get("sid"))
+            return DeliveryResult(ok=False, channel=self.name, error=f"{body.get('code')}: {body.get('message')}"[:200])
+        except (httpx.HTTPError, ValueError) as exc:
+            return DeliveryResult(ok=False, channel=self.name, error=exc.__class__.__name__)
+
+
 class StubChannel:
     def __init__(self, name: ChannelName) -> None:
         self.name = name
@@ -155,7 +180,8 @@ class StubChannel:
 
 def build_channels(settings) -> dict[ChannelName, object]:
     secret = lambda s: s.get_secret_value() if s is not None else None  # noqa: E731
-    return {
+    twilio = settings.twilio_account_sid and settings.twilio_auth_token
+    channels = {
         ChannelName.CONSOLE: ConsoleChannel(),
         ChannelName.WEB_INBOX: WebInboxChannel(),
         ChannelName.WEBPUSH: WebPushChannel(secret(settings.vapid_private_key), settings.vapid_subject),
@@ -165,6 +191,14 @@ def build_channels(settings) -> dict[ChannelName, object]:
         ChannelName.SMS: SmsGatewayChannel(settings.sms_gateway_url, settings.sms_gateway_username,
                                            secret(settings.sms_gateway_password)),
     }
+    if twilio:
+        token = secret(settings.twilio_auth_token)
+        channels[ChannelName.WHATSAPP] = TwilioChannel(ChannelName.WHATSAPP, settings.twilio_account_sid, token,
+                                                       settings.twilio_whatsapp_from)
+        if settings.twilio_sms_from:
+            channels[ChannelName.SMS] = TwilioChannel(ChannelName.SMS, settings.twilio_account_sid, token,
+                                                      settings.twilio_sms_from)
+    return channels
 
 
 def _print_vapid_keys() -> None:
