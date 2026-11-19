@@ -139,8 +139,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--dem", type=Path, default=data / "interim" / "terrain" / "dem_glo90.tif")
     parser.add_argument("--hand-stream-km2", type=float, default=10.0)
     parser.add_argument("--density-stream-km2", type=float, default=1.0)
+    parser.add_argument("--tag", default="", help="write to interim/terrain/<tag>/ instead of the main outputs")
     args = parser.parse_args(argv)
-    terrain_dir = data / "interim" / "terrain"
+    terrain_dir = data / "interim" / "terrain" / args.tag if args.tag else data / "interim" / "terrain"
 
     with rasterio.open(args.dem) as src:
         profile = src.profile.copy()
@@ -161,7 +162,9 @@ def main(argv: list[str] | None = None) -> int:
     hand = np.clip(hand, 0, None)  # small negatives come from the unconditioned DEM
     from scipy.ndimage import minimum_filter
 
-    hand_min = minimum_filter(np.where(np.isfinite(hand), hand, 1e6).astype("float32"), size=WINDOW_CELLS)
+    # Same ground distance (about ±180 m) whatever the DEM resolution: 5 cells at 90 m, 15 at 30 m.
+    window = max(3, int(round(WINDOW_CELLS * 92.8 / dy)) | 1)
+    hand_min = minimum_filter(np.where(np.isfinite(hand), hand, 1e6).astype("float32"), size=window)
     hand_min[~np.isfinite(hand)] = np.nan
     dem_arr = np.asarray(dem, dtype="float32")
     slope = compute_slope(dem_arr, dx, dy)
@@ -222,7 +225,8 @@ def main(argv: list[str] | None = None) -> int:
     static = pd.DataFrame(rows)
     features = data / "features"
     features.mkdir(parents=True, exist_ok=True)
-    static.to_parquet(features / "tehsil_static.parquet", index=False)
+    static_path = terrain_dir / "tehsil_static.parquet" if args.tag else features / "tehsil_static.parquet"
+    static.to_parquet(static_path, index=False)
 
     # ---- village exposure -----------------------------------------------------------------
     inv = ~transform
@@ -248,7 +252,8 @@ def main(argv: list[str] | None = None) -> int:
                 "dist_to_stream_m": round(float(dist[r, c])), "upstream_area_km2": round(up, 1),
             })
     exposure = pd.DataFrame(out_rows)
-    exposure.to_csv(data / "reference" / "village_exposure.csv", index=False)
+    exposure_path = terrain_dir / "village_exposure.csv" if args.tag else data / "reference" / "village_exposure.csv"
+    exposure.to_csv(exposure_path, index=False)
     print(json.dumps({"tehsils": len(static), "villages": len(exposure),
                       "bands": exposure["exposure_band"].value_counts().to_dict()}, indent=2))
     return 0

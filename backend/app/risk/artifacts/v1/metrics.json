@@ -1,0 +1,532 @@
+{
+  "gate_g2_passed": true,
+  "model_kind": "logistic",
+  "candidates": [
+    {
+      "model": "logistic",
+      "seasons held out: hit rate": 0.4157303370786517,
+      "seasons held out: PR-AUC": 0.01933087350169487,
+      "seasons held out: ROC-AUC": 0.8120395658312445,
+      "districts held out: hit rate": 0.3707865168539326,
+      "districts held out: PR-AUC": 0.01759772551202259
+    },
+    {
+      "model": "random_forest",
+      "seasons held out: hit rate": 0.24719101123595505,
+      "seasons held out: PR-AUC": 0.00840197737232904,
+      "seasons held out: ROC-AUC": 0.7418930184384183,
+      "districts held out: hit rate": 0.2808988764044944,
+      "districts held out: PR-AUC": 0.010204131325767783
+    },
+    {
+      "model": "extra_trees",
+      "seasons held out: hit rate": 0.30337078651685395,
+      "seasons held out: PR-AUC": 0.010485821989287731,
+      "seasons held out: ROC-AUC": 0.7990260113903336,
+      "districts held out: hit rate": 0.30337078651685395,
+      "districts held out: PR-AUC": 0.011527648547492915
+    },
+    {
+      "model": "lightgbm",
+      "seasons held out: hit rate": 0.33707865168539325,
+      "seasons held out: PR-AUC": 0.01055760890172284,
+      "seasons held out: ROC-AUC": 0.7699329435507638,
+      "districts held out: hit rate": 0.34831460674157305,
+      "districts held out: PR-AUC": 0.012279524264025145
+    },
+    {
+      "model": "xgboost",
+      "seasons held out: hit rate": 0.3258426966292135,
+      "seasons held out: PR-AUC": 0.011635606019662282,
+      "seasons held out: ROC-AUC": 0.7895324293296881,
+      "districts held out: hit rate": 0.33707865168539325,
+      "districts held out: PR-AUC": 0.01051826953158978
+    }
+  ],
+  "comparison": [
+    {
+      "method": "logistic (rain + terrain), seasons held out",
+      "ROC-AUC": 0.8120395658312445,
+      "PR-AUC": 0.01933087350169487,
+      "hit rate at 2.5 false alerts": 0.4157303370786517,
+      "false alerts / tehsil-season": 2.488095238095238,
+      "events": 89
+    },
+    {
+      "method": "logistic (rain + terrain), districts held out",
+      "ROC-AUC": 0.8210238388624262,
+      "PR-AUC": 0.01759772551202259,
+      "hit rate at 2.5 false alerts": 0.3707865168539326,
+      "false alerts / tehsil-season": 2.4702380952380953,
+      "events": 89
+    },
+    {
+      "method": "logistic ERA5-only rain model, seasons held out",
+      "ROC-AUC": 0.8127905475387841,
+      "PR-AUC": 0.015828751959670415,
+      "hit rate at 2.5 false alerts": 0.4157303370786517,
+      "false alerts / tehsil-season": 2.488095238095238,
+      "events": 89
+    },
+    {
+      "method": "Rain threshold (precip_cell_max)",
+      "ROC-AUC": 0.8107061557764261,
+      "PR-AUC": 0.012948316586411893,
+      "hit rate at 2.5 false alerts": 0.3707865168539326,
+      "false alerts / tehsil-season": 2.4672619047619047,
+      "events": 89
+    }
+  ],
+  "calibrated": {
+    "roc_auc": 0.8120395658312445,
+    "pr_auc": 0.01933087350169487,
+    "brier": 0.0021956783356826735,
+    "base_rate": 0.0022184002592287944
+  },
+  "levels": {
+    "moderate": {
+      "probability": 0.00431,
+      "target_false_alerts_per_tehsil_season": 8.0,
+      "hit_rate": 0.708,
+      "false_alerts_per_tehsil_season": 8.0
+    },
+    "high": {
+      "probability": 0.0119,
+      "target_false_alerts_per_tehsil_season": 2.5,
+      "hit_rate": 0.416,
+      "false_alerts_per_tehsil_season": 2.49
+    },
+    "very_high": {
+      "probability": 0.02732,
+      "target_false_alerts_per_tehsil_season": 0.5,
+      "hit_rate": 0.101,
+      "false_alerts_per_tehsil_season": 0.48
+    }
+  },
+  "reliability": [
+    {
+      "predicted (mean)": 0.000171776256639323,
+      "observed rate": 0.00019940179461615153,
+      "rows": 5015,
+      "events": 1
+    },
+    {
+      "predicted (mean)": 0.00033526796318266957,
+      "observed rate": 0.00019940179461615153,
+      "rows": 5015,
+      "events": 1
+    },
+    {
+      "predicted (mean)": 0.0005278926066914465,
+      "observed rate": 0.0009970089730807576,
+      "rows": 5015,
+      "events": 5
+    },
+    {
+      "predicted (mean)": 0.0008012070905582355,
+      "observed rate": 0.00039888312724371757,
+      "rows": 5014,
+      "events": 2
+    },
+    {
+      "predicted (mean)": 0.0012232014308570438,
+      "observed rate": 0.0005982053838484546,
+      "rows": 5015,
+      "events": 3
+    },
+    {
+      "predicted (mean)": 0.0019223029942976762,
+      "observed rate": 0.00259222333000997,
+      "rows": 5015,
+      "events": 13
+    },
+    {
+      "predicted (mean)": 0.0032330045826456906,
+      "observed rate": 0.0037886340977068794,
+      "rows": 5015,
+      "events": 19
+    },
+    {
+      "predicted (mean)": 0.009651874849832638,
+      "observed rate": 0.00897308075772682,
+      "rows": 5015,
+      "events": 45
+    }
+  ],
+  "forecast_gap": [
+    {
+      "year": 2024,
+      "lead": 0,
+      "source": "3-model mean",
+      "threshold": 0.0119,
+      "events": 10,
+      "hits": 0,
+      "hit_rate": 0.0,
+      "false_alerts_per_tehsil_season": 0.375,
+      "alert_days_share": 0.003244535519125683
+    },
+    {
+      "year": 2024,
+      "lead": 0,
+      "source": "ecmwf",
+      "threshold": 0.0119,
+      "events": 10,
+      "hits": 0,
+      "hit_rate": 0.0,
+      "false_alerts_per_tehsil_season": 0.3333333333333333,
+      "alert_days_share": 0.003244535519125683
+    },
+    {
+      "year": 2024,
+      "lead": 0,
+      "source": "gfs",
+      "threshold": 0.0119,
+      "events": 10,
+      "hits": 1,
+      "hit_rate": 0.1,
+      "false_alerts_per_tehsil_season": 1.2708333333333333,
+      "alert_days_share": 0.011270491803278689
+    },
+    {
+      "year": 2024,
+      "lead": 0,
+      "source": "icon",
+      "threshold": 0.0119,
+      "events": 10,
+      "hits": 0,
+      "hit_rate": 0.0,
+      "false_alerts_per_tehsil_season": 0.14583333333333334,
+      "alert_days_share": 0.001878415300546448
+    },
+    {
+      "year": 2024,
+      "lead": 1,
+      "source": "3-model mean",
+      "threshold": 0.0119,
+      "events": 10,
+      "hits": 1,
+      "hit_rate": 0.1,
+      "false_alerts_per_tehsil_season": 0.3958333333333333,
+      "alert_days_share": 0.0034153005464480873
+    },
+    {
+      "year": 2024,
+      "lead": 1,
+      "source": "ecmwf",
+      "threshold": 0.0119,
+      "events": 10,
+      "hits": 0,
+      "hit_rate": 0.0,
+      "false_alerts_per_tehsil_season": 0.125,
+      "alert_days_share": 0.0010245901639344263
+    },
+    {
+      "year": 2024,
+      "lead": 1,
+      "source": "gfs",
+      "threshold": 0.0119,
+      "events": 10,
+      "hits": 2,
+      "hit_rate": 0.2,
+      "false_alerts_per_tehsil_season": 1.4375,
+      "alert_days_share": 0.012465846994535519
+    },
+    {
+      "year": 2024,
+      "lead": 1,
+      "source": "icon",
+      "threshold": 0.0119,
+      "events": 10,
+      "hits": 0,
+      "hit_rate": 0.0,
+      "false_alerts_per_tehsil_season": 0.5208333333333334,
+      "alert_days_share": 0.004439890710382513
+    },
+    {
+      "year": 2024,
+      "lead": 2,
+      "source": "3-model mean",
+      "threshold": 0.0119,
+      "events": 10,
+      "hits": 0,
+      "hit_rate": 0.0,
+      "false_alerts_per_tehsil_season": 0.08333333333333333,
+      "alert_days_share": 0.0006830601092896175
+    },
+    {
+      "year": 2024,
+      "lead": 2,
+      "source": "ecmwf",
+      "threshold": 0.0119,
+      "events": 10,
+      "hits": 0,
+      "hit_rate": 0.0,
+      "false_alerts_per_tehsil_season": 0.0625,
+      "alert_days_share": 0.0005122950819672131
+    },
+    {
+      "year": 2024,
+      "lead": 2,
+      "source": "gfs",
+      "threshold": 0.0119,
+      "events": 10,
+      "hits": 1,
+      "hit_rate": 0.1,
+      "false_alerts_per_tehsil_season": 0.8333333333333334,
+      "alert_days_share": 0.008367486338797815
+    },
+    {
+      "year": 2024,
+      "lead": 2,
+      "source": "icon",
+      "threshold": 0.0119,
+      "events": 10,
+      "hits": 0,
+      "hit_rate": 0.0,
+      "false_alerts_per_tehsil_season": 0.4375,
+      "alert_days_share": 0.003756830601092896
+    },
+    {
+      "year": 2024,
+      "lead": 3,
+      "source": "3-model mean",
+      "threshold": 0.0119,
+      "events": 10,
+      "hits": 0,
+      "hit_rate": 0.0,
+      "false_alerts_per_tehsil_season": 0.16666666666666666,
+      "alert_days_share": 0.001366120218579235
+    },
+    {
+      "year": 2024,
+      "lead": 3,
+      "source": "ecmwf",
+      "threshold": 0.0119,
+      "events": 10,
+      "hits": 0,
+      "hit_rate": 0.0,
+      "false_alerts_per_tehsil_season": 0.5,
+      "alert_days_share": 0.004098360655737705
+    },
+    {
+      "year": 2024,
+      "lead": 3,
+      "source": "gfs",
+      "threshold": 0.0119,
+      "events": 10,
+      "hits": 0,
+      "hit_rate": 0.0,
+      "false_alerts_per_tehsil_season": 0.6458333333333334,
+      "alert_days_share": 0.005806010928961749
+    },
+    {
+      "year": 2024,
+      "lead": 3,
+      "source": "icon",
+      "threshold": 0.0119,
+      "events": 10,
+      "hits": 0,
+      "hit_rate": 0.0,
+      "false_alerts_per_tehsil_season": 0.25,
+      "alert_days_share": 0.0030737704918032786
+    },
+    {
+      "year": 2024,
+      "lead": "analysis",
+      "source": "ERA5 (what actually fell)",
+      "threshold": 0.0119,
+      "events": 10,
+      "hits": 3,
+      "hit_rate": 0.3,
+      "false_alerts_per_tehsil_season": 2.0,
+      "alert_days_share": 0.019296448087431695
+    },
+    {
+      "year": 2025,
+      "lead": 0,
+      "source": "3-model mean",
+      "threshold": 0.0119,
+      "events": 31,
+      "hits": 8,
+      "hit_rate": 0.25806451612903225,
+      "false_alerts_per_tehsil_season": 1.0,
+      "alert_days_share": 0.015539617486338798
+    },
+    {
+      "year": 2025,
+      "lead": 0,
+      "source": "ecmwf",
+      "threshold": 0.0119,
+      "events": 31,
+      "hits": 12,
+      "hit_rate": 0.3870967741935484,
+      "false_alerts_per_tehsil_season": 1.2291666666666667,
+      "alert_days_share": 0.018442622950819672
+    },
+    {
+      "year": 2025,
+      "lead": 0,
+      "source": "gfs",
+      "threshold": 0.0119,
+      "events": 31,
+      "hits": 8,
+      "hit_rate": 0.25806451612903225,
+      "false_alerts_per_tehsil_season": 2.0416666666666665,
+      "alert_days_share": 0.030566939890710382
+    },
+    {
+      "year": 2025,
+      "lead": 0,
+      "source": "icon",
+      "threshold": 0.0119,
+      "events": 31,
+      "hits": 13,
+      "hit_rate": 0.41935483870967744,
+      "false_alerts_per_tehsil_season": 1.2916666666666667,
+      "alert_days_share": 0.019296448087431695
+    },
+    {
+      "year": 2025,
+      "lead": 1,
+      "source": "3-model mean",
+      "threshold": 0.0119,
+      "events": 31,
+      "hits": 6,
+      "hit_rate": 0.1935483870967742,
+      "false_alerts_per_tehsil_season": 0.3958333333333333,
+      "alert_days_share": 0.008025956284153006
+    },
+    {
+      "year": 2025,
+      "lead": 1,
+      "source": "ecmwf",
+      "threshold": 0.0119,
+      "events": 31,
+      "hits": 10,
+      "hit_rate": 0.3225806451612903,
+      "false_alerts_per_tehsil_season": 1.0208333333333333,
+      "alert_days_share": 0.015027322404371584
+    },
+    {
+      "year": 2025,
+      "lead": 1,
+      "source": "gfs",
+      "threshold": 0.0119,
+      "events": 31,
+      "hits": 8,
+      "hit_rate": 0.25806451612903225,
+      "false_alerts_per_tehsil_season": 2.1875,
+      "alert_days_share": 0.029030054644808744
+    },
+    {
+      "year": 2025,
+      "lead": 1,
+      "source": "icon",
+      "threshold": 0.0119,
+      "events": 31,
+      "hits": 1,
+      "hit_rate": 0.03225806451612903,
+      "false_alerts_per_tehsil_season": 0.3333333333333333,
+      "alert_days_share": 0.003586065573770492
+    },
+    {
+      "year": 2025,
+      "lead": 2,
+      "source": "3-model mean",
+      "threshold": 0.0119,
+      "events": 31,
+      "hits": 6,
+      "hit_rate": 0.1935483870967742,
+      "false_alerts_per_tehsil_season": 0.4791666666666667,
+      "alert_days_share": 0.007172131147540984
+    },
+    {
+      "year": 2025,
+      "lead": 2,
+      "source": "ecmwf",
+      "threshold": 0.0119,
+      "events": 31,
+      "hits": 5,
+      "hit_rate": 0.16129032258064516,
+      "false_alerts_per_tehsil_season": 0.6666666666666666,
+      "alert_days_share": 0.00819672131147541
+    },
+    {
+      "year": 2025,
+      "lead": 2,
+      "source": "gfs",
+      "threshold": 0.0119,
+      "events": 31,
+      "hits": 5,
+      "hit_rate": 0.16129032258064516,
+      "false_alerts_per_tehsil_season": 1.375,
+      "alert_days_share": 0.01673497267759563
+    },
+    {
+      "year": 2025,
+      "lead": 2,
+      "source": "icon",
+      "threshold": 0.0119,
+      "events": 31,
+      "hits": 5,
+      "hit_rate": 0.16129032258064516,
+      "false_alerts_per_tehsil_season": 0.5625,
+      "alert_days_share": 0.006318306010928962
+    },
+    {
+      "year": 2025,
+      "lead": 3,
+      "source": "3-model mean",
+      "threshold": 0.0119,
+      "events": 31,
+      "hits": 3,
+      "hit_rate": 0.0967741935483871,
+      "false_alerts_per_tehsil_season": 0.4375,
+      "alert_days_share": 0.006147540983606557
+    },
+    {
+      "year": 2025,
+      "lead": 3,
+      "source": "ecmwf",
+      "threshold": 0.0119,
+      "events": 31,
+      "hits": 4,
+      "hit_rate": 0.12903225806451613,
+      "false_alerts_per_tehsil_season": 0.6666666666666666,
+      "alert_days_share": 0.007684426229508197
+    },
+    {
+      "year": 2025,
+      "lead": 3,
+      "source": "gfs",
+      "threshold": 0.0119,
+      "events": 31,
+      "hits": 8,
+      "hit_rate": 0.25806451612903225,
+      "false_alerts_per_tehsil_season": 1.8125,
+      "alert_days_share": 0.020150273224043717
+    },
+    {
+      "year": 2025,
+      "lead": 3,
+      "source": "icon",
+      "threshold": 0.0119,
+      "events": 31,
+      "hits": 2,
+      "hit_rate": 0.06451612903225806,
+      "false_alerts_per_tehsil_season": 0.8541666666666666,
+      "alert_days_share": 0.009562841530054645
+    },
+    {
+      "year": 2025,
+      "lead": "analysis",
+      "source": "ERA5 (what actually fell)",
+      "threshold": 0.0119,
+      "events": 31,
+      "hits": 17,
+      "hit_rate": 0.5483870967741935,
+      "false_alerts_per_tehsil_season": 5.104166666666667,
+      "alert_days_share": 0.05549863387978142
+    }
+  ]
+}

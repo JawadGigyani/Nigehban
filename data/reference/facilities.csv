@@ -634,8 +634,8 @@ high_ground:osm:n2644624270,high_ground,serves 6 high-exposure villages within 3
 high_ground:gn:11414850,high_ground,serves 8 high-exposure villages within 3 km,3,Mandarra,,34.51528,72.4181,buner__daggar,45.2,low,False,derived from DEM (M3); no known building
 high_ground:osm:n4989275687,high_ground,serves 6 high-exposure villages within 3 km,3,Gata Maira,,34.58727,72.45499,buner__daggar,17.2,low,False,derived from DEM (M3); no known building
 high_ground:gn:1482241,high_ground,serves 6 high-exposure villages within 3 km,3,Tahsil,,34.5049,72.4655,buner__daggar,31.6,low,False,derived from DEM (M3); no known building
-high_ground:osm:w1126947011,high_ground,serves 5 high-exposure villages within 3 km,3,Sunigram Kalay,,34.48708,72.48402,buner__gagra,15.7,low,False,derived from DEM (M3); no known building
 high_ground:gn:1384725,high_ground,serves 5 high-exposure villages within 3 km,3,Tor Gat Sunigram,,34.48712,72.48309,buner__gagra,15.7,low,False,derived from DEM (M3); no known building
+high_ground:osm:w1126947011,high_ground,serves 5 high-exposure villages within 3 km,3,Sunigram Kalay,,34.48708,72.48402,buner__gagra,15.7,low,False,derived from DEM (M3); no known building
 high_ground:osm:n4989734668,high_ground,serves 5 high-exposure villages within 3 km,3,Sunigram,,34.48774,72.48436,buner__gagra,16.8,low,False,derived from DEM (M3); no known building
 high_ground:gn:1171632,high_ground,serves 1 high-exposure villages within 3 km,3,Maghdarra,,34.2156,72.46522,buner__khado_khel,73.0,low,False,derived from DEM (M3); no known building
 high_ground:osm:n8883973195,high_ground,serves 1 high-exposure villages within 3 km,3,Mughdara,,34.21558,72.46524,buner__khado_khel,73.0,low,False,derived from DEM (M3); no known building
@@ -700,33 +700,33 @@ high_ground:osm:n2832778154,high_ground,serves 2 high-exposure villages within 3
 high_ground:osm:n2851764150,high_ground,serves 6 high-exposure villages within 3 km,3,Kulālai,,34.71662,72.67875,shangla__puran,43.1,low,False,derived from DEM (M3); no known building
 high_ground:osm:n2851764144,high_ground,serves 5 high-exposure villages within 3 km,3,Kaikor,,34.71958,72.68891,shangla__puran,40.7,low,False,derived from DEM (M3); no known building
 high_ground:osm:n2851764151,high_ground,serves 5 high-exposure villages within 3 km,3,Kuz Hawārai,,34.72218,72.6916,shangla__puran,47.9,low,False,derived from DEM (M3); no known building
-high_ground:gn:7033618,high_ground,serves 16 high-exposure villages within 3 km,3,Gulkada,,34.76213,72.363,swat__babuzai,19.1,low,False,derived from DEM (M3); no known building
-high_ground:gn:7033612,high_ground,serves 14 high-exposure villages within 3 km,3,Mohallah Rangmala,,34.7759,72.368,swat__babuzai,28.3,low,False,derived from DEM (M3); no known building
-high_ground:gn:7033627,high_ground,serves 14 high-exposure villages within 3 km,3,Mohallah Qazi Baba,,34.7797,72.3651,swat__babuzai,36.5,low,False,derived from DEM (M3); no known building
-high_ground:osm:n12011180120,high_ground,serves 17 high-exposure villages within 3 km,3,Zorh Kalay,,35.2005,72.53752,swat__bahrain,101.2,low,False,derived from DEM (M3); no known building
-high_ground:osm:n12011180119,high_ground,serves 16 high-exposure villages within 3 km,3,Tilba,,35.20504,72.54147,swat__bahrain,34.0,low,False,derived from DEM (M3); no known building
-high_ground:gn:1478786,high_ground,serves 15 high-exposure villages within 3 km,3,Zor Kalle,,35.19636,72.5392,swat__bahrain,24.8,low,False,derived from DEM (M3); no known building
-high_ground:gn:1383843,high_ground,serves 2 high-exposure villages within 3 km,3,Zarra Khela,,34.68175,72.12973,swat__barikot,16.5,low,False,derived from DEM (M3); no known building
-high_ground:osm:n4670274712,high_ground,serves 0 high-exposure villages within 3 km,3,Natmaira,,34.65738,72.23518,swat__barikot,16.9,low,False,derived from DEM (M3); no known building
-high_ground:gn:11409965,high_ground,serves 0 high-exposure villages within 3 km,3,Hamidabad,,34.70262,72.21741,swat__barikot,17.5,low,False,derived from DEM (M3); no known building
-high_ground:gn:1420830,high_ground,serves 2 high-exposure villages within 3 km,3,Shagai,,34.82639,72.52639,swat__charbagh,28.4,low,False,derived from DEM (M3); no known building
-high_ground:gn:1420818,high_ground,serves 2 high-exposure villages within 3 km,3,Makad,,34.84444,72.50833,swat__charbagh,45.2,low,False,derived from DEM (M3); no known building
-high_ground:gn:1162063,high_ground,serves 1 high-exposure villages within 3 km,3,Zindwala,,34.83833,72.4736,swat__charbagh,81.8,low,False,derived from DEM (M3); no known building
-high_ground:gn:1384632,high_ground,serves 2 high-exposure villages within 3 km,3,Kamarbagh,,34.84033,72.43854,swat__kabal,19.4,low,False,derived from DEM (M3); no known building
-high_ground:gn:1183364,high_ground,serves 2 high-exposure villages within 3 km,3,Bara Bandai,,34.82301,72.39844,swat__kabal,21.7,low,False,derived from DEM (M3); no known building
-high_ground:gn:1481836,high_ground,serves 1 high-exposure villages within 3 km,3,Ehsanabad,,34.83031,72.27075,swat__kabal,16.0,low,False,derived from DEM (M3); no known building
-high_ground:osm:n4439819004,high_ground,serves 5 high-exposure villages within 3 km,3,Karen,,35.57101,72.42315,swat__kalam,20.1,low,False,derived from DEM (M3); no known building
-high_ground:osm:n11566117367,high_ground,serves 4 high-exposure villages within 3 km,3,Bafar,,35.52846,72.64325,swat__kalam,27.9,low,False,derived from DEM (M3); no known building
-high_ground:gn:1162883,high_ground,serves 4 high-exposure villages within 3 km,3,Ushu,,35.53071,72.64339,swat__kalam,27.9,low,False,derived from DEM (M3); no known building
-high_ground:gn:1377459,high_ground,serves 11 high-exposure villages within 3 km,3,Sangobat,,35.07136,72.50011,swat__khwaza_khela,56.9,low,False,derived from DEM (M3); no known building
-high_ground:gn:1377460,high_ground,serves 10 high-exposure villages within 3 km,3,Taudar Oho,,35.06944,72.50278,swat__khwaza_khela,51.7,low,False,derived from DEM (M3); no known building
-high_ground:osm:n11524066446,high_ground,serves 9 high-exposure villages within 3 km,3,Taude Oba,,35.06688,72.50774,swat__khwaza_khela,21.8,low,False,derived from DEM (M3); no known building
-high_ground:gn:1391116,high_ground,serves 10 high-exposure villages within 3 km,3,Kohistani Banda,,35.12222,72.39028,swat__matta_kharirai,66.2,low,False,derived from DEM (M3); no known building
-high_ground:osm:n12014282475,high_ground,serves 10 high-exposure villages within 3 km,3,Batkoo,,35.11644,72.39927,swat__matta_kharirai,91.7,low,False,derived from DEM (M3); no known building
-high_ground:gn:7443262,high_ground,serves 8 high-exposure villages within 3 km,3,Kilai,,35.1306,72.3968,swat__matta_kharirai,69.3,low,False,derived from DEM (M3); no known building
-high_ground:gn:1391039,high_ground,serves 8 high-exposure villages within 3 km,3,Roringar,,35.07222,72.32308,swat__matta_sebujni,17.5,low,False,derived from DEM (M3); no known building
-high_ground:osm:n895267139,high_ground,serves 8 high-exposure villages within 3 km,3,Serai,,35.07082,72.32213,swat__matta_sebujni,25.4,low,False,derived from DEM (M3); no known building
-high_ground:gn:1391016,high_ground,serves 7 high-exposure villages within 3 km,3,Nalkot,,35.06439,72.30597,swat__matta_sebujni,39.5,low,False,derived from DEM (M3); no known building
+high_ground:gn:7033612,high_ground,serves 16 high-exposure villages within 3 km,3,Mohallah Rangmala,,34.7759,72.368,swat__babuzai,20.5,low,False,derived from DEM (M3); no known building
+high_ground:gn:1481846,high_ground,serves 16 high-exposure villages within 3 km,3,Malukabad,,34.77789,72.36843,swat__babuzai,24.5,low,False,derived from DEM (M3); no known building
+high_ground:gn:7033627,high_ground,serves 16 high-exposure villages within 3 km,3,Mohallah Qazi Baba,,34.7797,72.3651,swat__babuzai,28.6,low,False,derived from DEM (M3); no known building
+high_ground:osm:n12011180120,high_ground,serves 18 high-exposure villages within 3 km,3,Zorh Kalay,,35.2005,72.53752,swat__bahrain,99.6,low,False,derived from DEM (M3); no known building
+high_ground:gn:1478786,high_ground,serves 16 high-exposure villages within 3 km,3,Zor Kalle,,35.19636,72.5392,swat__bahrain,21.8,low,False,derived from DEM (M3); no known building
+high_ground:osm:n12011180121,high_ground,serves 14 high-exposure villages within 3 km,3,Jaga,,35.19201,72.53416,swat__bahrain,86.5,low,False,derived from DEM (M3); no known building
+high_ground:gn:1383842,high_ground,serves 3 high-exposure villages within 3 km,3,Chungai,,34.6794,72.12183,swat__barikot,23.4,low,False,derived from DEM (M3); no known building
+high_ground:gn:1383756,high_ground,serves 1 high-exposure villages within 3 km,3,Parurri,,34.70536,72.22842,swat__barikot,15.2,low,False,derived from DEM (M3); no known building
+high_ground:osm:n4670274712,high_ground,serves 1 high-exposure villages within 3 km,3,Natmaira,,34.65738,72.23518,swat__barikot,20.4,low,False,derived from DEM (M3); no known building
+high_ground:gn:1420830,high_ground,serves 2 high-exposure villages within 3 km,3,Shagai,,34.82639,72.52639,swat__charbagh,19.8,low,False,derived from DEM (M3); no known building
+high_ground:gn:1420818,high_ground,serves 2 high-exposure villages within 3 km,3,Makad,,34.84444,72.50833,swat__charbagh,49.8,low,False,derived from DEM (M3); no known building
+high_ground:gn:1162063,high_ground,serves 1 high-exposure villages within 3 km,3,Zindwala,,34.83833,72.4736,swat__charbagh,61.6,low,False,derived from DEM (M3); no known building
+high_ground:gn:1481833,high_ground,serves 3 high-exposure villages within 3 km,3,Landi Choya,,34.84875,72.26775,swat__kabal,17.6,low,False,derived from DEM (M3); no known building
+high_ground:gn:1384645,high_ground,serves 3 high-exposure villages within 3 km,3,Samsel Banda,,34.82434,72.27162,swat__kabal,21.2,low,False,derived from DEM (M3); no known building
+high_ground:gn:11623915,high_ground,serves 3 high-exposure villages within 3 km,3,Devloi,,34.85859,72.25905,swat__kabal,29.3,low,False,derived from DEM (M3); no known building
+high_ground:osm:n2948990458,high_ground,serves 6 high-exposure villages within 3 km,3,Matiltan,,35.54146,72.66128,swat__kalam,69.5,low,False,derived from DEM (M3); no known building
+high_ground:gn:1481730,high_ground,serves 5 high-exposure villages within 3 km,3,Usharan,,35.50348,72.58468,swat__kalam,72.0,low,False,derived from DEM (M3); no known building
+high_ground:gn:1478326,high_ground,serves 4 high-exposure villages within 3 km,3,Bandi,,35.60141,72.41789,swat__kalam,19.0,low,False,derived from DEM (M3); no known building
+high_ground:osm:n12011397750,high_ground,serves 13 high-exposure villages within 3 km,3,Yaka Badesha,,35.05836,72.49182,swat__khwaza_khela,101.2,low,False,derived from DEM (M3); no known building
+high_ground:gn:1377455,high_ground,serves 12 high-exposure villages within 3 km,3,Nakhtar,,35.05665,72.51112,swat__khwaza_khela,78.1,low,False,derived from DEM (M3); no known building
+high_ground:gn:1391031,high_ground,serves 11 high-exposure villages within 3 km,3,Pach Bachaabad,,35.06326,72.48328,swat__khwaza_khela,18.9,low,False,derived from DEM (M3); no known building
+high_ground:osm:n12014282475,high_ground,serves 10 high-exposure villages within 3 km,3,Batkoo,,35.11644,72.39927,swat__matta_kharirai,27.5,low,False,derived from DEM (M3); no known building
+high_ground:gn:1391116,high_ground,serves 10 high-exposure villages within 3 km,3,Kohistani Banda,,35.12222,72.39028,swat__matta_kharirai,70.5,low,False,derived from DEM (M3); no known building
+high_ground:gn:7443262,high_ground,serves 8 high-exposure villages within 3 km,3,Kilai,,35.1306,72.3968,swat__matta_kharirai,30.9,low,False,derived from DEM (M3); no known building
+high_ground:gn:1391016,high_ground,serves 10 high-exposure villages within 3 km,3,Nalkot,,35.06439,72.30597,swat__matta_sebujni,26.0,low,False,derived from DEM (M3); no known building
+high_ground:osm:n895267139,high_ground,serves 10 high-exposure villages within 3 km,3,Serai,,35.07082,72.32213,swat__matta_sebujni,30.3,low,False,derived from DEM (M3); no known building
+high_ground:gn:1390985,high_ground,serves 9 high-exposure villages within 3 km,3,Awarai,,35.04272,72.3163,swat__matta_sebujni,84.1,low,False,derived from DEM (M3); no known building
 high_ground:gn:11138155,high_ground,serves 7 high-exposure villages within 3 km,3,Asarmara,,35.12624,71.8114,upper_dir__barawal,53.1,low,False,derived from DEM (M3); no known building
 high_ground:osm:n11244164435,high_ground,serves 6 high-exposure villages within 3 km,3,Barawal Bandi,,35.08991,71.76399,upper_dir__barawal,20.9,low,False,derived from DEM (M3); no known building
 high_ground:gn:1373886,high_ground,serves 6 high-exposure villages within 3 km,3,Dilakal Kas,,35.09545,71.77811,upper_dir__barawal,24.7,low,False,derived from DEM (M3); no known building

@@ -19,11 +19,24 @@ from backend.app.hydromet import HydrometService
 D = dt.date
 
 
+def _num(v: float) -> str:
+    """Keep small numbers readable: 1234 -> 1234, 12.34 -> 12.3, 0.0123 -> 0.0123."""
+
+    a = abs(v)
+    if a >= 100:
+        return f"{v:.0f}"
+    if a >= 10:
+        return f"{v:.1f}"
+    if a >= 0.1 or a == 0:
+        return f"{v:.2f}"
+    return f"{v:.3g}"
+
+
 def _md(frame: pd.DataFrame) -> str:
     cols = list(frame.columns)
     lines = ["| " + " | ".join(map(str, cols)) + " |", "|" + "---|" * len(cols)]
     for row in frame.itertuples(index=False):
-        lines.append("| " + " | ".join("" if pd.isna(v) else (f"{v:.1f}" if isinstance(v, float) else str(v))
+        lines.append("| " + " | ".join("" if pd.isna(v) else (_num(v) if isinstance(v, float) else str(v))
                                        for v in row) + " |")
     return "\n".join(lines)
 
