@@ -37,6 +37,28 @@ class CycleReport:
                 "deliveries_ok": self.deliveries_ok, "deliveries_failed": self.deliveries_failed}
 
 
+SMS_LEVEL = {"en": {"high": "HIGH", "very_high": "VERY HIGH", "moderate": "MODERATE", "low": "LOW"},
+             "ur_roman": {"high": "ZYADA", "very_high": "BOHAT ZYADA", "moderate": "DARMIYANA", "low": "KAM"}}
+
+
+def sms_text(alert: AlertRow, language: str) -> str:
+    """Plain-text SMS under 160 characters (one part; Urdu script would cost 3-5 parts).
+
+    Built by code from the alert's fields, so the level and place are exactly the model's.
+    """
+
+    district, tehsil = alert.tehsil_id.split("__")
+    place = f"{tehsil.replace('_', ' ').title()} ({district.replace('_', ' ').title()})"
+    day = f"{alert.valid_date:%d %b}"
+    if language == "en":
+        text = (f"Nigehban: {SMS_LEVEL['en'][alert.level]} flash-flood risk {place} {day}. "
+                f"Avoid streams, move to high ground if water rises. Emergency 1122")
+    else:
+        text = (f"Nigehban: {place} {day} selabi raile ka khatra {SMS_LEVEL['ur_roman'][alert.level]}. "
+                f"Nalon se door rahein, oonchi jagah jayein. Emergency 1122")
+    return text[:160]
+
+
 class AlertEngine:
     def __init__(self, risk_service, composer, channels: dict, cipher: ContactCipher | None,
                  village_tehsil: dict[str, str], in_scope: set[str],
@@ -106,6 +128,8 @@ class AlertEngine:
         for sub in self.subscribers_for(session, alert.tehsil_id):
             text = {Language.UR.value: alert.message_ur, Language.EN.value: alert.message_en,
                     Language.UR_ROMAN.value: alert.message_ur_roman}.get(sub.language, alert.message_ur)
+            if sub.channel == ChannelName.SMS.value:
+                text = sms_text(alert, sub.language)  # one plain-text SMS part (cost)
             channel = self.channels.get(ChannelName(sub.channel))
             try:
                 address = self.cipher.decrypt(sub.address_encrypted) if self.cipher else ""
