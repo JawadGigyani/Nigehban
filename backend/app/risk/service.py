@@ -42,10 +42,17 @@ class RiskModel:
         cal = meta["calibration"]
         self._a, self._b = cal["a"], cal["b"]
         self.thresholds = {RiskLevel(k): v["probability"] for k, v in meta["levels"].items()}
+        # Forecast-tuned thresholds per lead (M7); used for forecast inputs when present.
+        self.lead_thresholds: dict[int, dict[RiskLevel, float]] = {
+            int(lead): {RiskLevel(k): v for k, v in levels.items()}
+            for lead, levels in meta.get("forecast_levels", {}).items()}
 
     @classmethod
     def load(cls, directory: Path = ARTIFACT_DIR) -> RiskModel:
         meta = json.loads((directory / "meta.json").read_text(encoding="utf-8"))
+        forecast_levels = directory / "forecast_levels.json"
+        if forecast_levels.is_file():
+            meta["forecast_levels"] = json.loads(forecast_levels.read_text(encoding="utf-8"))["levels"]
         return cls(joblib.load(directory / "model.joblib"), meta)
 
     @property
@@ -61,9 +68,14 @@ class RiskModel:
     def predict(self, frame: pd.DataFrame) -> np.ndarray:
         return self.calibrate(self.raw(frame))
 
-    def level(self, probability: float) -> RiskLevel:
+    def level(self, probability: float, lead_days: int | None = None) -> RiskLevel:
+        """Level from fixed thresholds. With a lead day, the forecast-tuned thresholds apply."""
+
+        thresholds = self.thresholds
+        if lead_days is not None and self.lead_thresholds:
+            thresholds = self.lead_thresholds.get(max(lead_days, 1), thresholds)
         for level in (RiskLevel.VERY_HIGH, RiskLevel.HIGH, RiskLevel.MODERATE):
-            if probability >= self.thresholds[level]:
+            if probability >= thresholds[level]:
                 return level
         return RiskLevel.LOW
 
@@ -104,11 +116,12 @@ def describe_driver(driver: RiskDriver) -> str:
 class RiskService:
     """Implements the RiskProvider protocol over the hydromet service."""
 
-    def __init__(self, hydromet, model: RiskModel, static: pd.DataFrame, locator=None) -> None:
+    def __init__(self, hydromet, model: RiskModel, static: pd.DataFrame, locator=None, rivers=None) -> None:
         self.hydromet = hydromet
         self.model = model
         self.static = static
         self.locator = locator
+        self.rivers = rivers  # RiverMonitor or None
         self._cache: dict[tuple[dt.date, bool], list[TehsilRiskForecast]] = {}
 
     @classmethod
@@ -116,12 +129,19 @@ class RiskService:
         from backend.app.geo.locator import TehsilLocator
         from backend.app.hydromet import HydrometService
 
-        return cls(HydrometService.from_data_dir(data_dir), RiskModel.load(), load_static(data_dir),
-                   TehsilLocator.from_geojson(data_dir / "reference" / "tehsils.geojson"))
+        from backend.app.config import get_settings
+        from backend.app.hydromet.rivers import RiverMonitor
+
+        hydromet = HydrometService.from_data_dir(data_dir)
+        rivers = RiverMonitor.from_data_dir(data_dir, hydromet.client,
+                                            get_settings().river_flag_return_period)
+        return cls(hydromet, RiskModel.load(), load_static(data_dir),
+                   TehsilLocator.from_geojson(data_dir / "reference" / "tehsils.geojson"), rivers)
 
     # ---- core ------------------------------------------------------------------------------
 
-    def score(self, hydromet_rows: pd.DataFrame, issued_at: dt.datetime) -> list[TehsilRiskForecast]:
+    def score(self, hydromet_rows: pd.DataFrame, issued_at: dt.datetime,
+              river_flags: dict | None = None) -> list[TehsilRiskForecast]:
         frame = build_matrix(hydromet_rows, self.static)
         if frame.empty:
             return []
@@ -138,8 +158,9 @@ class RiskService:
             p = float(row.p)
             out.append(TehsilRiskForecast(
                 tehsil_id=row.tehsil_id, issued_at=issued_at, valid_date=row.date, lead_days=int(row.lead_days),
-                probability=round(p, 4), level=self.model.level(p), drivers=tuple(drv),
-                models_used=tuple(HydrometModel(m) for m in row.models)))
+                probability=round(p, 4), level=self.model.level(p, int(row.lead_days)), drivers=tuple(drv),
+                models_used=tuple(HydrometModel(m) for m in row.models),
+                glofas_flag=(row.tehsil_id, row.date) in (river_flags or {})))
         return out
 
     def forecast(self, issue: dt.date | None = None, replay: bool = False) -> list[TehsilRiskForecast]:
@@ -154,8 +175,30 @@ class RiskService:
             else:
                 rows = self.hydromet.live_features(issue)
                 issued_at = dt.datetime.now(PKT)
-            self._cache[key] = self.score(rows, issued_at)
+            self._cache[key] = self.score(rows, issued_at, self.river_flags(issue, replay))
         return self._cache[key]
+
+    def river_flags(self, issue: dt.date, replay: bool) -> dict:
+        """(tehsil_id, date) -> RiverReading at or above the flag level, for lead 0–3."""
+
+        if self.rivers is None:
+            return {}
+        try:
+            if replay:  # no archived GloFAS forecasts: use the reanalysis for those days
+                readings = self.rivers.history(issue, issue + dt.timedelta(days=3))
+            else:
+                readings = self.rivers.forecast()
+        except Exception:  # the river signal is secondary; never block the risk outlook
+            return {}
+        return self.rivers.tehsil_flags(readings)
+
+    def river_readings(self, issue: dt.date | None = None, replay: bool = False) -> list:
+        """Raw readings for the board (all points, lead 0–3)."""
+
+        if self.rivers is None:
+            return []
+        issue = issue or dt.datetime.now(PKT).date()
+        return self.rivers.history(issue, issue + dt.timedelta(days=3)) if replay else self.rivers.forecast()
 
     # ---- RiskProvider ----------------------------------------------------------------------
 

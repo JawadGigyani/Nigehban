@@ -1,0 +1,11 @@
+point_id,name,river,lat,lon,tehsils
+swat_kalam,Swat River at Kalam,Swat,35.470,72.590,swat__kalam
+swat_bahrain,Swat River at Bahrain,Swat,35.205,72.545,swat__bahrain
+swat_khwazakhela,Swat River at Khwazakhela,Swat,34.935,72.470,swat__khwaza_khela;swat__matta_kharirai;swat__matta_sebujni;swat__charbagh
+swat_mingora,Swat River at Mingora (Fizagat),Swat,34.765,72.375,swat__babuzai;swat__kabal
+swat_barikot,Swat River at Barikot,Swat,34.680,72.200,swat__barikot
+swat_chakdara,Swat River at Chakdara,Swat,34.645,72.025,lower_dir__adenzai;malakand__bat_khela;malakand__dargai
+panjkora_timergara,Panjkora River at Timergara,Panjkora,34.830,71.840,lower_dir__timergara;lower_dir__balambat;lower_dir__munda
+indus_besham,Indus River at Besham,Indus,34.930,72.880,shangla__bisham
+kunhar_balakot,Kunhar River at Balakot,Kunhar,34.548,73.350,mansehra__bala_kot
+barandu_daggar,Barandu River at Daggar,Barandu,34.510,72.480,buner__daggar;buner__gagra

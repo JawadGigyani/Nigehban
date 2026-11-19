@@ -1,0 +1,116 @@
+{
+  "source": "GloFAS via Open-Meteo Flood API",
+  "method": "Gumbel fit to Apr-Oct yearly peaks 1997-2025 at the main-channel GloFAS cell (highest mean discharge within 0.1 degrees)",
+  "points": [
+    {
+      "point_id": "swat_kalam",
+      "name": "Swat River at Kalam",
+      "lat": 35.37,
+      "lon": 72.59,
+      "q2": 184.9,
+      "q5": 237.0,
+      "q10": 271.5,
+      "q20": 304.6,
+      "years_used": 29
+    },
+    {
+      "point_id": "swat_bahrain",
+      "name": "Swat River at Bahrain",
+      "lat": 35.105,
+      "lon": 72.495,
+      "q2": 291.1,
+      "q5": 369.6,
+      "q10": 421.6,
+      "q20": 471.5,
+      "years_used": 29
+    },
+    {
+      "point_id": "swat_khwazakhela",
+      "name": "Swat River at Khwazakhela",
+      "lat": 34.835,
+      "lon": 72.37,
+      "q2": 306.1,
+      "q5": 389.4,
+      "q10": 444.5,
+      "q20": 497.4,
+      "years_used": 29
+    },
+    {
+      "point_id": "swat_mingora",
+      "name": "Swat River at Mingora (Fizagat)",
+      "lat": 34.765,
+      "lon": 72.275,
+      "q2": 318.3,
+      "q5": 407.3,
+      "q10": 466.3,
+      "q20": 522.8,
+      "years_used": 29
+    },
+    {
+      "point_id": "swat_barikot",
+      "name": "Swat River at Barikot",
+      "lat": 34.68,
+      "lon": 72.1,
+      "q2": 325.1,
+      "q5": 417.4,
+      "q10": 478.4,
+      "q20": 537.0,
+      "years_used": 29
+    },
+    {
+      "point_id": "swat_chakdara",
+      "name": "Swat River at Chakdara",
+      "lat": 34.645,
+      "lon": 71.925,
+      "q2": 335.3,
+      "q5": 429.7,
+      "q10": 492.1,
+      "q20": 552.1,
+      "years_used": 29
+    },
+    {
+      "point_id": "panjkora_timergara",
+      "name": "Panjkora River at Timergara",
+      "lat": 34.73,
+      "lon": 71.74,
+      "q2": 129.9,
+      "q5": 185.0,
+      "q10": 221.5,
+      "q20": 256.5,
+      "years_used": 29
+    },
+    {
+      "point_id": "indus_besham",
+      "name": "Indus River at Besham",
+      "lat": 34.83,
+      "lon": 72.88,
+      "q2": 10066.7,
+      "q5": 12428.2,
+      "q10": 13991.7,
+      "q20": 15491.4,
+      "years_used": 29
+    },
+    {
+      "point_id": "kunhar_balakot",
+      "name": "Kunhar River at Balakot",
+      "lat": 34.448,
+      "lon": 73.45,
+      "q2": 426.0,
+      "q5": 568.5,
+      "q10": 662.8,
+      "q20": 753.3,
+      "years_used": 29
+    },
+    {
+      "point_id": "barandu_daggar",
+      "name": "Barandu River at Daggar",
+      "lat": 34.46,
+      "lon": 72.58,
+      "q2": 57.8,
+      "q5": 95.7,
+      "q10": 120.8,
+      "q20": 144.9,
+      "years_used": 29
+    }
+  ]
+}

@@ -14,6 +14,22 @@ from backend.app.config import get_settings
 from backend.app.risk.service import RiskService, describe_driver
 from pipelines.hydromet.qa import _md
 
+NOTES = """
+
+## Reading these results
+
+- **Levels used here were tuned on the 2024-2025 forecasts, which include these days**, so these
+  replays are flattering. The fair test is the cross-season backtest in reports/m7_backtest.md
+  (each season's levels tuned on the other season).
+- **Buner day (15 Aug 2025):** most flooded tehsils were at high 1-3 days ahead. The forecasts
+  showed heavy rain across Swat, Buner and Mansehra.
+- **Swat day (27 Jun 2025):** missed (moderate at best, 2 days ahead in Babuzai). Every forecast
+  had only 10-14 mm for these tehsils, against about 57 mm that fell. The GloFAS river flag did not
+  fire either: GloFAS showed an ordinary flow at Mingora that day.
+- Probabilities look small because floods are rare (about 0.2% of tehsil-days); "high" means
+  roughly 3-5 times the usual chance. The board and alerts show levels, not raw probabilities.
+"""
+
 CASES = [
     ("Buner cloudburst", dt.date(2025, 8, 15), ["buner__", "swat__", "shangla__", "bajaur__", "mansehra__"]),
     ("Swat River flood", dt.date(2025, 6, 27), ["swat__"]),
@@ -46,7 +62,8 @@ def main() -> int:
                         + _md(table))
     text = (f"# M5 replay check\n\nGenerated {dt.date.today()} by `python -m pipelines.risk.replay_check`. "
             "Forecasts as they were issued 1–3 days before each demo day (Open-Meteo archived runs, "
-            "ECMWF + GFS + ICON averaged), scored by the shipped model.\n\n" + "\n\n".join(sections) + "\n")
+            "ECMWF + GFS + ICON averaged), scored by the shipped model with the forecast-tuned levels.\n\n"
+            + "\n\n".join(sections) + NOTES)
     Path("reports/m5_replay_check.md").write_text(text, encoding="utf-8")
     print(text[:3000])
     return 0
