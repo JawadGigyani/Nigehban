@@ -11,7 +11,7 @@ administrations and Rescue 1122 a risk board. It supports official warnings and 
 | Data (PDMA flood events, weather history, terrain, villages, shelters, rivers) | Done |
 | Risk model (forecast 1–3 days ahead per tehsil) and backtest | Done, gate G2 passed |
 | Alert engine (rules, Urdu / English / Roman Urdu text, voice, de-duplication) | Done |
-| Citizen app (Urdu PWA) and authority board | Done |
+| Public website (English, Urdu, Roman Urdu; desktop and phone) and authority board | Done |
 | Ask Nigehban (grounded Q&A agent), place check, route to safety, advisory drafts | Done |
 | Satellite rain layer on the board (NASA IMERG) | Done |
 | Security hardening (rate limits, headers, encrypted contacts, board login) | Done |
@@ -60,8 +60,8 @@ cd frontend; npm run dev
 
 Open:
 
-- http://localhost:3000 for the citizen app (open it on a phone-size window, or press F12 then the
-  phone icon in the browser).
+- http://localhost:3000 for the public website. Pages: Home, Risk map, My area, Ask, Alerts,
+  Safety guide. It also works on a phone-size window (F12, then the phone icon).
 - http://localhost:3000/board for the authority board (log in with the board password).
 
 In the Claude app you can also start both from the Browser pane: they are the `api` and `web`
@@ -73,7 +73,7 @@ entries in `.claude/launch.json`.
 .venv\Scripts\python -m pytest -q
 ```
 
-Expected: about 191 passed, 5 skipped (the skipped ones need live keys). Live LLM tests are opt-in:
+Expected: about 192 passed, 5 skipped (the skipped ones need live keys). Live LLM tests are opt-in:
 
 ```powershell
 $env:NIGEHBAN_RUN_LIVE="1"; .venv\Scripts\python -m pytest -m live; Remove-Item Env:NIGEHBAN_RUN_LIVE
@@ -107,34 +107,41 @@ happened next.
 7. **Alerts sent (replay)** at the bottom lists alerts the engine produced for that replay.
 8. Also try **Replay: 26 Jun 2025 (Swat River flood eve)**, or any date from 1 Mar 2024.
 
-### B. Citizen app (Urdu)
+### B. Public website
 
-1. Open http://localhost:3000. It is in Urdu by default; switch language in **Me** (میں):
-   Urdu, English, or Roman Urdu.
-2. In **Me**, set **Demo: replay a past date** to 14 Aug 2025. A yellow "demo mode" banner shows.
-3. **Risk** tab: search a place (for example "Mingora", "Pir Baba", "Daggar") or use your location.
-   You get the level for today and the next 3 days, the reasons, what to do, the nearest safer
-   places and Rescue 1122. Use **Am I in a danger zone?** to check the exact point: it says
-   whether the spot is low ground beside a large river, and gives a walking route to the nearest
-   higher ground or shelter.
-4. **Ask** tab: ask in Urdu, English or Roman Urdu, for example:
-   - "کیا کل بونیر میں سیلاب کا خطرہ ہے؟"
+1. Open http://localhost:3000. Switch language in the header: **اردو**, **EN** or **Roman**.
+   The choice is remembered.
+2. Click the **Live** pill in the header and choose **14 Aug 2025 · Buner cloudburst**. A yellow bar
+   says you are viewing a past forecast; every page now shows that day. **Back to live** undoes it.
+3. **Home**: the map shows each tehsil's level. Switch days (Today, Tomorrow, …) and switch to
+   **Satellite rain**. The card on the map shows the highest-risk tehsil; click any tehsil to see
+   its card, then **See details**. The counts under the map, the feature cards, "How Nigehban
+   works", and the safety band follow.
+4. **Search** on Home (for example "Mingora", "Pir Baba", "Daggar") or click **Use my location**:
+   it opens **My area** with the 4-day levels, what to do, the reasons, villages on low ground,
+   nearby safer places, Rescue 1122 and the district control room. **Am I in a danger zone?**
+   checks the exact point and, if it is low ground by a river, gives a walking route to higher
+   ground. **Get alerts** adds the place to your alerts.
+5. **Risk map**: a full-screen map with a filterable ranked list; click a tehsil for its levels,
+   reasons, exposure, river flow and satellite rain.
+6. **Ask**: click a suggested question or type one, in Urdu, English or Roman Urdu, for example:
+   - "کیا کل سوات میں سیلاب کا خطرہ ہے؟"
    - "What should I do if water enters my house?"
    - "Mingora mein kal kya khatra hai?"
-   Answers use only Nigehban's own data and official guidance, and list their sources. Press the
-   speaker button to hear the Urdu answer (ElevenLabs voice).
-5. **Alerts** tab: subscribe to a tehsil with the **web inbox** (no phone number needed). Then
+   Answers use only Nigehban's own data and official guidance and list their sources. In Urdu,
+   **Listen** plays the answer (ElevenLabs voice).
+7. **Alerts**: add places and **Subscribe to alerts** (web inbox, no phone number needed). Then
    start an alert cycle for the replay date. In a third terminal:
 
    ```powershell
    Invoke-RestMethod -Method Post -Uri http://127.0.0.1:8000/internal/run-cycle -ContentType "application/json" -Body '{"as_of":"2025-08-14T09:00:00+05:00"}'
    ```
 
-   If your tehsil is at high or above within 2 days, the alert appears in the inbox in your
+   If your place is at high or above within 2 days, the alert appears in the inbox in your
    language, with a play button for the Urdu voice message. Run the command again: no
-   duplicate is sent. This also works from http://127.0.0.1:8000/docs.
-6. **Me** tab: **stop alerts** and **delete all my data** remove your subscription and its
-   delivery records.
+   duplicate is sent. This also works from http://127.0.0.1:8000/docs. **Stop alerts** and
+   **Delete all my data** are on the same page.
+8. **Safety guide**: before / during / after advice and the emergency numbers (1122, PDMA 1700).
 
 ### C. Command-line checks (optional)
 
@@ -158,7 +165,7 @@ happened next.
         |   per tehsil, lead 0–3 days, level low / moderate / high / very high, with reasons
         v
  +--------------------+-------------------------+----------------------+
- | Alert engine       | Citizen app + board     | Ask Nigehban agent   |
+ | Alert engine       | Website + board         | Ask Nigehban agent   |
  | rules, dedupe,     | maps, details, routes,  | LangGraph: understand|
  | Urdu/English/Roman | advisory drafts         | -> locate -> gather  |
  | text, voice        |                         | -> compose -> check  |
@@ -203,8 +210,9 @@ happened next.
    Urdu, English and Roman Urdu, then checked by code (level, place, date). A short plain SMS
    version is built by code. The Urdu message is also turned into audio (ElevenLabs).
    Contacts are encrypted; phone numbers are never shown back.
-9. **Apps (M12/M13).** The citizen app is an installable web app in Urdu (Nastaliq,
-   right-to-left). The board is English, behind a password, with replays.
+9. **Website and board (M12/M13).** The public website has six pages (Home, Risk map, My area,
+   Ask, Alerts, Safety guide) in English, Urdu (Nastaliq, right-to-left) and Roman Urdu, with a
+   Live / Replay switch in the header. The board is English, behind a password, with replays.
 10. **Place check, routes, advisories (M10/M11/F11).** Point danger check from terrain; walking
     or driving route to safety on OpenStreetMap roads, avoiding low ground; advisory drafts for
     officials, with actions checked against the evidence.
@@ -224,7 +232,7 @@ backend/app/
   alerts/      rules, composer, channels, voice, advisory
   geo/         danger check, routing, contacts, Urdu names
   db/          database tables (SQLite locally, Postgres when deployed)
-frontend/      Next.js citizen app (/) and board (/board)
+frontend/      Next.js website (/, /map, /area, /ask, /alerts, /safety) and board (/board)
 pipelines/     offline jobs that build data, train and evaluate
 reports/       results of each step (QA, model, backtest, alerts, IMERG)
 tests/         automated tests

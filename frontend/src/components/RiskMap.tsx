@@ -24,6 +24,9 @@ interface Props {
   /** "rain" shows satellite rain already fallen instead of the forecast levels. */
   mode?: "risk" | "rain";
   rain?: ObservedRain | null;
+  /** Page-scroll friendly: two fingers / ctrl+scroll to move the map. */
+  cooperative?: boolean;
+  flyOnSelect?: boolean;
 }
 
 const RAIN_COLOR = [
@@ -46,7 +49,7 @@ const STYLE: maplibregl.StyleSpecification = {
 };
 
 /** Tehsil choropleth coloured by the model's level for the chosen lead day. */
-export default function RiskMap({ geojson, risk, lead, selected, onSelect, markers = [], height = "100%", mode = "risk", rain = null }: Props) {
+export default function RiskMap({ geojson, risk, lead, selected, onSelect, markers = [], height = "100%", mode = "risk", rain = null, cooperative = false, flyOnSelect = true }: Props) {
   const container = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
   const ready = useRef(false);
@@ -56,7 +59,7 @@ export default function RiskMap({ geojson, risk, lead, selected, onSelect, marke
 
   useEffect(() => {
     if (!container.current || map.current) return;
-    const m = new maplibregl.Map({ container: container.current, style: STYLE, center: [72.4, 35.0], zoom: 7.2 });
+    const m = new maplibregl.Map({ container: container.current, style: STYLE, center: [72.4, 35.0], zoom: 7.2, cooperativeGestures: cooperative, attributionControl: { compact: true } });
     m.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
     m.on("load", () => {
       ready.current = true;
@@ -141,11 +144,11 @@ export default function RiskMap({ geojson, risk, lead, selected, onSelect, marke
         m.setFeatureState({ source: "tehsils", id }, { selected: id === selected });
       });
       const f = geojson.features.find((x) => x.properties?.tehsil_id === selected);
-      if (f && f.properties) m.flyTo({ center: [f.properties.centroid_lon, f.properties.centroid_lat], zoom: 9.2, speed: 1.4 });
+      if (f && f.properties && flyOnSelect) m.flyTo({ center: [f.properties.centroid_lon, f.properties.centroid_lat], zoom: 9.2, speed: 1.4 });
     };
     if (ready.current) apply();
     else m.once("nigehban:ready", apply);
-  }, [selected, geojson]);
+  }, [selected, geojson, flyOnSelect]);
 
   // Point markers (shelters, Rescue 1122, high-exposure villages).
   useEffect(() => {

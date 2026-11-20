@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import RiskMap, { type MapMarker } from "@/components/RiskMap";
+import { Logo } from "@/components/site/ui";
 import { api, ApiError, LEVEL_COLORS, LEVEL_ORDER, RAIN_STEPS, type Advisory, type Level, type ObservedRain, type RiskResponse, type TehsilDetail } from "@/lib/api";
 
 const LEVEL_LABEL: Record<Level, string> = { low: "Low", moderate: "Moderate", high: "High", very_high: "Very high" };
@@ -32,7 +33,7 @@ function Login({ onToken }: { onToken: (t: string) => void }) {
           setBusy(false);
         }
       }}>
-        <h2 style={{ margin: 0 }}>Nigehban authority board</h2>
+        <Logo withUrdu={false} /><h2 style={{ margin: "8px 0 0" }}>Authority board</h2>
         <p className="muted" style={{ margin: 0 }}>PDMA, district administration and Rescue 1122.</p>
         <input type="password" autoComplete="current-password" placeholder="Board password" value={pw} onChange={(e) => setPw(e.target.value)} />
         <button className="btn" disabled={busy || !pw}>{busy ? "Signing in…" : "Sign in"}</button>
@@ -63,6 +64,7 @@ export default function BoardPage() {
   useEffect(() => {
     document.documentElement.lang = "en";
     document.documentElement.dir = "ltr";
+    document.body.classList.remove("ur");
     try { setToken(sessionStorage.getItem("nigehban:board")); } catch { /* none */ }
     setChecked(true);
   }, []);
@@ -150,7 +152,7 @@ export default function BoardPage() {
   return (
     <div className="board">
       <div className="board-top">
-        <h1>Nigehban · Flash-flood risk board</h1>
+        <h1><Logo withUrdu={false} /><span className="tiny" style={{ fontWeight: 400 }}>Authority board</span></h1>
         <select value={customDate ? -1 : preset} onChange={(e) => { setCustomDate(""); setPreset(Number(e.target.value)); }}>
           {PRESETS.map((p, i) => <option key={p.label} value={i}>{p.label}</option>)}
           {customDate && <option value={-1}>Replay: {customDate}</option>}
@@ -163,7 +165,7 @@ export default function BoardPage() {
           {[0, 1, 2, 3].map((l) => <button key={l} className={lead === l ? "on" : ""} onClick={() => setLead(l)}>{dayName(l)}</button>)}
         </div>
         {risk?.replay && <span className="pill" style={{ background: "#fff3d6", color: "#6a4b00" }}>REPLAY · forecasts as issued {risk.issue_date}</span>}
-        <button className="btn secondary" style={{ marginLeft: "auto", padding: "6px 12px" }}
+        <button className="btn ghost" style={{ marginLeft: "auto", padding: "6px 12px" }}
           onClick={() => { try { sessionStorage.removeItem("nigehban:board"); } catch { /* */ } setToken(null); }}>Sign out</button>
       </div>
       <div className="board-main">
@@ -238,7 +240,7 @@ export default function BoardPage() {
                     <p key={r.point_id} className="tiny">{r.name}: {r.series.map((s) => `${s.discharge.toFixed(0)}`).join(" → ")} m³/s (2-yr flow {r.q2.toFixed(0)})</p>
                   ))}
                   <p className="tiny">{detail.note}</p>
-                  <button className="btn secondary" disabled={drafting} onClick={() => makeDraft([sel.tehsil_id])}>{drafting ? "Drafting…" : "Draft advisory for this tehsil"}</button>
+                  <button className="btn ghost" disabled={drafting} onClick={() => makeDraft([sel.tehsil_id])}>{drafting ? "Drafting…" : "Draft advisory for this tehsil"}</button>
                 </>
               ) : <p className="muted">Loading details…</p>}
             </section>
@@ -294,8 +296,8 @@ export default function BoardPage() {
             <div className="row" style={{ justifyContent: "space-between" }}>
               <b>Advisory draft {draft.checked ? "(actions checked against the evidence)" : "(template actions)"}</b>
               <div className="row">
-                <button className="btn secondary" onClick={() => navigator.clipboard?.writeText(draft.markdown)}>Copy text</button>
-                <button className="btn secondary" onClick={() => window.print()}>Print</button>
+                <button className="btn ghost" onClick={() => navigator.clipboard?.writeText(draft.markdown)}>Copy text</button>
+                <button className="btn ghost" onClick={() => window.print()}>Print</button>
                 <button className="btn" onClick={() => setDraft(null)}>Close</button>
               </div>
             </div>
