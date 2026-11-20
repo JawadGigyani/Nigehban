@@ -157,6 +157,25 @@ async function request<T>(path: string, init: RequestInit = {}, token?: string):
   return res.json() as Promise<T>;
 }
 
+export interface ObservedRain {
+  date: string | null;
+  run: string | null;
+  available: boolean;
+  note: string;
+  cell_size_deg: number;
+  tehsils: { tehsil_id: string; mean_mm: number; max_mm: number }[];
+  cells: { lon: number; lat: number; mm: number }[];
+}
+
+/** Satellite rain classes (mm in one day) for the observed-rain layer. */
+export const RAIN_STEPS: { min: number; color: string; label: string }[] = [
+  { min: 1, color: "#c6dbef", label: "1–5" },
+  { min: 5, color: "#6baed6", label: "5–15" },
+  { min: 15, color: "#2171b5", label: "15–30" },
+  { min: 30, color: "#08306b", label: "30–60" },
+  { min: 60, color: "#7a0177", label: "60+" },
+];
+
 const asOfParam = (asOf?: string | null) => (asOf ? `?as_of=${encodeURIComponent(asOf)}` : "");
 
 export const api = {
@@ -176,6 +195,7 @@ export const api = {
     request<{ token: string; expires_at: number }>("/board/login", { method: "POST", body: JSON.stringify({ password }) }),
   alerts: (token: string, replay?: boolean) =>
     request<any[]>(`/alerts?limit=100${replay === undefined ? "" : `&replay=${replay}`}`, {}, token),
+  rain: (asOf?: string | null) => request<ObservedRain>(`/rain/observed${asOfParam(asOf)}`),
   geoCheck: (lat: number, lon: number, asOf?: string | null) =>
     request<GeoCheck>("/geo/check", { method: "POST", body: JSON.stringify({ lat, lon, as_of: asOf ?? null }) }),
   route: (lat: number, lon: number, mode: "walk" | "drive" = "walk") =>
