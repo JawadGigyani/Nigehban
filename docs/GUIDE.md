@@ -11,7 +11,7 @@ administrations and Rescue 1122 a risk board. It supports official warnings and 
 | Data (PDMA flood events, weather history, terrain, villages, shelters, rivers) | Done |
 | Risk model (forecast 1–3 days ahead per tehsil) and backtest | Done, gate G2 passed |
 | Alert engine (rules, Urdu / English / Roman Urdu text, voice, de-duplication) | Done |
-| Public website (English and Urdu; desktop and phone) and authority board | Done |
+| Public website (English and Urdu; desktop and phone, with motion) and authority board | Done |
 | Ask Nigehban (grounded Q&A agent), place check, route to safety, advisory drafts | Done |
 | Satellite rain layer on the board (NASA IMERG) | Done |
 | Security hardening (rate limits, headers, encrypted contacts, board login) | Done |
@@ -109,15 +109,14 @@ happened next.
 
 ### B. Public website
 
-1. Open http://localhost:3000. It opens in English; switch to **اردو** in the header. The choice
-   is remembered.
-2. Scroll to the footer and, under **Demo: see a past flood**, click **14 Aug 2025 · Buner
-   cloudburst**. A yellow bar says you are viewing a past forecast; every page now shows that day.
-   **Back to today** undoes it.
-3. **Home**: search box first ("Where do you live?"), and next to it a map of all tehsils with a
-   plain sentence such as "12 tehsils at high or very high risk: Kabal, Wari, …". Switch days;
-   click a tehsil or a name to open it. Below: how it works (4 steps with icons), what the
-   colours mean, what you can do here, and an emergency strip with 1122.
+1. Open http://localhost:3000. It opens in English; switch to **اردو** in the header.
+   The choice is remembered.
+2. Click the **Live** pill in the header and choose **14 Aug 2025 · Buner cloudburst**. A yellow bar
+   says you are viewing a past forecast; every page now shows that day. **Back to live** undoes it.
+3. **Home**: the map shows each tehsil's level. Switch days (Today, Tomorrow, …) and switch to
+   **Satellite rain**. The card on the map shows the highest-risk tehsil; click any tehsil to see
+   its card, then **See details**. The counts under the map, the feature cards, "How Nigehban
+   works", and the safety band follow.
 4. **Search** on Home (for example "Mingora", "Pir Baba", "Daggar") or click **Use my location**:
    it opens **My area** with the 4-day levels, what to do, the reasons, villages on low ground,
    nearby safer places, Rescue 1122 and the district control room. **Am I in a danger zone?**
@@ -211,8 +210,8 @@ happened next.
    version is built by code. The Urdu message is also turned into audio (ElevenLabs).
    Contacts are encrypted; phone numbers are never shown back.
 9. **Website and board (M12/M13).** The public website has six pages (Home, Risk map, My area,
-   Ask, Alerts, Safety guide) in English and Urdu (Nastaliq, right-to-left), with demo replays
-   of past floods in the footer. The board is English, behind a password, with replays.
+   Ask, Alerts, Safety guide) in English and Urdu (Nastaliq, right-to-left), with a
+   Live / Replay switch in the header. The board is English, behind a password, with replays.
 10. **Place check, routes, advisories (M10/M11/F11).** Point danger check from terrain; walking
     or driving route to safety on OpenStreetMap roads, avoiding low ground; advisory drafts for
     officials, with actions checked against the evidence.
