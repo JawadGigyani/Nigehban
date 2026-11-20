@@ -4,7 +4,7 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useRef } from "react";
 
-import { LEVEL_COLORS, type Level, type TehsilRisk } from "@/lib/api";
+import { LEVEL_COLORS, RAIN_STEPS, type Level, type ObservedRain, type TehsilRisk } from "@/lib/api";
 
 export interface MapMarker {
   lon: number;
@@ -21,7 +21,15 @@ interface Props {
   onSelect: (tehsilId: string) => void;
   markers?: MapMarker[];
   height?: string;
+  /** "rain" shows satellite rain already fallen instead of the forecast levels. */
+  mode?: "risk" | "rain";
+  rain?: ObservedRain | null;
 }
+
+const RAIN_COLOR = [
+  "step", ["get", "mm"], RAIN_STEPS[0].color,
+  ...RAIN_STEPS.slice(1).flatMap((s) => [s.min, s.color]),
+] as unknown as maplibregl.ExpressionSpecification;
 
 const STYLE: maplibregl.StyleSpecification = {
   version: 8,
@@ -38,7 +46,7 @@ const STYLE: maplibregl.StyleSpecification = {
 };
 
 /** Tehsil choropleth coloured by the model's level for the chosen lead day. */
-export default function RiskMap({ geojson, risk, lead, selected, onSelect, markers = [], height = "100%" }: Props) {
+export default function RiskMap({ geojson, risk, lead, selected, onSelect, markers = [], height = "100%", mode = "risk", rain = null }: Props) {
   const container = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
   const ready = useRef(false);
@@ -56,6 +64,12 @@ export default function RiskMap({ geojson, risk, lead, selected, onSelect, marke
       m.addLayer({
         id: "tehsil-fill", type: "fill", source: "tehsils",
         paint: { "fill-color": ["coalesce", ["get", "color"], "#cccccc"], "fill-opacity": 0.62 },
+      });
+      m.addSource("rain", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+      m.addLayer({
+        id: "rain-cells", type: "fill", source: "rain",
+        layout: { visibility: "none" },
+        paint: { "fill-color": RAIN_COLOR, "fill-opacity": 0.75 },
       });
       m.addLayer({
         id: "tehsil-line", type: "line", source: "tehsils",
@@ -97,6 +111,25 @@ export default function RiskMap({ geojson, risk, lead, selected, onSelect, marke
     if (ready.current) apply();
     else m.once("nigehban:ready", apply);
   }, [geojson, risk, lead]);
+
+  // Observed-rain layer: 0.1° satellite cells; forecast colours fade out while it is shown.
+  useEffect(() => {
+    const m = map.current;
+    if (!m) return;
+    const apply = () => {
+      const half = (rain?.cell_size_deg ?? 0.1) / 2;
+      const features: GeoJSON.Feature[] = (rain?.cells ?? []).map((c) => ({
+        type: "Feature", properties: { mm: c.mm },
+        geometry: { type: "Polygon", coordinates: [[[c.lon - half, c.lat - half], [c.lon + half, c.lat - half],
+          [c.lon + half, c.lat + half], [c.lon - half, c.lat + half], [c.lon - half, c.lat - half]]] },
+      }));
+      (m.getSource("rain") as maplibregl.GeoJSONSource | undefined)?.setData({ type: "FeatureCollection", features });
+      m.setLayoutProperty("rain-cells", "visibility", mode === "rain" ? "visible" : "none");
+      m.setPaintProperty("tehsil-fill", "fill-opacity", mode === "rain" ? 0.08 : 0.62);
+    };
+    if (ready.current) apply();
+    else m.once("nigehban:ready", apply);
+  }, [rain, mode]);
 
   // Highlight and fly to the selected tehsil.
   useEffect(() => {

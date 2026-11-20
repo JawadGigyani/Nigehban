@@ -3,6 +3,7 @@
 - POST /geo/check          danger zone at a point + model level today/tomorrow -> advice
 - POST /route/shelter      route to the nearest safer place (OpenRouteService or OSM roads)
 - POST /advisories/draft   draft advisory for selected tehsils (board login)
+- GET  /rain/observed      satellite rain already fallen (NASA IMERG), per tehsil + wet cells
 """
 
 from __future__ import annotations
@@ -148,3 +149,29 @@ def _llm():
     from backend.app.llm import LLMService
 
     return LLMService.from_settings(get_settings())
+
+
+@lru_cache(maxsize=1)
+def _nowcast():
+    from backend.app.hydromet.imerg import ImergClient, tehsil_weights
+    from backend.app.hydromet.nowcast import RainNowcast
+
+    settings = get_settings()
+    return RainNowcast(ImergClient.from_settings(settings),
+                       tehsil_weights(settings.data_dir / "reference" / "tehsils.geojson"))
+
+
+@router.get("/rain/observed")
+def rain_observed(as_of: dt.datetime | None = None) -> dict:
+    """Rain that has already fallen (satellite). Not a forecast and not used by the risk model."""
+
+    obs = _nowcast().observed(as_of)
+    return {
+        "date": str(obs.date) if obs.date else None,
+        "run": obs.run,
+        "available": obs.date is not None,
+        "note": obs.note,
+        "cell_size_deg": 0.1,
+        "tehsils": [{"tehsil_id": t, "mean_mm": m, "max_mm": x} for t, (m, x) in sorted(obs.tehsils.items())],
+        "cells": [{"lon": lon, "lat": lat, "mm": mm} for lon, lat, mm in obs.cells],
+    }

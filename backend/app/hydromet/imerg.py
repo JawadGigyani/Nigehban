@@ -22,10 +22,12 @@ import numpy as np
 
 BASE = "https://gpm1.gesdisc.eosdis.nasa.gov/opendap/GPM_L3"
 PRODUCTS = {
-    "early": ("GPM_3IMERGDE.07", "3B-DAY-E.MS.MRG.3IMERG.{d}-S000000-E235959.V07B.nc4"),
-    "late": ("GPM_3IMERGDL.07", "3B-DAY-L.MS.MRG.3IMERG.{d}-S000000-E235959.V07B.nc4"),
-    "final": ("GPM_3IMERGDF.07", "3B-DAY.MS.MRG.3IMERG.{d}-S000000-E235959.V07B.nc4"),
+    "early": ("GPM_3IMERGDE.07", "3B-DAY-E.MS.MRG.3IMERG.{d}-S000000-E235959.{v}.nc4"),
+    "late": ("GPM_3IMERGDL.07", "3B-DAY-L.MS.MRG.3IMERG.{d}-S000000-E235959.{v}.nc4"),
+    "final": ("GPM_3IMERGDF.07", "3B-DAY.MS.MRG.3IMERG.{d}-S000000-E235959.{v}.nc4"),
 }
+# Near-real-time files moved from V07B to V07C in 2026; history is V07B. Try the newest first.
+VERSIONS = ("V07C", "V07B")
 BOX = (34.0, 71.0, 36.1, 74.6)  # south, west, north, east
 STEP = 0.1
 
@@ -97,9 +99,9 @@ class ImergClient:
         token = settings.earthdata_token.get_secret_value() if settings.earthdata_token else None
         return cls(token, settings.data_dir / "cache" / "imerg")
 
-    def url(self, day: dt.date, run: str) -> str:
+    def url(self, day: dt.date, run: str, version: str = "V07B") -> str:
         product, pattern = PRODUCTS[run]
-        name = pattern.format(d=day.strftime("%Y%m%d"))
+        name = pattern.format(d=day.strftime("%Y%m%d"), v=version)
         return (f"{BASE}/{product}/{day:%Y}/{day:%m}/{name}.ascii?"
                 f"precipitation[0:0][{LON0 - 1}:{LON1 + 1}][{LAT0 - 1}:{LAT1 + 1}]")
 
@@ -113,8 +115,11 @@ class ImergClient:
             return None if data is None else np.array(data, dtype=float)
         if not self.token:
             raise ImergError("Set NIGEHBAN_EARTHDATA_TOKEN.")
-        r = self.http.get(self.url(day, run), headers={"Authorization": f"Bearer {self.token}"})
-        if r.status_code == 404:
+        for version in VERSIONS:
+            r = self.http.get(self.url(day, run, version), headers={"Authorization": f"Bearer {self.token}"})
+            if r.status_code != 404:
+                break
+        else:
             return None  # not produced yet (latency) or missing
         if r.status_code == 401:
             raise ImergError("Earthdata refused the token: approve 'NASA GESDISC DATA ARCHIVE' under "

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import RiskMap, { type MapMarker } from "@/components/RiskMap";
-import { api, ApiError, LEVEL_COLORS, LEVEL_ORDER, type Advisory, type Level, type RiskResponse, type TehsilDetail } from "@/lib/api";
+import { api, ApiError, LEVEL_COLORS, LEVEL_ORDER, RAIN_STEPS, type Advisory, type Level, type ObservedRain, type RiskResponse, type TehsilDetail } from "@/lib/api";
 
 const LEVEL_LABEL: Record<Level, string> = { low: "Low", moderate: "Moderate", high: "High", very_high: "Very high" };
 const PRESETS: { label: string; asOf: string | null }[] = [
@@ -57,6 +57,8 @@ export default function BoardPage() {
   const [error, setError] = useState<string | null>(null);
   const [draft, setDraft] = useState<Advisory | null>(null);
   const [drafting, setDrafting] = useState(false);
+  const [mapMode, setMapMode] = useState<"risk" | "rain">("risk");
+  const [rain, setRain] = useState<ObservedRain | null>(null);
 
   useEffect(() => {
     document.documentElement.lang = "en";
@@ -82,6 +84,16 @@ export default function BoardPage() {
       if (e instanceof ApiError && e.status === 401) { setToken(null); try { sessionStorage.removeItem("nigehban:board"); } catch { /* */ } }
     });
   }, [token, asOf]);
+
+  useEffect(() => {
+    if (!token) return;
+    setRain(null);
+    api.rain(asOf).then(setRain).catch(() => setRain(null));
+  }, [token, asOf]);
+
+  const rainBy = useMemo(() => new Map((rain?.tehsils ?? []).map((t) => [t.tehsil_id, t])), [rain]);
+  const wettest = useMemo(() => [...(rain?.tehsils ?? [])].sort((a, b) => b.max_mm - a.max_mm).slice(0, 5), [rain]);
+  const rainDay = rain?.date ? new Date(`${rain.date}T00:00:00Z`).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }) : null;
 
   useEffect(() => {
     setDetail(null);
@@ -157,10 +169,23 @@ export default function BoardPage() {
       <div className="board-main">
         <div className="board-map">
           {loading && <div className="loading-overlay">Computing risk for all tehsils…</div>}
-          <RiskMap geojson={geo} risk={risk?.tehsils ?? []} lead={lead} selected={selected} onSelect={setSelected} markers={markers} />
-          <div className="legend">
-            {LEVEL_ORDER.map((l) => <span key={l}><i className="chip" style={{ background: LEVEL_COLORS[l] }} />{LEVEL_LABEL[l]}</span>)}
+          <RiskMap geojson={geo} risk={risk?.tehsils ?? []} lead={lead} selected={selected} onSelect={setSelected} markers={markers}
+            mode={mapMode} rain={rain} />
+          <div className="map-mode seg" role="group" aria-label="Map layer">
+            <button className={mapMode === "risk" ? "on" : ""} onClick={() => setMapMode("risk")}>Forecast risk</button>
+            <button className={mapMode === "rain" ? "on" : ""} onClick={() => setMapMode("rain")}
+              title="Rain that has already fallen, from NASA satellites. Not a forecast.">Satellite rain{rainDay ? ` (${rainDay})` : ""}</button>
           </div>
+          {mapMode === "risk" ? (
+            <div className="legend">
+              {LEVEL_ORDER.map((l) => <span key={l}><i className="chip" style={{ background: LEVEL_COLORS[l] }} />{LEVEL_LABEL[l]}</span>)}
+            </div>
+          ) : (
+            <div className="legend">
+              <span>{rain?.available ? `Rain fallen, mm (UTC day ${rainDay})` : (rain?.note ?? "Loading satellite rain…")}</span>
+              {rain?.available && RAIN_STEPS.map((st) => <span key={st.label}><i className="chip" style={{ background: st.color }} />{st.label}</span>)}
+            </div>
+          )}
         </div>
         <aside className="board-side">
           {error && <section><div className="banner err">{error}</div></section>}
@@ -186,6 +211,12 @@ export default function BoardPage() {
                 ))}
               </div>
               <p className="muted" style={{ margin: "4px 0" }}>Why: {sel.days.find((d) => d.lead_days === lead)?.drivers.join("; ") || "—"}</p>
+              {rain?.available && (
+                <p className="tiny" style={{ margin: "2px 0 6px" }}>
+                  Satellite rain already fallen ({rainDay}): <b>{(rainBy.get(sel.tehsil_id)?.mean_mm ?? 0).toFixed(1)} mm</b> average,
+                  {" "}{(rainBy.get(sel.tehsil_id)?.max_mm ?? 0).toFixed(1)} mm in the wettest part. Observed, not a forecast.
+                </p>
+              )}
               {detail ? (
                 <>
                   <p className="muted" style={{ margin: "4px 0" }}>
@@ -210,6 +241,21 @@ export default function BoardPage() {
                   <button className="btn secondary" disabled={drafting} onClick={() => makeDraft([sel.tehsil_id])}>{drafting ? "Drafting…" : "Draft advisory for this tehsil"}</button>
                 </>
               ) : <p className="muted">Loading details…</p>}
+            </section>
+          )}
+          {mapMode === "rain" && rain?.available && (
+            <section>
+              <h2>Wettest tehsils by satellite ({rainDay})</h2>
+              {wettest.map((t) => {
+                const r = rows.find((x) => x.tehsil_id === t.tehsil_id);
+                return (
+                  <div key={t.tehsil_id} className="facility" style={{ cursor: "pointer" }} onClick={() => setSelected(t.tehsil_id)}>
+                    <span>{r?.tehsil ?? t.tehsil_id} <span className="tiny">{r?.district}</span></span>
+                    <span className="tiny">{t.max_mm.toFixed(0)} mm peak · {t.mean_mm.toFixed(0)} mm avg</span>
+                  </div>
+                );
+              })}
+              <p className="tiny">{rain.note} Observed rain only; it is not used by the forecast model.</p>
             </section>
           )}
           <section>

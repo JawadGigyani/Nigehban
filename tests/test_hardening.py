@@ -215,3 +215,50 @@ def test_smsto_channel(monkeypatch):
     assert r.ok and r.provider_message_id == "m1"
     assert seen["url"] == "https://api.sms.to/sms/send" and seen["headers"]["Authorization"] == "Bearer key"
     assert seen["json"] == {"message": "الرٹ", "to": "+923235550000", "sender_id": "Nigehban"}
+
+
+def test_rain_nowcast_live_replay_and_version_fallback(tmp_path):
+    import datetime as dt
+
+    import httpx
+    import numpy as np
+
+    from backend.app.hydromet.imerg import LATS, LONS, ImergClient
+    from backend.app.hydromet.nowcast import RainNowcast
+
+    seen = []
+    i, j = 5, 7
+    body = "precipitation.lat, " + ", ".join(str(v) for v in LATS) + "\n"
+    row = ["0.0"] * len(LATS)
+    row[j] = "42.0"
+    body += f"precipitation.precipitation[0][precipitation.lon={LONS[i]}], " + ", ".join(row) + "\n"
+
+    def handler(request):
+        url = str(request.url)
+        seen.append(url)
+        if "V07C" in url and "20251001" not in url:
+            return httpx.Response(404)
+        if "3B-DAY-L" in url and "20261119" in url:
+            return httpx.Response(404)  # yesterday's Late file not out yet
+        return httpx.Response(200, text=body)
+
+    client = ImergClient("tok", tmp_path, http=httpx.Client(transport=httpx.MockTransport(handler)))
+    weights = {"a__b": [(i, j, 1.0)]}
+    now = dt.datetime(2026, 11, 20, 6, tzinfo=dt.timezone.utc)
+    nc = RainNowcast(client, weights, clock=lambda: now)
+
+    live = nc.observed()
+    assert live.date == dt.date(2026, 11, 19) and live.run == "early"
+    assert live.tehsils["a__b"] == (42.0, 42.0)
+    assert live.cells == [(float(LONS[i]), float(LATS[j]), 42.0)]
+    calls = len(seen)
+    nc.observed()
+    assert len(seen) == calls  # cached
+
+    replay = nc.observed(dt.datetime(2025, 8, 15, 9, tzinfo=dt.timezone(dt.timedelta(hours=5))))
+    assert replay.date == dt.date(2025, 8, 14) and replay.run == "final"
+    assert any("V07B" in u and "3B-DAY.MS" in u for u in seen)
+
+    off = RainNowcast(ImergClient(None, tmp_path), weights).observed()
+    assert off.date is None and "no Earthdata token" in off.note
+    assert np.isfinite(live.tehsils["a__b"][0])
