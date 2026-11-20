@@ -17,6 +17,7 @@ Rules the graph enforces in code, not by asking the model:
 from __future__ import annotations
 
 import datetime as dt
+import re
 from typing import Any, Literal, TypedDict
 
 from langgraph.graph import END, StateGraph
@@ -268,7 +269,8 @@ def _result(state: AgentState, answer: AgentAnswer, fallback: bool) -> dict:
     by_ref = {i.ref: i for i in bundle.items}
     cited = list(dict.fromkeys([*answer.refs, *(r for a in answer.actions for r in a.refs)]))
     intent = state["understanding"].intent
-    text = answer.answer.strip()
+    # Internal level codes never reach the reader ("بہت زیادہ (very_high)" -> "بہت زیادہ").
+    text = re.sub(r"\s*\((?:low|moderate|high|very_high)\)", "", answer.answer).strip()
     if intent not in ("small_talk", "out_of_scope"):
         text = f"{text}\n\n{CLOSING[lang]}"
     return {

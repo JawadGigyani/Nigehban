@@ -46,6 +46,18 @@ class AgentContext:
                 if isinstance(name, str) and name.strip():
                     self._names.setdefault(name.strip().lower(), idx)
         self._tehsil_names = {tid.split("__")[1].replace("_", " "): tid for tid, v in tehsils.items() if v["in_scope"]}
+        # A district name ("Swat", "سوات") means the district, not a hamlet that shares the name
+        # (GeoNames has a "Swat" in Kalkot). It points at the tehsil of the district's main town.
+        from backend.app.geo.urdu import _names as urdu_names
+
+        self._district_names: dict[str, str] = {}
+        for district in {tid.split("__")[0] for tid, v in tehsils.items() if v["in_scope"]}:
+            in_district = g[g["tehsil_id"].str.startswith(f"{district}__")]
+            target = in_district.iloc[0]["tehsil_id"] if len(in_district) else next(
+                tid for tid in tehsils if tid.startswith(f"{district}__"))
+            for name in (district.replace("_", " "), urdu_names().get(district)):
+                if name:
+                    self._district_names[name.strip().lower()] = target
 
     # ---- place lookup --------------------------------------------------------------------------
 
@@ -68,6 +80,11 @@ class AgentContext:
 
     def _find_place(self, place: str) -> dict | None:
         key = place.lower()
+        district = self._district_names.get(key)
+        if district is not None and key not in self._tehsil_names:
+            t = self.tehsils[district]
+            return {"tehsil_id": district, "name": tehsil_name(district), "lat": t["lat"], "lon": t["lon"],
+                    "village_id": None}
         tehsil = self._tehsil_names.get(key)
         idx = self._names.get(key)
         if idx is None and tehsil is None:

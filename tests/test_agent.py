@@ -161,3 +161,15 @@ def test_live_urdu_golden():
     assert r["checked"] and r["level"] in {"moderate", "high", "very_high"}
     assert all(c["ref"].split(":")[0] in {"risk", "doc", "facility", "exposure", "contact", "river"}
                for c in r["citations"])
+
+
+def test_district_name_means_the_district_not_a_hamlet_with_that_name():
+    ctx = _context()
+    hamlet = pd.DataFrame([{"place_id": "gn:1", "name": "Buner", "alt_names": "", "name_ur": "", "feature": "village",
+                            "lat": 34.8, "lon": 73.0, "district_slug": "battagram", "tehsil_id": "battagram__allai",
+                            "population": None}])
+    ctx = AgentContext(ctx.risk, ctx.kb, pd.concat([ctx.gazetteer.drop(columns=["rank"]), hamlet], ignore_index=True),
+                       ctx.villages, ctx.facilities, ctx.tehsils)
+    for name in ("Buner", "buner", "بونیر"):
+        assert ctx.locate(name, None, None, None)["tehsil_id"] == "buner__gagra"
+    assert ctx.locate("Pir Baba", None, None, None)["village_id"] == "manual:pir_baba"
