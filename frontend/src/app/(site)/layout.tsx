@@ -2,6 +2,7 @@
 
 import Footer from "@/components/site/Footer";
 import Header from "@/components/site/Header";
+import Motion from "@/components/site/Motion";
 import { SiteProvider, useSite } from "@/lib/site";
 
 function Frame({ children }: { children: React.ReactNode }) {
@@ -9,8 +10,9 @@ function Frame({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header />
-      <main style={{ minHeight: "60vh" }}>{ready ? children : null}</main>
+      <main id="main" style={{ minHeight: "60vh" }}>{ready ? children : null}</main>
       <Footer />
+      <Motion />
     </>
   );
 }
