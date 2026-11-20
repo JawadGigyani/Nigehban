@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "lucide-react": "0.469.0",
     "maplibre-gl": "4.7.1",
     "next": "15.5.29",
     "react": "19.1.1",

@@ -64,7 +64,8 @@ export function SiteProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const urlLang = params.get("lang");
-    setLangS(urlLang === "ur" || urlLang === "en" || urlLang === "ur_roman" ? urlLang : load<Lang>("lang", "en"));
+    const stored = load<Lang>("lang", "en");
+    setLangS(urlLang === "ur" || urlLang === "en" ? urlLang : stored === "ur" ? "ur" : "en"); // site: English or Urdu only
     setAsOfS(load<string | null>("asOf", null));
     setPlaceS(load<Place | null>("place", null));
     setPlacesS(load<Place[]>("places", []));

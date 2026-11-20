@@ -62,12 +62,12 @@ export default function AlertsPage() {
       <div className="cols">
         <div className="stack">
           <div className="card">
-            <h2>{subId ? s.inbox : t.subscribe_title}</h2>
+            {subId && <h2>{s.inbox}</h2>}
             {!subId && (
               <>
-                <span className="tiny">{s.places_label}</span>
+                <div className="steps-mini"><span className={`k ${places.length === 0 ? "on" : ""}`}>1</span>{s.step_choose}</div>
                 <div className="place-chips">
-                  {places.length === 0 && <span className="tiny">—</span>}
+                  {places.length === 0 && <span className="tiny">{s.no_places}</span>}
                   {places.map((p) => (
                     <span key={p.id} className="place-chip">{placeLabel(p, lang)}
                       <button aria-label={`${s.close} ${p.name}`} onClick={() => setPlaces(places.filter((x) => x.id !== p.id))}>×</button>
@@ -75,7 +75,8 @@ export default function AlertsPage() {
                   ))}
                 </div>
                 <PlaceSearch lang={lang} flat placeholder={s.add_place} onPick={(p) => !places.some((x) => x.id === p.id) && setPlaces([...places, p])} />
-                <button className="btn" style={{ marginTop: 14 }} disabled={busy || places.length === 0} onClick={subscribe}>{Icon.bell}{t.subscribe_btn}</button>
+                <div className="steps-mini" style={{ marginTop: 20 }}><span className={`k ${places.length > 0 ? "on" : ""}`}>2</span>{s.step_subscribe}</div>
+                <button className="btn" disabled={busy || places.length === 0} onClick={subscribe}>{Icon.bell}{t.subscribe_btn}</button>
               </>
             )}
             {subId && (
