@@ -2,14 +2,13 @@
 
 Next.js website for Nigehban. Light, warm design (off-white ground, charcoal type, black pill
 buttons; colour only where it means risk). English (default) and Urdu (Nastaliq, right to left),
-switched from the header and remembered per browser. Icons from lucide-react; subtle entrance motion
-(`components/site/Motion.tsx`, off when the system asks for reduced motion). Works on desktop and phone.
+switched from the header and remembered per browser. Works on desktop and phone.
 
 ## Pages
 
 | Path | What it does |
 |---|---|
-| `/` | Home: "Where do you live?" search, outlook map with a plain summary sentence, how it works (4 icon steps), what the colours mean, what you can do here, emergency strip |
+| `/` | Home: place search, live outlook map (forecast risk or satellite rain, days 0–3) with the highest-risk tehsil, counts by level, features, how it works, safety band |
 | `/map` | Full risk map: day and layer switches, counts, selected tehsil (levels, reasons, exposure, river flow, satellite rain), filterable ranked list |
 | `/area` | My area: 4-day levels for a place, what to do, reasons, alerts sign-up, "Am I in a danger zone?" check with a walking route to higher ground, nearby safer places, Rescue 1122 and the district control room |
 | `/ask` | Ask Nigehban: suggested questions, grounded answers with sources, Urdu voice playback |
@@ -17,8 +16,14 @@ switched from the header and remembered per browser. Icons from lucide-react; su
 | `/safety` | Before / during / after guidance and emergency numbers |
 | `/board` | Authority board (password): map, ranked table, tehsil detail, advisory drafts, replay switch |
 
-The footer's **Demo: see a past flood** links switch every public page to a past day (14 Aug 2025
-Buner, 26 Jun 2025 Swat) to show what Nigehban said the day before a real flood.
+The **Live / Replay** pill in the header switches every public page to a past day (14 Aug 2025 Buner,
+26 Jun 2025 Swat) to show what Nigehban said the day before a real flood.
+
+## Motion
+
+Sections fade and rise into view (`components/site/Motion.tsx` adds `.in` to `.reveal` elements),
+counts count up, risk bars grow, feature tiles animate their contents, the live dot pulses. With
+the system's reduced-motion setting, only gentle fades remain.
 
 ## Code
 

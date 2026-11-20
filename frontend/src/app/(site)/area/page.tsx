@@ -1,6 +1,5 @@
 "use client";
 
-import { Ambulance, CalendarDays, House, ShieldAlert, Waves } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
@@ -11,8 +10,6 @@ import { useGeo, useRisk, useTehsil } from "@/lib/hooks";
 import { DRIVER_NAMES, LEVEL_NAMES, T, dayLabel } from "@/lib/i18n";
 import { tehsilPlace } from "@/lib/places";
 import { placeLabel, useSite } from "@/lib/site";
-
-const I = { strokeWidth: 1.75, "aria-hidden": true } as const;
 
 function fmtDate(date: string, lang: Lang) {
   return new Date(`${date}T00:00:00`).toLocaleDateString(lang === "ur" ? "ur-PK" : "en-GB", { weekday: "short", day: "numeric", month: "short" });
@@ -57,7 +54,7 @@ function SafetyCheck({ place, autoLocate, onLocated }: { place: Place | null; au
   const tone = check?.advice === "move_away" ? "very_high" : check?.advice === "be_ready" ? "high" : check?.advice === "stay_alert" ? "moderate" : "";
   return (
     <div className="card">
-      <div className="card-h"><span className="ci"><ShieldAlert {...I} /></span><h2>{t.safety}</h2></div>
+      <h2>{t.safety}</h2>
       <p className="muted" style={{ fontSize: 15 }}>{S[lang].b_safe_d}</p>
       <div className="row" style={{ marginTop: 14 }}>
         <button className="btn" onClick={here} disabled={busy}>{Icon.locate}{t.check_here}</button>
@@ -143,7 +140,7 @@ export default function AreaPage() {
           {place && row && (
             <div className="card">
               <div className="row" style={{ justifyContent: "space-between" }}>
-                <div className="card-h" style={{ margin: 0 }}><span className="ci"><CalendarDays {...I} /></span><h2>{s.outlook}</h2></div>
+                <h2 style={{ margin: 0 }}>{s.outlook}</h2>
                 {worst && <LevelBadge level={worst} lang={lang} />}
               </div>
               <div className="days" style={{ marginTop: 14 }}>
@@ -178,7 +175,7 @@ export default function AreaPage() {
           )}
           {place && detail && (
             <div className="card">
-              <div className="card-h"><span className="ci"><Waves {...I} /></span><h2>{s.exposure}</h2></div>
+              <h2>{s.exposure}</h2>
               <p style={{ fontSize: 15 }}>
                 <b style={{ fontWeight: 500, color: "var(--ink)" }}>{detail.exposure.high}</b> {s.exp_high} · {detail.exposure.medium} {s.exp_medium} · <span className="tiny">{detail.exposure.villages} {s.exp_of}</span>
               </p>
@@ -193,14 +190,14 @@ export default function AreaPage() {
           <SafetyCheck place={place} autoLocate={autoLocate} onLocated={onLocated} />
           {place && detail && (
             <div className="card">
-              <div className="card-h"><span className="ci"><House {...I} /></span><h2>{s.safer_places}</h2></div>
+              <h2>{t.shelters}</h2>
               {detail.shelters.slice(0, 4).map((f) => (
                 <div key={f.id} className="facility">
                   <span>{f.name || t.unnamed_shelter}{f.kind === "high_ground" ? ` (${t.high_ground})` : ""} <span className="pill">{t.unverified}</span></span>
                   <span className="meta">{f.km} {t.km}</span>
                 </div>
               ))}
-              <div style={{ marginTop: 20 }}><div className="card-h"><span className="ci"><Ambulance {...I} /></span><h2>{t.rescue}</h2></div></div>
+              <h2 style={{ marginTop: 18 }}>{t.rescue}</h2>
               {detail.rescue_1122.slice(0, 2).map((f) => (
                 <div key={f.id} className="facility">
                   <span>{f.name.replace(/^Rescue 1122\s*/, "") || `${t.rescue} · ${f.subtype || ""}`.replace(/ · $/, "")} <span className="pill">{t.unverified}</span></span>

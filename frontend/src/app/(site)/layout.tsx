@@ -10,7 +10,7 @@ function Frame({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Header />
-      <main id="main" style={{ minHeight: "60vh" }}>{ready ? children : null}</main>
+      <main style={{ minHeight: "60vh" }}>{ready ? children : null}</main>
       <Footer />
       <Motion />
     </>

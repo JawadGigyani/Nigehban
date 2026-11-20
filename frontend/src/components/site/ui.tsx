@@ -1,6 +1,5 @@
 "use client";
 
-import { ArrowRight, Bell, Check, Droplets, Info, LocateFixed, MapPin, Menu, Phone, Route, Search, SendHorizontal, TriangleAlert, Volume2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { api, LEVEL_COLORS, type Lang, type Level, type Place, type RiskDay } from "@/lib/api";
@@ -8,25 +7,49 @@ import { S } from "@/lib/copy";
 import { LEVEL_NAMES, T, dayLabel } from "@/lib/i18n";
 import { placeLabel } from "@/lib/site";
 
-const I = { strokeWidth: 1.75, "aria-hidden": true } as const;
+const P = { fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
 
 export const Icon = {
-  search: <Search {...I} />,
-  pin: <MapPin {...I} />,
-  locate: <LocateFixed {...I} />,
-  arrow: <ArrowRight {...I} className="flip-rtl" />,
-  menu: <Menu {...I} />,
-  close: <X {...I} />,
-  phone: <Phone {...I} />,
-  check: <Check {...I} />,
-  info: <Info {...I} />,
-  alert: <TriangleAlert {...I} />,
-  bell: <Bell {...I} />,
-  send: <SendHorizontal {...I} className="flip-rtl" />,
-  speaker: <Volume2 {...I} />,
-  route: <Route {...I} />,
-  drop: <Droplets {...I} />,
+  search: <svg viewBox="0 0 24 24" {...P}><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>,
+  pin: <svg viewBox="0 0 24 24" {...P}><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg>,
+  locate: <svg viewBox="0 0 24 24" {...P}><circle cx="12" cy="12" r="7" /><circle cx="12" cy="12" r="2.5" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3" /></svg>,
+  arrow: <svg viewBox="0 0 24 24" {...P}><path d="M5 12h14M13 6l6 6-6 6" /></svg>,
+  menu: <svg viewBox="0 0 24 24" {...P}><path d="M4 7h16M4 12h16M4 17h16" /></svg>,
+  close: <svg viewBox="0 0 24 24" {...P}><path d="M6 6l12 12M18 6 6 18" /></svg>,
+  phone: <svg viewBox="0 0 24 24" {...P}><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" /></svg>,
+  check: <svg viewBox="0 0 24 24" {...P}><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>,
+  info: <svg viewBox="0 0 24 24" {...P}><circle cx="12" cy="12" r="9" /><path d="M12 11v5M12 8h.01" /></svg>,
+  alert: <svg viewBox="0 0 24 24" {...P}><path d="M12 3 2 20h20L12 3z" /><path d="M12 10v4M12 17h.01" /></svg>,
+  bell: <svg viewBox="0 0 24 24" {...P}><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0" /></svg>,
+  send: <svg viewBox="0 0 24 24" {...P}><path d="M5 12h13M12 5l7 7-7 7" /></svg>,
+  speaker: <svg viewBox="0 0 24 24" {...P}><path d="M4 9v6h4l5 4V5L8 9H4z" /><path d="M16.5 8.5a5 5 0 0 1 0 7" /></svg>,
+  route: <svg viewBox="0 0 24 24" {...P}><circle cx="6" cy="18" r="2.5" /><circle cx="18" cy="6" r="2.5" /><path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5" /></svg>,
+  drop: <svg viewBox="0 0 24 24" {...P}><path d="M12 3c-3 4.5-6 7.7-6 11a6 6 0 0 0 12 0c0-3.3-3-6.5-6-11z" /></svg>,
 };
+
+/** A number that counts up from 0 the first time it is shown (instant with reduced motion). */
+export function CountUp({ value, ms = 900 }: { value: number; ms?: number }) {
+  const [shown, setShown] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    let raf = 0;
+    const el = ref.current;
+    const run = () => {
+      const t0 = performance.now();
+      const tick = (t: number) => {
+        const p = Math.min(1, (t - t0) / ms);
+        setShown(Math.round(value * (1 - Math.pow(1 - p, 3))));
+        if (p < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    };
+    if (!el || !("IntersectionObserver" in window)) { run(); return; }
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); run(); } });
+    io.observe(el);
+    return () => { io.disconnect(); cancelAnimationFrame(raf); };
+  }, [value, ms]);
+  return <span ref={ref} className="tabular">{shown}</span>;
+}
 
 /** Mark: a mountain ridge above a wave, inside a ring. */
 export function Logo({ withUrdu = true }: { withUrdu?: boolean }) {
@@ -35,7 +58,7 @@ export function Logo({ withUrdu = true }: { withUrdu?: boolean }) {
       <svg viewBox="0 0 32 32" aria-hidden="true">
         <circle cx="16" cy="16" r="15" fill="#0e5e66" />
         <path d="M6.5 17.5 12 10l3.2 4.2L18.5 9l7 8.5" fill="none" stroke="#fff" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
-        <path d="M7 22c1.5-1.3 3-1.3 4.5 0s3 1.3 4.5 0 3-1.3 4.5 0 3 1.3 4.5 0" fill="none" stroke="#9fd6cf" strokeWidth="2" strokeLinecap="round" />
+        <path className="logo-wave" d="M7 22c1.5-1.3 3-1.3 4.5 0s3 1.3 4.5 0 3-1.3 4.5 0 3 1.3 4.5 0" fill="none" stroke="#9fd6cf" strokeWidth="2" strokeLinecap="round" />
       </svg>
       Nigehban
       {withUrdu && <span className="ur-name">نگہبان</span>}
@@ -67,8 +90,8 @@ export function LevelStrip({ days, lang, focus }: { days: RiskDay[]; lang: Lang;
 }
 
 /** Village / town / tehsil search with keyboard support. */
-export function PlaceSearch({ lang, onPick, flat = false, placeholder, cta, inputId }: {
-  lang: Lang; onPick: (p: Place) => void; flat?: boolean; placeholder?: string; cta?: string; inputId?: string;
+export function PlaceSearch({ lang, onPick, flat = false, placeholder, cta }: {
+  lang: Lang; onPick: (p: Place) => void; flat?: boolean; placeholder?: string; cta?: string;
 }) {
   const [q, setQ] = useState("");
   const [hits, setHits] = useState<Place[]>([]);
@@ -92,7 +115,7 @@ export function PlaceSearch({ lang, onPick, flat = false, placeholder, cta, inpu
     <div className={`search ${flat ? "flat" : ""}`} ref={box}>
       <form className="search-box" onSubmit={(e) => { e.preventDefault(); if (hits[active]) pick(hits[active]); }}>
         {Icon.search}
-        <input id={inputId} value={q} onChange={(e) => setQ(e.target.value)} onFocus={() => hits.length && setOpen(true)}
+        <input value={q} onChange={(e) => setQ(e.target.value)} onFocus={() => hits.length && setOpen(true)}
           placeholder={placeholder ?? T[lang].search_place} aria-label={placeholder ?? T[lang].search_place}
           role="combobox" aria-expanded={open && hits.length > 0} aria-controls="place-results" autoComplete="off"
           onKeyDown={(e) => {

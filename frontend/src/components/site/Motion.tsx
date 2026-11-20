@@ -4,20 +4,19 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
 /**
- * Subtle entrance motion: elements with class "reveal" fade and rise a few pixels the first time
- * they scroll into view. `style={{ "--d": "80ms" }}` staggers siblings. Without JS, or with
- * reduced motion, content is simply shown (CSS only hides it under html.motion).
+ * Entrance motion: elements with class "reveal" fade (and rise a few pixels) the first time they
+ * scroll into view; `style={{ "--d": "80ms" }}` staggers siblings. When the system asks for reduced
+ * motion, CSS keeps only gentle fades (no movement, no looping effects). Without JS, content shows.
  */
 export default function Motion() {
   const path = usePathname();
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     document.documentElement.classList.add("motion");
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
         if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
       });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.05 });
+    }, { rootMargin: "0px 0px -6% 0px", threshold: 0.05 });
     const watch = () => document.querySelectorAll(".reveal:not(.in)").forEach((el) => io.observe(el));
     watch();
     const mo = new MutationObserver(watch);
