@@ -28,12 +28,14 @@ class CycleReport:
     candidates: int = 0
     new_alerts: list[dict] = field(default_factory=list)
     skipped_duplicates: int = 0
+    skipped_no_subscribers: int = 0
     deliveries_ok: int = 0
     deliveries_failed: int = 0
 
     def as_dict(self) -> dict:
         return {"issued_for": str(self.issued_for), "replay": self.replay, "candidates": self.candidates,
                 "new_alerts": self.new_alerts, "skipped_duplicates": self.skipped_duplicates,
+                "skipped_no_subscribers": self.skipped_no_subscribers,
                 "deliveries_ok": self.deliveries_ok, "deliveries_failed": self.deliveries_failed}
 
 
@@ -59,8 +61,14 @@ class AlertEngine:
         forecasts = self.risk.forecast(issue, replay)
         candidates = select_candidates(forecasts, self.min_level, self.max_lead, self.in_scope)
         report.candidates = len(candidates)
+        # Only tehsils someone subscribed to get a message and a voice note (LLM and voice quota).
+        subscribed = self.subscribed_tehsils(session)
+        self._voice_off = False
         for candidate in candidates:
             f = candidate.forecast
+            if f.tehsil_id not in subscribed:
+                report.skipped_no_subscribers += 1
+                continue
             previous = session.exec(select(AlertRow.level).where(
                 AlertRow.tehsil_id == f.tehsil_id, AlertRow.valid_date == f.valid_date,
                 AlertRow.replay == replay)).all()
@@ -88,14 +96,25 @@ class AlertEngine:
                        message_ur=composed.message_ur, message_en=composed.message_en,
                        message_ur_roman=composed.message_ur_roman, citations=list(composed.citations),
                        replay=replay)
-        if speak and self.voice is not None and self.voice.enabled:  # no voice quota spent on dry runs
+        if speak and not getattr(self, "_voice_off", False) and self.voice is not None and self.voice.enabled:
             try:
                 row.audio_key = self.voice.speak(composed.message_ur)
             except Exception as exc:  # voice is optional; the text alert still goes out
-                log.warning("voice failed: %s", str(exc)[:120])
+                if "quota" in str(exc).lower():  # no point trying again for every alert in this run
+                    self._voice_off = True
+                    log.warning("voice off for this cycle: the voice provider's quota is used up")
+                else:
+                    log.warning("voice failed: %s", str(exc)[:120])
         session.add(row)
         session.flush()
         return row
+
+    def subscribed_tehsils(self, session: Session) -> set[str]:
+        out: set[str] = set()
+        for s in session.exec(select(SubscriptionRow).where(SubscriptionRow.active == True)).all():  # noqa: E712
+            out.update(s.tehsil_ids or [])
+            out.update(t for v in (s.village_ids or []) if (t := self.village_tehsil.get(v)))
+        return out
 
     def subscribers_for(self, session: Session, tehsil_id: str) -> list[SubscriptionRow]:
         rows = session.exec(select(SubscriptionRow).where(SubscriptionRow.active == True)).all()  # noqa: E712

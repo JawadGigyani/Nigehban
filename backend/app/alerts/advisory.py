@@ -9,6 +9,9 @@ Layout (agreed): title, date, area, risk, actions, sources, "Draft for official 
 
 from __future__ import annotations
 
+from backend.app.config.settings import LLMProvider
+from backend.app.llm.service import ask_structured
+
 import datetime as dt
 
 from pydantic import BaseModel, Field
@@ -44,7 +47,7 @@ class AdvisoryDraft(BaseModel):
 SYSTEM = """You draft flash-flood advisories for PDMA Khyber Pakhtunkhwa and district administrations.
 Use ONLY the evidence. Write concrete actions for officials (Rescue 1122 readiness, closing riverside
 tourist spots, clearing nullahs, preparing shelters) and for residents (move to higher ground, keep away
-from streams, move livestock), each citing evidence ids. Shelter and Rescue 1122 locations are unverified.
+from streams, move livestock), each citing evidence ids.
 Do not state or change risk levels anywhere (no "low", "moderate", "high", "very high"): the risk table
 and the risk sentence are added by code. Actions and public_message_en are in English with English place
 names; use the Urdu place names given only in public_message_ur. No exaggeration: the model gives a raised
@@ -116,7 +119,7 @@ def compose_advisory(llm, context, forecasts_by_tehsil: dict[str, list], issue: 
         if errors:
             user += "\n\nYour previous draft was rejected: " + "; ".join(errors) + ". Fix this."
         try:
-            draft = llm.complete_structured(SYSTEM, user, AdvisoryDraft)
+            draft = ask_structured(llm, SYSTEM, user, AdvisoryDraft, prefer=LLMProvider.GEMINI)  # Urdu text
         except Exception as exc:  # LLM down: template actions
             errors = [exc.__class__.__name__]
             draft = None

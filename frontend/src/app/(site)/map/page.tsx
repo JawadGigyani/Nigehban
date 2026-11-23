@@ -36,7 +36,7 @@ export default function MapPage() {
     return !q || r.tehsil.toLowerCase().includes(q) || r.district.toLowerCase().includes(q) || (r.tehsil_ur ?? "").includes(q);
   });
   const markers: MapMarker[] = useMemo(() => (detail ? [
-    ...detail.shelters.slice(0, 6).map((f) => ({ lon: f.lon, lat: f.lat, color: f.kind === "high_ground" ? "#1c7ed6" : "#2f9e44", label: `${f.name || t.unnamed_shelter} (${t.unverified})` })),
+    ...detail.shelters.slice(0, 6).map((f) => ({ lon: f.lon, lat: f.lat, color: f.kind === "high_ground" ? "#1c7ed6" : "#2f9e44", label: f.name })),
     ...detail.rescue_1122.slice(0, 3).map((f) => ({ lon: f.lon, lat: f.lat, color: "#d9662b", label: f.name })),
   ] : []), [detail, t]);
 

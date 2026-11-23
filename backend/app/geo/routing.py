@@ -8,7 +8,7 @@ Engines:
   route prefers higher roads but can still cross a bridge.
 
 Destinations: the nearest shelters and higher ground not in the high-exposure
-band. All are unverified, and the answer says so.
+band, with a name.
 """
 
 from __future__ import annotations
@@ -219,7 +219,7 @@ class SafeRouter:
         seconds = sum(e["seconds"] for e in edges)
         low = sum(e["length"] for e in edges if e["low"]) / length if length else 0.0
         start_gap = km(lat, lon, start[1], start[0]) * 1000
-        notes = ["Destination location is unverified."]
+        notes = []
         if start_gap > 300:
             notes.append(f"Nearest mapped road or path is about {start_gap:.0f} m away.")
         if low > 0.2:
@@ -241,4 +241,4 @@ class SafeRouter:
                 best = (summary, d, feat["geometry"]["coordinates"])
         summary, dest, coords = best
         return Route("openrouteservice", dest, summary["distance"], summary["duration"], coords, None,
-                     ["Destination location is unverified."])
+                     [])

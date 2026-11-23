@@ -220,3 +220,25 @@ def test_urdu_place_names_are_fixed_and_checked():
     misspelled = draft.model_copy(update={"message_ur": "گرا، بونیر میں خطرہ زیادہ ہے۔"})
     assert any("name the tehsil" in e for e in check_draft(misspelled, bundle, "high", "buner__gagra"))
 
+
+
+def test_no_message_or_voice_for_tehsils_nobody_subscribed_to(db, cipher):
+    class CountingVoice:
+        enabled = True
+        calls = 0
+
+        def speak(self, text):
+            CountingVoice.calls += 1
+            raise RuntimeError("ElevenLabs error 401: quota_exceeded")
+
+    engine = _engine(FixedRisk([fc(level=RiskLevel.HIGH)]), cipher, ConsoleChannel(stream=io.StringIO()))
+    engine.voice = CountingVoice()
+    as_of = dt.datetime(2025, 8, 14, 9, tzinfo=PKT)
+    report = engine.run(db, as_of)
+    assert report.new_alerts == [] and report.skipped_no_subscribers == 1 and CountingVoice.calls == 0
+    subscribe(db, cipher, SubscriptionCreate(channel=ChannelName.WEB_INBOX, address="inbox-7",
+                                             tehsil_ids=("buner__gagra", "battagram__allai")),
+              {"buner__gagra", "battagram__allai"}, set())
+    engine.risk.forecasts = [fc(level=RiskLevel.HIGH), fc(tehsil="battagram__allai", level=RiskLevel.HIGH)]
+    report = engine.run(db, as_of)
+    assert len(report.new_alerts) == 2 and CountingVoice.calls == 1  # quota error: voice off for the rest

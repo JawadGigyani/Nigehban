@@ -168,11 +168,19 @@ class LLMService:
         self._paused_until[index] = self._clock() + seconds
         logger.warning("LLM slot %s rate limited; paused %.0f s", self.slots[index].label, seconds)
 
-    def _call_rotating(self, call):
-        """Run `call(slot)` on each available slot until one succeeds."""
+    def _call_rotating(self, call, prefer: LLMProvider | None = None):
+        """Run `call(slot)` on each available slot until one succeeds.
+
+        `prefer` moves that provider's slots to the front (e.g. Gemini for Urdu text); the others
+        stay as fallbacks.
+        """
 
         last: BaseException | None = None
-        for index in self.available_slots():
+        order = self.available_slots()
+        if prefer is not None:
+            order = [i for i in order if self.slots[i].provider is prefer] + \
+                    [i for i in order if self.slots[i].provider is not prefer]
+        for index in order:
             slot = self.slots[index]
             try:
                 return call(slot)
@@ -217,6 +225,8 @@ class LLMService:
             model_names = [settings.model_for(provider)]
             if provider is LLMProvider.GROQ:
                 model_names += [m for m in settings.groq_extra_models if m not in model_names]
+            if provider is LLMProvider.GEMINI:
+                model_names += [m for m in settings.gemini_extra_models if m not in model_names]
             for key_number, key in enumerate(keys, start=1):
                 for model_name in model_names:
                     # Reasoning models on Groq (gpt-oss) spend tokens on hidden reasoning;
@@ -306,8 +316,19 @@ class LLMService:
 
         return self._call_rotating(call)
 
-    def complete_structured(self, system: str, user: str, output_model: type[T]) -> T:
+    def complete_structured(self, system: str, user: str, output_model: type[T],
+                            prefer: LLMProvider | None = None) -> T:
         payload = {"system": system, "user": user}
         return self._call_rotating(
-            lambda slot: self._structured_chain(slot, output_model).invoke(payload)
+            lambda slot: self._structured_chain(slot, output_model).invoke(payload), prefer
         )
+
+
+def ask_structured(llm, system: str, user: str, output_model: type[T], prefer: LLMProvider | None = None) -> T:
+    """`llm.complete_structured` with a provider preference when the client supports one."""
+
+    import inspect
+
+    if prefer is not None and "prefer" in inspect.signature(llm.complete_structured).parameters:
+        return llm.complete_structured(system, user, output_model, prefer=prefer)
+    return llm.complete_structured(system, user, output_model)

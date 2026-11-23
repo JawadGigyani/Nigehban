@@ -127,6 +127,9 @@ def tehsil_detail(tehsil_id: str, as_of: dt.datetime | None = None) -> dict:
                  "verified": False, "source": r.source} for r in frame.nsmallest(n, "km").itertuples(index=False)]
 
     shelters = local[local["kind"].isin(["shelter", "high_ground"]) & (local["exposure_band"] != "high")]
+    # The same place is sometimes mapped twice (e.g. a mosque as a point and a building): list it once.
+    shelters = shelters.assign(_key=shelters["name"].astype(str).str.strip().str.lower()) \
+        .sort_values("km").drop_duplicates("_key").drop(columns="_key")
     rivers = []
     if ctx.risk is not None and ctx.risk.rivers is not None:
         issue, replay = _issue(as_of)
@@ -151,7 +154,7 @@ def tehsil_detail(tehsil_id: str, as_of: dt.datetime | None = None) -> dict:
         "health": rows(fac[fac["kind"] == "health"], 2),
         "rivers": rivers,
         "rescue_1122_control_room": _control_room(tehsil_id),
-        "note": "Shelter, Rescue 1122 and health locations are from OpenStreetMap and news reports and are unverified.",
+        "note": "Shelter, Rescue 1122 and health locations are from OpenStreetMap and news reports.",
     }
 
 

@@ -18,7 +18,7 @@ def citation_label(ref: str, kb=None) -> str:
         if passage:
             return passage.label
     return {"risk": "Nigehban risk model", "river": "GloFAS river flow (Copernicus)",
-            "exposure": "Nigehban terrain analysis", "facility": "OpenStreetMap / Nigehban (unverified)",
+            "exposure": "Nigehban terrain analysis", "facility": "OpenStreetMap / Nigehban",
             "contact": "Rescue 1122; PDMA helpline"}.get(kind, ref)
 
 

@@ -34,7 +34,10 @@ class AgentContext:
         self.risk = risk_service
         self.kb = knowledge
         self.villages = villages
-        self.facilities = facilities
+        # Shelters and higher ground are offered only when they have a name a person can look for.
+        named = facilities["name"].fillna("").astype(str).str.strip() != ""
+        place = facilities["kind"].isin(["shelter", "high_ground"])
+        self.facilities = facilities[named | ~place].reset_index(drop=True)
         self.tehsils = tehsils  # tehsil_id -> {lat, lon, in_scope}
         g = gazetteer[gazetteer["tehsil_id"].isin([t for t, v in tehsils.items() if v["in_scope"]])].copy()
         g["rank"] = g["feature"].map({"city": 0, "town": 1}).fillna(2)

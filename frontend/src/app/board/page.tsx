@@ -78,19 +78,25 @@ export default function BoardPage() {
 
   useEffect(() => {
     if (!token) return;
+    // Only the answer for the date on screen counts: an older, slower answer is ignored.
+    let live = true;
     setLoading(true);
     setError(null);
-    api.risk(asOf).then((r) => { setRisk(r); setLoading(false); })
-      .catch((e) => { setError(e instanceof ApiError ? e.message : "Could not load risk."); setLoading(false); });
-    api.alerts(token, asOf !== null).then(setAlerts).catch((e) => {
+    setRisk(null);
+    api.risk(asOf).then((r) => { if (live) { setRisk(r); setLoading(false); } })
+      .catch((e) => { if (live) { setError(e instanceof ApiError ? e.message : "Could not load risk."); setLoading(false); } });
+    api.alerts(token, asOf !== null).then((a) => { if (live) setAlerts(a); }).catch((e) => {
       if (e instanceof ApiError && e.status === 401) { setToken(null); try { sessionStorage.removeItem("nigehban:board"); } catch { /* */ } }
     });
+    return () => { live = false; };
   }, [token, asOf]);
 
   useEffect(() => {
     if (!token) return;
+    let live = true;
     setRain(null);
-    api.rain(asOf).then(setRain).catch(() => setRain(null));
+    api.rain(asOf).then((r) => { if (live) setRain(r); }).catch(() => { if (live) setRain(null); });
+    return () => { live = false; };
   }, [token, asOf]);
 
   const rainBy = useMemo(() => new Map((rain?.tehsils ?? []).map((t) => [t.tehsil_id, t])), [rain]);
@@ -98,8 +104,10 @@ export default function BoardPage() {
   const rainDay = rain?.date ? new Date(`${rain.date}T00:00:00Z`).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }) : null;
 
   useEffect(() => {
+    let live = true;
     setDetail(null);
-    if (selected) api.tehsil(selected, asOf).then(setDetail).catch(() => setDetail(null));
+    if (selected) api.tehsil(selected, asOf).then((d) => { if (live) setDetail(d); }).catch(() => { if (live) setDetail(null); });
+    return () => { live = false; };
   }, [selected, asOf]);
 
   const rows = useMemo(() => {
@@ -122,8 +130,8 @@ export default function BoardPage() {
     if (!detail) return [];
     return [
       ...detail.shelters.map((f) => ({ lon: f.lon, lat: f.lat, color: f.kind === "high_ground" ? "#1c7ed6" : "#2f9e44",
-        label: `${f.kind === "high_ground" ? "Higher ground" : "Shelter"}: ${f.name || f.subtype} (unverified)` })),
-      ...detail.rescue_1122.map((f) => ({ lon: f.lon, lat: f.lat, color: "#f03e3e", label: `${f.name} (${f.subtype || "unverified"})` })),
+        label: `${f.kind === "high_ground" ? "Higher ground" : "Shelter"}: ${f.name}` })),
+      ...detail.rescue_1122.map((f) => ({ lon: f.lon, lat: f.lat, color: "#f03e3e", label: f.subtype ? `${f.name} (${f.subtype})` : f.name })),
       ...detail.high_villages.slice(0, 10).map((v) => ({ lon: v.lon, lat: v.lat, color: "#7048e8", label: `High exposure: ${v.name}` })),
     ];
   }, [detail]);
@@ -234,7 +242,7 @@ export default function BoardPage() {
                     <p className="tiny" style={{ margin: "2px 0" }}>District control room ({detail.rescue_1122_control_room.district}): <b>{detail.rescue_1122_control_room.control_room}</b> · office {detail.rescue_1122_control_room.district_office} · official directory</p>
                   )}
                   {detail.rescue_1122.map((f) => (
-                    <div key={f.id} className="facility"><span>{f.name}</span><span className="tiny">{f.km} km · {f.subtype || "unverified"}</span></div>
+                    <div key={f.id} className="facility"><span>{f.name}</span><span className="tiny">{f.km} km{f.subtype ? ` · ${f.subtype}` : ""}</span></div>
                   ))}
                   {detail.rivers.map((r) => (
                     <p key={r.point_id} className="tiny">{r.name}: {r.series.map((s) => `${s.discharge.toFixed(0)}`).join(" → ")} m³/s (2-yr flow {r.q2.toFixed(0)})</p>

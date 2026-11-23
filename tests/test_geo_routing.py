@@ -55,7 +55,7 @@ def test_route_avoids_riverside_and_high_exposure_shelters():
     assert route.destination["id"] == "osm:1"
     assert route.low_ground_share < 0.5  # took the hill loop, not the riverside path
     assert route.distance_m > km(34.0, 72.0, 34.0, 72.0105) * 1000
-    assert "unverified" in route.notes[0]
+    assert not any("unverified" in n for n in route.notes)
 
 
 def test_drive_mode_skips_footpaths():
