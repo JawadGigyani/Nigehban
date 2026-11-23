@@ -1,6 +1,6 @@
 """Alert, subscription and inbox routes.
 
-- POST /internal/run-cycle         run one alert cycle (cron every 3 h, or on demand; as_of = replay)
+- POST /internal/run-cycle         run one alert cycle (on demand or every few hours; as_of = replay)
 - POST /subscriptions              subscribe (returns the id; the contact is never returned)
 - DELETE /subscriptions/{id}       unsubscribe (deletes the subscription and its delivery records)
 - POST /me/delete                  delete every subscription and delivery for a contact

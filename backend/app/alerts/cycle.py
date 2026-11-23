@@ -1,6 +1,6 @@
 """One alert cycle: forecasts -> fixed rules -> compose -> store -> deliver.
 
-Run every 3 hours by cron (POST /internal/run-cycle) or on demand. With `as_of`
+Run by `python -m pipelines.alerts.run_cycle` (once or every few hours) or POST /internal/run-cycle. With `as_of`
 it replays a past moment using the archived forecasts; replay alerts are marked
 `replay=True` so they never mix with live ones in reports.
 """

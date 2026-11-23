@@ -8,7 +8,6 @@ administrations and Rescue 1122 a risk board with ready-to-print advisories.
 It supports official warnings and never replaces them. Risk is estimated per tehsil, not per house,
 and some floods will be missed.
 
-Built for the KPITB AI Challenge 2026.
 
 ## What it does
 
@@ -38,7 +37,7 @@ three days ahead), against 16 for a plain rain threshold at the same false-alarm
 ```powershell
 py -3.11 -m venv .venv
 .venv\Scripts\python -m pip install -e ".[dev]"
-copy .env.example .env      # then fill in the keys (see docs/DEPLOYMENT.md)
+copy .env.example .env      # then fill in the keys (see docs/CONFIGURATION.md)
 cd frontend; npm install; cd ..
 ```
 
@@ -52,14 +51,15 @@ Run the API and the website in two terminals:
 cd frontend; npm run dev
 ```
 
-Open http://localhost:3000 (website) and http://localhost:3000/board (board). Tests:
+Open http://localhost:3000 (website) and http://localhost:3000/board (board). Run the alert
+cycle with `python -m pipelines.alerts.run_cycle` (once) or `--every-hours 3`. Tests:
 
 ```powershell
 .venv\Scripts\python -m pytest -q
 ```
 
-The runtime data (terrain, reference tables, model artefacts) is built by the pipelines in
-`pipelines/` or downloaded from the private data bundle; see [docs/DATA.md](docs/DATA.md).
+The runtime data (terrain rasters, weather history, road tiles) is built by the pipelines in
+`pipelines/`; see [docs/DATA.md](docs/DATA.md). Reference tables and the trained model are in git.
 
 ## Documentation
 
@@ -70,7 +70,7 @@ The runtime data (terrain, reference tables, model artefacts) is built by the pi
 | [docs/MODEL.md](docs/MODEL.md) | Risk model: data, features, model choice, levels, evaluation, limits |
 | [docs/DATA.md](docs/DATA.md) | Data sources, licences, pipelines and rebuild order, privacy |
 | [docs/API.md](docs/API.md) | Every HTTP endpoint with request and response |
-| [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | Deploying (Hugging Face Spaces, Vercel, Supabase, GitHub Actions) and every setting |
+| [docs/CONFIGURATION.md](docs/CONFIGURATION.md) | Running it, the alert cycle, every setting |
 | [frontend/README.md](frontend/README.md) | Website pages, motion and frontend code |
 | [reports/](reports/) | Results of each build step (QA, model, backtest, agent, alerts, IMERG) |
 
@@ -80,7 +80,7 @@ The runtime data (terrain, reference tables, model artefacts) is built by the pi
 backend/app/     FastAPI backend: api, hydromet, risk, agent, knowledge, alerts, geo, db, llm, config
 frontend/        Next.js website (/, /map, /area, /ask, /alerts, /safety) and authority board (/board)
 pipelines/       Offline jobs: PDMA events, weather history, terrain, reference data, training,
-                 backtest, knowledge index, alert replay, deployment bundle
+                 backtest, knowledge index, alert cycle and replay
 data/            Reference tables in git; large and private data gitignored (data/contracts/README.md)
 reports/         Generated QA and evaluation reports
 tests/           Unit and integration tests (pytest)
@@ -89,9 +89,9 @@ docs/            Project documentation
 
 ## Status
 
-All build modules are complete and tested (192 tests). Not yet done: deployment, an SMS route
-(code ready; needs an Android gateway phone or a paid provider), WhatsApp (code ready; needs a
-Meta test number), and the demo pack.
+All modules are complete and tested (192 backend tests). Open items: an SMS route (code ready;
+needs an Android gateway phone or a paid provider) and WhatsApp (code ready; needs a Meta test
+number). See the roadmap in [docs/GUIDE.md](docs/GUIDE.md#1-status).
 
 ## Data sources
 

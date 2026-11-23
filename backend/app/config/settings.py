@@ -79,7 +79,7 @@ class Settings(BaseSettings):
     # Paths
     data_dir: Path = PROJECT_ROOT / "data"
 
-    # Database: SQLite locally, Postgres (Supabase) when deployed.
+    # Database: SQLite by default; any SQLAlchemy URL (Postgres works too).
     database_url: str = f"sqlite:///{(PROJECT_ROOT / 'data' / 'nigehban.db').as_posix()}"
 
     # LLM (LangChain). The primary provider is tried first; on errors or rate
@@ -139,7 +139,7 @@ class Settings(BaseSettings):
     # Alert rules: alert at this level or above, for lead days up to alert_max_lead.
     alert_min_level: str = "high"
     alert_max_lead_days: int = Field(default=2, ge=0, le=3)
-    # Protects POST /internal/run-cycle (required in production; the cron job sends it).
+    # Protects POST /internal/run-cycle (required when environment is production).
     internal_token: SecretStr | None = None
     # Web push (VAPID). Generate with: python -m backend.app.alerts.channels --vapid
     vapid_public_key: str | None = None
