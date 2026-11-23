@@ -1,6 +1,8 @@
 # Runs one alert cycle every 3 hours (risk for all tehsils, fixed rules, alerts to subscribers).
 # Repository secrets needed: NIGEHBAN_API_URL (e.g. https://<user>-nigehban.hf.space) and
 # NIGEHBAN_INTERNAL_TOKEN (same value as the backend's NIGEHBAN_INTERNAL_TOKEN).
+# Until both secrets are set (the backend is not deployed yet), the job skips and succeeds,
+# so it sends no failure emails.
 name: alert-cycle
 
 on:
@@ -12,13 +14,27 @@ jobs:
   run-cycle:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      API_URL: ${{ secrets.NIGEHBAN_API_URL }}
+      INTERNAL_TOKEN: ${{ secrets.NIGEHBAN_INTERNAL_TOKEN }}
     steps:
+      - name: Check the backend is configured
+        id: cfg
+        run: |
+          if [ -z "$API_URL" ] || [ -z "$INTERNAL_TOKEN" ]; then
+            echo "::notice::NIGEHBAN_API_URL or NIGEHBAN_INTERNAL_TOKEN is not set (backend not deployed yet). Skipping."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: Wake the backend
-        run: curl -fsS --retry 5 --retry-delay 20 --max-time 120 "${{ secrets.NIGEHBAN_API_URL }}/health" || true
+        if: steps.cfg.outputs.ready == 'true'
+        run: curl -fsS --retry 5 --retry-delay 20 --max-time 120 "$API_URL/health" || true
       - name: Run the alert cycle
+        if: steps.cfg.outputs.ready == 'true'
         run: |
           curl -fsS --retry 3 --retry-delay 30 --max-time 600 \
-            -X POST "${{ secrets.NIGEHBAN_API_URL }}/internal/run-cycle" \
+            -X POST "$API_URL/internal/run-cycle" \
             -H "Content-Type: application/json" \
-            -H "X-Internal-Token: ${{ secrets.NIGEHBAN_INTERNAL_TOKEN }}" \
+            -H "X-Internal-Token: $INTERNAL_TOKEN" \
             -d '{"deliver": true}'
