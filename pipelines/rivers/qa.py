@@ -1,4 +1,4 @@
-"""Write reports/m6_glofas.md: river points, chosen cells, return levels, and how GloFAS saw known floods.
+"""Write reports/rivers_glofas.md: river points, chosen cells, return levels, and how GloFAS saw known floods.
 
     python -m pipelines.rivers.qa
 """
@@ -71,7 +71,7 @@ alert rule remains "model high or above, or river flag".
 Better river input for later: the observed gauge flows in the Flood Forecasting Division's daily
 bulletins (for example Swat at Chakdara and Munda) during the monsoon.
 """
-    Path("reports/m6_glofas.md").write_text(text, encoding="utf-8")
+    Path("reports/rivers_glofas.md").write_text(text, encoding="utf-8")
     print(text)
     return 0
 

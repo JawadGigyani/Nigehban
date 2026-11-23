@@ -47,3 +47,6 @@ Thumbs.db
 
 # Frontend build info
 *.tsbuildinfo
+
+# Local developer tools (not published)
+tools/

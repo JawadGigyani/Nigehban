@@ -10,7 +10,7 @@ plain CSS. Code in `frontend/`; new backend routes in `backend/app/api/risk.py`.
   colour and words, plain-language reasons, river flag note, nearest safer places and Rescue 1122
   (marked unverified), "call 1122".
 - **Alerts**: subscribe to villages or tehsils; alerts appear in the in-app inbox (refreshes every
-  minute); optional browser notifications when VAPID keys are set.
+  minute).
 - **Ask**: the grounded agent (M8); shows "answer checked" and its sources.
 - **My data**: language, demo replay (14 Aug 2025), stop alerts, delete all my data.
 - Installable (manifest + service worker; offline shell; push handler). Risk data is never cached.
@@ -45,5 +45,4 @@ Chrome), which crashed the Ask tab.
 
 - The first replay request after a server start takes about 25 s (features for all tehsils are
   built, then cached); concurrent requests now share one computation.
-- Browser notifications need VAPID keys (not set yet). WhatsApp and SMS remain stubs.
-- Not yet deployed (deploy step comes at the end).
+- Alerts are delivered to the in-app inbox; other channels can be integrated.

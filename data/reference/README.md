@@ -64,7 +64,7 @@ height above the nearest stream (draining at least 10 km²) at the point;
 `hand_min_m` is the lowest value within about 180 m, which sets
 `exposure_band` (high: under 5 m next to a river draining at least 50 km²;
 medium: under 8 m; low: otherwise). Copernicus GLO-90 DEM. Bands only, never
-flood depths. See reports/m3_terrain_qa.md for the validation.
+flood depths. See reports/terrain_qa.md for the validation.
 
 ## facilities.csv (M4b)
 
@@ -85,4 +85,4 @@ was reported or only the district service is known.
 - `river_points_thresholds.json`: chosen GloFAS cell and q2/q5/q10/q20 flows (Gumbel fit to Apr–Oct
   yearly peaks 1997–2025). `river_points_cells.json`: the chosen cells; `river_yearly_peaks.csv`: the peaks.
 - Source: Copernicus GloFAS via the Open-Meteo Flood API (CC BY 4.0). GloFAS misses the Swat floods
-  that matter (see reports/m6_glofas.md), so the river flag is a secondary signal only.
+  that matter (see reports/rivers_glofas.md), so the river flag is a secondary signal only.

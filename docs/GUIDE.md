@@ -154,8 +154,8 @@ happened next.
 ### C. Command-line checks (optional)
 
 ```powershell
-.venv\Scripts\python -m pipelines.alerts.replay_cycle   # Buner 13–15 Aug 2025 -> reports/m9_alerts_replay.md
-.venv\Scripts\python -m pipelines.backtest.run          # how many past floods were caught -> reports/m7_backtest.md
+.venv\Scripts\python -m pipelines.alerts.replay_cycle   # Buner 13–15 Aug 2025 -> reports/alerts_replay.md
+.venv\Scripts\python -m pipelines.backtest.run          # how many past floods were caught -> reports/backtest.md
 ```
 
 ## 4. How it works
@@ -245,9 +245,9 @@ tests/         automated tests
 data/          reference data (small files in git; large and private data gitignored)
 ```
 
-Useful reports: `m5_risk_qa.md` (model choice), `m7_backtest.md` (floods caught),
-`m9_alerts_replay.md` (Buner alert replay), `imerg_vs_era5.md` (satellite rain),
-`hardening_voice_channels.md` (security, voice, channels).
+Useful reports: `risk_model.md` (model choice), `backtest.md` (floods caught),
+`alerts_replay.md` (Buner alert replay), `imerg_vs_era5.md` (satellite rain),
+`security_and_voice.md` (security, voice, channels).
 
 ## 6. API endpoints (for reference)
 

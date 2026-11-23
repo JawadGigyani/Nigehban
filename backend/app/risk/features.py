@@ -21,7 +21,7 @@ STATIC_FEATURES = [
     "log_population", "log_population_low_hand", "log_high_villages",
 ]
 ALL_FEATURES = RAIN_FEATURES + SEASON_FEATURES + STATIC_FEATURES
-# The model's features, chosen on held-out seasons and districts (reports/m5_risk_qa.md):
+# The model's features, chosen on held-out seasons and districts (reports/risk_model.md):
 # with under 100 positive days, a small rain-centred set generalises best.
 FEATURES = ["log_precip_cell_max", "log_precip_3d", "log_precip_max_1h", "log_precip_7d_antecedent",
             "soil_moisture_0_7", "log_population", "log_high_villages"]

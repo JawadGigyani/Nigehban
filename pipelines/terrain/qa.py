@@ -1,4 +1,4 @@
-"""Write `reports/m3_terrain_qa.md`: tehsil statics, village bands, validation on PDMA villages, facilities.
+"""Write `reports/terrain_qa.md`: tehsil statics, village bands, validation on PDMA villages, facilities.
 
     python -m pipelines.terrain.qa
 """
@@ -138,7 +138,7 @@ villages, so they were replaced by the rule above.
 - Upper Chitral (Mulkhow) is outside the DEM box and has no terrain features; it is
   out of scope.
 """
-    out = Path("reports") / "m3_terrain_qa.md"
+    out = Path("reports") / "terrain_qa.md"
     out.write_text(text, encoding="utf-8")
     print(f"wrote {out}; villages ok {has_village}; shelters ok {has_shelter}")
     return 0

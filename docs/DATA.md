@@ -61,7 +61,7 @@ Run from the `nigehban` folder. Each step is resumable and cached; most write a 
   text (`pipelines/pdma/redact.py`) and asks the LLM to fill a fixed form.
 - `build_events` geocodes (village, then tehsil, then district), merges repeat reports, applies the
   private hand corrections in `data/events/event_corrections.csv`, and writes
-  `data/events/flood_events.parquet` plus `reports/m1_events_qa.md`.
+  `data/events/flood_events.parquet` plus `reports/flood_events_qa.md`.
 
 ### 3. Weather history (M2)
 
@@ -69,7 +69,7 @@ Run from the `nigehban` folder. Each step is resumable and cached; most write a 
 .venv\Scripts\python -m pipelines.hydromet.build_history              # Jun–Sep 2019–2025 (core)
 .venv\Scripts\python -m pipelines.hydromet.build_history --scope all  # every month (optional)
 .venv\Scripts\python -m pipelines.hydromet.build_history --status
-.venv\Scripts\python -m pipelines.hydromet.qa                         # reports/m2_hydromet_qa.md
+.venv\Scripts\python -m pipelines.hydromet.qa                         # reports/weather_qa.md
 .venv\Scripts\python -m pipelines.hydromet.imerg_history              # IMERG Jun–Sep 2019–2025
 ```
 
@@ -85,7 +85,7 @@ stops cleanly; run it again the next day.
 .venv\Scripts\python -m pipelines.terrain.fetch_dem --res 30 --bbox 72.0 34.6 72.9 35.9
 .venv\Scripts\python -m pipelines.terrain.build_terrain --tag swat30
 .venv\Scripts\python -m pipelines.terrain.merge_detail --tag swat30 --district swat
-.venv\Scripts\python -m pipelines.terrain.qa                          # reports/m3_terrain_qa.md
+.venv\Scripts\python -m pipelines.terrain.qa                          # reports/terrain_qa.md
 .venv\Scripts\python -m pipelines.reference.build_facilities --fetch
 .venv\Scripts\python -m pipelines.reference.extract_roads             # OSM road tiles for routing
 ```
@@ -97,7 +97,7 @@ village; high = under 5 m beside a stream draining at least 50 km², medium = un
 
 ```powershell
 .venv\Scripts\python -m pipelines.rivers.build_thresholds   # Gumbel fit to yearly GloFAS peaks 1997–2025
-.venv\Scripts\python -m pipelines.rivers.qa                 # reports/m6_glofas.md
+.venv\Scripts\python -m pipelines.rivers.qa                 # reports/rivers_glofas.md
 ```
 
 ### 6. Model and evaluation (M5, M7)

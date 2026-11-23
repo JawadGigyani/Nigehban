@@ -279,7 +279,7 @@ trained without it. Model: {kind}; "high" at probability {high:.4f}; rain thresh
 - Scoring follows M5: ±1 day window; false alerts are runs of alert days with no event, per tehsil
   per season (122 days).
 """
-    (out_dir / "m7_backtest.md").write_text(text, encoding="utf-8")
+    (out_dir / "backtest.md").write_text(text, encoding="utf-8")
     print(_md(eq))
     print(_md(tuned_leads))
     print(json.dumps(forecast_levels, indent=1))
