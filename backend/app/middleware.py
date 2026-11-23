@@ -2,7 +2,7 @@
 
 Public endpoints call free LLM, voice and weather quotas, so each client IP gets a small
 per-minute allowance (sliding window, in memory), and the chat has a global daily cap.
-Behind a proxy (Hugging Face, Render) the client IP comes from X-Forwarded-For.
+Behind a reverse proxy the client IP comes from X-Forwarded-For.
 """
 
 from __future__ import annotations

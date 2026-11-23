@@ -42,7 +42,3 @@ the system's reduced-motion setting, only gentle fades remain.
 Browser notifications need `NEXT_PUBLIC_VAPID_PUBLIC_KEY` here and the VAPID key pair in the
 backend `.env` (`python -m backend.app.alerts.channels --vapid`).
 
-## Deploy (Vercel)
-
-Root directory `nigehban/frontend`; set `NEXT_PUBLIC_API_URL` to the backend URL and add the
-Vercel domain to the backend's `NIGEHBAN_CORS_ALLOW_ORIGINS`.

@@ -1,12 +1,12 @@
 # Nigehban: guide to running, testing and understanding it
 
-Other documents: [Architecture](ARCHITECTURE.md) · [Risk model](MODEL.md) · [Data](DATA.md) · [API](API.md) · [Deployment](DEPLOYMENT.md).
+Other documents: [Architecture](ARCHITECTURE.md) · [Risk model](MODEL.md) · [Data](DATA.md) · [API](API.md) · [Configuration](CONFIGURATION.md).
 
 Nigehban gives a flash-flood risk level for each tehsil in northern Khyber Pakhtunkhwa for today
 and the next 3 days. It sends Urdu alerts to people who subscribe and gives PDMA, district
 administrations and Rescue 1122 a risk board. It supports official warnings and never replaces them.
 
-## 1. Is it complete?
+## 1. Status
 
 | Part | State |
 |---|---|
@@ -20,17 +20,30 @@ administrations and Rescue 1122 a risk board. It supports official warnings and 
 | Channels that work today | Web inbox, browser push, console, voice audio |
 | SMS | Code done (SMS.to, Android SMS Gateway, Twilio); needs a paid or phone route |
 | WhatsApp | Code done (Meta Cloud API, Twilio); needs a Meta test number |
-| Deployment (Hugging Face Spaces + Vercel + Supabase + GitHub cron) | Prepared, not yet deployed |
-| Demo pack (method note, script, results) | Last step |
+| Alert cycle runner (`pipelines.alerts.run_cycle`, once or every few hours) | Done |
+| Documentation (architecture, model, data, API, configuration) | Done |
 | Weather history for non-monsoon months (`--scope all`) | Optional, 13/35 chunks; the app does not need it |
 
-**In short:** the application is built and runs end to end on your computer. What remains is
-putting it online (deployment), choosing an SMS/WhatsApp route, and the demo pack.
+**In short:** the system is built and runs end to end on one machine. Open items are message
+channels (SMS, WhatsApp) and the improvements in the roadmap below.
+
+### Roadmap
+
+| Item | Why |
+|---|---|
+| SMS route | Most people in the area have basic phones; needs an Android gateway phone or a paid provider |
+| WhatsApp | Needs a Meta test number (free for up to 5 recipients) or a paid account |
+| Live-season check | The model has only been tested on past seasons; the next monsoon (Jun–Sep) is the first live test |
+| Real river gauges | GloFAS added nothing in the backtest; FFD/WAPDA gauge bulletins would be a real river input |
+| More flood labels | 89 positive days is a small sample; adding NDMA and news reports would tighten the model |
+| Frontend tests | The backend has 192 tests; the website is checked by hand |
+| Urdu review | A native speaker should read the website's Urdu text once |
+| Mobile app | The website works on phones; a native app could add offline use and push notifications |
 
 ## 2. Run it yourself (Windows, PowerShell)
 
 You need Python 3.11 and Node.js 18+ installed. Everything below is run from
-`H:\AIChallenge26\nigehban`.
+the `nigehban` folder (the repository root).
 
 ### First time only
 
@@ -205,7 +218,7 @@ happened next.
    writes an answer, then checks it: every claim must point to evidence, and Urdu place names
    come from a fixed table. If the check fails twice it falls back to a safe template. It uses
    LangChain with Groq first and Gemini as backup.
-8. **Alerts (M9).** Each cycle (every 3 hours when deployed) the engine alerts subscribers when
+8. **Alerts (M9).** Each cycle (for example every 3 hours with `run_cycle --every-hours 3`) the engine alerts subscribers when
    their tehsil is high or above within 2 days, or the river flag is raised. It sends once per
    tehsil, level and date and only again if the level goes up. Text is written by the LLM in
    Urdu, English and Roman Urdu, then checked by code (level, place, date). A short plain SMS
@@ -232,7 +245,7 @@ backend/app/
   knowledge/   search index of official guidance
   alerts/      rules, composer, channels, voice, advisory
   geo/         danger check, routing, contacts, Urdu names
-  db/          database tables (SQLite locally, Postgres when deployed)
+  db/          database tables (SQLite by default, Postgres supported)
 frontend/      Next.js website (/, /map, /area, /ask, /alerts, /safety) and board (/board)
 pipelines/     offline jobs that build data, train and evaluate
 reports/       results of each step (QA, model, backtest, alerts, IMERG)
@@ -260,7 +273,7 @@ Useful reports: `m5_risk_qa.md` (model choice), `m7_backtest.md` (floods caught)
 | `GET /inbox/{id}` | Web inbox |
 | `GET /rain/observed?as_of=` | Satellite rain already fallen |
 | `POST /board/login`, `GET /alerts`, `POST /advisories/draft` | Board (password) |
-| `POST /internal/run-cycle` | Run one alert cycle (token when deployed) |
+| `POST /internal/run-cycle` | Run one alert cycle (token in production mode) |
 | `POST /tts`, `GET /audio/{key}.mp3` | Urdu voice |
 
 ## 7. Limits to say out loud

@@ -30,7 +30,6 @@ data/interim/     intermediate files: LLM extractions, terrain rasters (gitignor
 data/events/      flood events and corrections                        (gitignored, private)
 data/features/    hydromet_daily.parquet, imerg_daily.parquet         (gitignored)
 data/cache/       API caches (Open-Meteo, IMERG, OSM road tiles)       (gitignored)
-data/bundle/      runtime data bundle for deployment                   (gitignored)
 data/nigehban.db  local SQLite database                                 (gitignored)
 ```
 
@@ -115,15 +114,9 @@ Builds `backend/app/knowledge/index/passages.jsonl.gz` from the guidance PDFs (P
 hazards contingency plan, NDMP, Swat disaster risk mapping, PDMA flood do's and don'ts, NIH flood
 guidelines). Lists of officials' names are filtered out.
 
-### 8. Deployment bundle
+### 8. Check
 
-```powershell
-.venv\Scripts\python -m pipelines.deploy.bundle_runtime_data
-.venv\Scripts\python -m pipelines.deploy.bundle_runtime_data --upload <hf-user>/nigehban-runtime
-```
-
-Copies only the files the server needs (`backend/app/runtime_data.py`, `RUNTIME_FILES`; about
-140 MB) and refuses to build if any private path is included.
+`GET /health` lists any runtime file still missing (`backend/app/runtime_data.py`, `RUNTIME_FILES`).
 
 ## Privacy
 
@@ -132,7 +125,7 @@ Copies only the files the server needs (`backend/app/runtime_data.py`, `RUNTIME_
 - Event files, hand corrections and spot checks are private (`data/events/`).
 - Subscriber contacts are encrypted at rest (Fernet) and looked up by keyed hash; the API never
   returns them. Users can delete all their data (`POST /me/delete`).
-- API keys live only in `.env` (gitignored) or the host's secret store.
+- API keys live only in `.env` (gitignored).
 
 ## Hand-edited reference files
 

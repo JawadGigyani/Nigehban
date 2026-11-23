@@ -84,7 +84,7 @@ const en: Dict = {
   call_1122: "Call 1122",
   read_guide: "Read the safety guide",
 
-  footer_about: "Flash-flood early warning for northern Khyber Pakhtunkhwa. Built for the KPITB AI Challenge 2026.",
+  footer_about: "Flash-flood early warning for northern Khyber Pakhtunkhwa.",
   footer_sources: "Data: PDMA KP, Open-Meteo (ECMWF, GFS, ICON, GloFAS), NASA IMERG, Copernicus DEM, OpenStreetMap.",
   footer_board: "Authority board",
   footer_help: "Emergency",
@@ -226,7 +226,7 @@ const ur: Dict = {
   call_1122: "1122 پر کال کریں",
   read_guide: "حفاظتی رہنمائی پڑھیں",
 
-  footer_about: "شمالی خیبر پختونخوا کے لیے سیلابی ریلوں کی پیشگی اطلاع۔ کے پی آئی ٹی بی اے آئی چیلنج 2026 کے لیے تیار کیا گیا۔",
+  footer_about: "شمالی خیبر پختونخوا کے لیے سیلابی ریلوں کی پیشگی اطلاع۔",
   footer_sources: "ڈیٹا: پی ڈی ایم اے کے پی، اوپن میٹیو، ناسا IMERG، کوپرنیکس DEM، اوپن اسٹریٹ میپ۔",
   footer_board: "انتظامیہ کا بورڈ",
   footer_help: "ہنگامی نمبر",

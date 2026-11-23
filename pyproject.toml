@@ -10,7 +10,6 @@ dependencies = [
     "fastapi>=0.115",
     "geopandas>=1.0",
     "httpx>=0.27",
-    "huggingface_hub>=0.25",
     "joblib>=1.4",
     "langchain-core>=1.0",
     "langchain-openai>=1.0",

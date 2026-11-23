@@ -21,18 +21,18 @@
                                  ▼  HTTP (JSON)
                  Next.js frontend: public website + authority board
                                  ▲
-       GitHub Actions cron ──────┘  POST /internal/run-cycle every 3 hours
+   pipelines.alerts.run_cycle ───┘  (or POST /internal/run-cycle), e.g. every 3 hours
 ```
 
-One Python backend serves everything. The website and board call it over HTTP. A scheduled job
-calls one internal endpoint to run the alert cycle.
+One Python backend serves everything. The website and board call it over HTTP. The alert cycle
+runs from `python -m pipelines.alerts.run_cycle` (once or every few hours) or the internal endpoint.
 
 ## Components
 
 | Component | Folder | Role |
 |---|---|---|
 | Contracts | `backend/app/contracts/` | Pydantic v2 models shared by every module (levels, forecasts, alerts, subscriptions) |
-| Config | `backend/app/config/` | Settings from `.env` (prefix `NIGEHBAN_`); see [DEPLOYMENT.md](DEPLOYMENT.md) |
+| Config | `backend/app/config/` | Settings from `.env` (prefix `NIGEHBAN_`); see [CONFIGURATION.md](CONFIGURATION.md) |
 | Hydromet | `backend/app/hydromet/` | Weather per tehsil: Open-Meteo client with a request pacer and disk cache, 0.25° grid with area weights, daily and rolling features, river monitor (GloFAS), IMERG satellite rain and nowcast |
 | Risk | `backend/app/risk/` | Feature matrix, the trained model (`artifacts/v1/`), per-lead levels, drivers (reasons), 3-model ensemble, river flag, replays |
 | Geo | `backend/app/geo/` | Tehsil locator, point danger check (HAND terrain rasters), safe routing on OSM roads, Rescue 1122 contacts, fixed Urdu names |
@@ -40,10 +40,10 @@ calls one internal endpoint to run the alert cycle.
 | Agent | `backend/app/agent/` | Ask Nigehban: LangGraph graph understand → locate → gather → compose → validate, with retries and a template fallback |
 | LLM | `backend/app/llm/` | LangChain chat models (Groq first, Gemini fallback), key rotation with cooldowns, structured output |
 | Alerts | `backend/app/alerts/` | Rules, de-duplication, trilingual message composer with code checks, channels, voice (ElevenLabs), advisory drafts, subscriptions |
-| DB | `backend/app/db/` | SQLModel tables (subscriptions with encrypted contacts, alerts, deliveries); SQLite locally, Postgres when deployed |
+| DB | `backend/app/db/` | SQLModel tables (subscriptions with encrypted contacts, alerts, deliveries); SQLite by default, Postgres supported |
 | API | `backend/app/api/` | FastAPI routers: risk, geo, chat, alerts, voice; see [API.md](API.md) |
 | Middleware | `backend/app/middleware.py` | Security headers and per-IP rate limits (stricter for chat, plus a daily global chat cap) |
-| Startup | `backend/app/start.py`, `runtime_data.py` | On a server, download the runtime data bundle if missing, then start uvicorn |
+| Runtime data | `backend/app/runtime_data.py` | List of data files the backend needs; `/health` reports missing ones |
 | Frontend | `frontend/` | Next.js 15 website and board, MapLibre map; see [frontend/README.md](../frontend/README.md) |
 | Pipelines | `pipelines/` | Offline jobs that build data, train and evaluate; see [DATA.md](DATA.md) |
 
@@ -65,9 +65,10 @@ calls one internal endpoint to run the alert cycle.
 5. Results are cached per issue date. A replay (`as_of` in the past) uses the forecasts exactly as
    issued then (Open-Meteo previous runs), so it never sees what happened next.
 
-### Alert cycle (every 3 hours)
+### Alert cycle
 
-1. `POST /internal/run-cycle` (token protected) computes risk for all tehsils.
+1. `pipelines.alerts.run_cycle` (or `POST /internal/run-cycle`, token protected) computes risk for
+   all tehsils.
 2. Rules: alert when a tehsil is High or above within 2 days, or the river flag is raised.
 3. De-duplication: one alert per tehsil, level and date; a new alert only if the level goes up.
 4. The composer asks the LLM for the message in Urdu, English and Roman Urdu, then checks in code
@@ -147,10 +148,10 @@ frontend/src/
 | Evidence ids in every answer | Lets code verify that an answer is grounded, and lets users see sources. |
 | Fixed Urdu names table | LLMs misspell local names; place names come from `data/reference/urdu_names.csv`. |
 | Contacts encrypted | Phone numbers are Fernet-encrypted and looked up by keyed hash; they are never returned by the API. |
-| Free tiers throughout | Open-Meteo, Groq/Gemini free quotas, Hugging Face Spaces, Vercel, Supabase: the system can run without a budget. A request pacer and caches keep within quotas. |
+| Free data and models | Open-Meteo, NASA IMERG and Groq/Gemini free quotas: the system runs without a budget. A request pacer and caches keep within quotas. |
 
 ## Tech stack
 
 Python 3.11, FastAPI, Pydantic v2, SQLModel, LangChain and LangGraph, scikit-learn, pandas,
 rasterio, pysheds, shapely, networkx, pyosmium, rapidfuzz, httpx. Next.js 15, React 19, MapLibre
-GL 4.7, TypeScript. Docker (Hugging Face Spaces), Vercel, Supabase Postgres, GitHub Actions.
+GL 4.7, TypeScript. SQLite by default (Postgres supported).

@@ -1,4 +1,4 @@
-"""Database tables (SQLModel). SQLite locally, Postgres when deployed."""
+"""Database tables (SQLModel). SQLite by default, Postgres supported."""
 
 from __future__ import annotations
 

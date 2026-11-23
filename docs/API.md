@@ -100,7 +100,7 @@ Request `{"address"}`. Deletes every subscription and delivery for that contact.
 ### `POST /internal/run-cycle`
 Header `X-Internal-Token`. Request `{"as_of"?, "deliver": true}`. Runs one alert cycle:
 `{"issued_for", "replay", "candidates", "new_alerts", "skipped_duplicates", "deliveries_ok",
-"deliveries_failed"}`. Called every 3 hours by GitHub Actions.
+"deliveries_failed"}`. The same cycle runs from `python -m pipelines.alerts.run_cycle`.
 
 ## Board (token)
 
