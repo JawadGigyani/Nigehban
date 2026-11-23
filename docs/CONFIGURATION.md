@@ -34,7 +34,6 @@ unattended on Windows, point Task Scheduler at the `--every-hours` command or at
 
 ```powershell
 .venv\Scripts\python -c "from backend.app.db import generate_keys; print(generate_keys())"   # contact keys
-.venv\Scripts\python -m backend.app.alerts.channels --vapid                            # browser notification keys
 .venv\Scripts\python -c "import secrets; print(secrets.token_urlsafe(32))"            # internal token
 ```
 
@@ -75,15 +74,10 @@ All variables use the `NIGEHBAN_` prefix unless noted.
 | `NIGEHBAN_ALERT_MAX_LEAD_DAYS` | 2 | Up to this many days ahead |
 | `NIGEHBAN_ALERT_FALSE_ALARM_TARGET_PER_SEASON` | 2.5 | Target behind the "High" threshold |
 | `NIGEHBAN_RIVER_FLAG_RETURN_PERIOD` | 5 | GloFAS return period (years) that raises the river flag |
-| `NIGEHBAN_VAPID_PUBLIC_KEY`, `NIGEHBAN_VAPID_PRIVATE_KEY` | — | Browser notifications |
 | `NIGEHBAN_ELEVENLABS_API_KEY` | — | Urdu voice (ElevenLabs, model `eleven_v3`, Text to Speech permission) |
-| `NIGEHBAN_SMSTO_API_KEY`, `NIGEHBAN_SMSTO_SENDER_ID` | — | SMS through SMS.to |
-| `NIGEHBAN_SMS_GATEWAY_URL`, `_USERNAME`, `_PASSWORD` | cloud URL | SMS through the open-source SMS Gateway for Android app |
-| `NIGEHBAN_TWILIO_ACCOUNT_SID`, `_AUTH_TOKEN`, `_SMS_FROM` | — | Twilio SMS and WhatsApp sandbox (used instead of the above when set) |
-| `NIGEHBAN_WHATSAPP_TOKEN`, `NIGEHBAN_WHATSAPP_PHONE_NUMBER_ID`, `NIGEHBAN_WHATSAPP_TEMPLATE` | — | WhatsApp Cloud API (Meta) |
-| `NIGEHBAN_TELEGRAM_BOT_TOKEN` | — | Development only (Telegram is blocked in Pakistan) |
 
-Test a channel: `python -m pipelines.alerts.send_test --channel sms --to +92XXXXXXXXXX`.
+Alerts are delivered to the web inbox. Other channels (SMS, WhatsApp, browser push) are not built;
+see `backend/app/alerts/channels.py` for how one would be added.
 
 ### Data and limits
 
@@ -101,7 +95,6 @@ Test a channel: `python -m pipelines.alerts.send_test --channel sms --to +92XXXX
 | Variable | Purpose |
 |---|---|
 | `NEXT_PUBLIC_API_URL` | Backend URL (default `http://localhost:8000`) |
-| `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | Same public key as the backend, for browser notifications |
 
 ## Notes
 

@@ -66,8 +66,20 @@ export function SiteProvider({ children }: { children: React.ReactNode }) {
     const urlLang = params.get("lang");
     const stored = load<Lang>("lang", "en");
     setLangS(urlLang === "ur" || urlLang === "en" ? urlLang : stored === "ur" ? "ur" : "en"); // English or Urdu only
-    setAsOfS(load<string | null>("asOf", null));
-    setPlaceS(load<Place | null>("place", null));
+    // ?replay=2025-08-14 opens that past day (shareable demo links); ?replay=live goes back to today.
+    const replay = params.get("replay");
+    if (replay === "live") { setAsOfS(null); save("asOf", null); }
+    else if (replay && /^\d{4}-\d{2}-\d{2}$/.test(replay)) {
+      const v = `${replay}T09:00:00+05:00`;
+      setAsOfS(v); save("asOf", v);
+    } else setAsOfS(load<string | null>("asOf", null));
+    // ?tehsil=swat__kabal opens My area for that tehsil (shareable links).
+    const tehsil = params.get("tehsil");
+    if (tehsil && /^[a-z_]+__[a-z_]+$/.test(tehsil)) {
+      const name = tehsil.split("__")[1].replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+      const p: Place = { type: "tehsil", id: tehsil, name, tehsil_id: tehsil, label_ur: null };
+      setPlaceS(p); save("place", p);
+    } else setPlaceS(load<Place | null>("place", null));
     setPlacesS(load<Place[]>("places", []));
     setSubIdS(load<string | null>("sub", null));
     let id = load<string>("device", "");

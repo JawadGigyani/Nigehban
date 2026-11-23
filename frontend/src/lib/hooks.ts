@@ -54,15 +54,17 @@ export function useTehsil(id: string | null | undefined, asOf: string | null) {
 export const levelAt = (r: TehsilRisk, lead: number) => r.days.find((d) => d.lead_days === lead);
 
 /** Tehsils sorted by level, then probability, for one lead day. */
+/** Highest level first, then highest probability, for one lead day. */
+export function rankTehsils(rows: TehsilRisk[], lead: number): TehsilRisk[] {
+  return [...rows].sort((a, b) => {
+    const da = levelAt(a, lead), db = levelAt(b, lead);
+    return (LEVEL_ORDER.indexOf(db?.level ?? "low") - LEVEL_ORDER.indexOf(da?.level ?? "low"))
+      || ((db?.probability ?? 0) - (da?.probability ?? 0));
+  });
+}
+
 export function useRanked(risk: RiskResponse | null, lead: number) {
-  return useMemo(() => {
-    if (!risk) return [];
-    return [...risk.tehsils].sort((a, b) => {
-      const da = levelAt(a, lead), db = levelAt(b, lead);
-      return (LEVEL_ORDER.indexOf(db?.level ?? "low") - LEVEL_ORDER.indexOf(da?.level ?? "low"))
-        || ((db?.probability ?? 0) - (da?.probability ?? 0));
-    });
-  }, [risk, lead]);
+  return useMemo(() => (risk ? rankTehsils(risk.tehsils, lead) : []), [risk, lead]);
 }
 
 export function countLevels(rows: TehsilRisk[], lead: number) {

@@ -83,9 +83,9 @@ Response: `session_id`, `answer`, `actions` (`text`, `refs`), `language`, `inten
 ## Alerts and subscriptions
 
 ### `POST /subscriptions`
-Request `{"channel": "web_inbox" | "webpush" | "sms" | "whatsapp", "address", "language": "ur" |
-"en" | "ur_roman", "tehsil_ids": [], "village_ids": []}`. `address` is a device id (web inbox), a
-web-push subscription JSON, or a phone number. Returns the subscription without the contact.
+Request `{"channel": "web_inbox", "address", "language": "ur" | "en" | "ur_roman", "tehsil_ids": [],
+"village_ids": []}`. `address` is the browser's random device id. Returns the subscription without the
+contact. (`console` is also accepted, for local testing.)
 
 ### `DELETE /subscriptions/{id}`
 Removes the subscription and its delivery records.
@@ -125,5 +125,4 @@ Request `{"text"}` in Urdu. Returns `{"audio_url"}` (ElevenLabs, cached).
 Cached audio for alerts and answers.
 
 ### `GET /config`
-What the website may turn on, without secrets: `voice`, `webpush_public_key`, `sms`, `whatsapp`
-and channel details.
+What the website may turn on, without secrets: `{"voice": true | false}`.

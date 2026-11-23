@@ -12,7 +12,7 @@ switched from the header and remembered per browser. Works on desktop and phone.
 | `/map` | Full risk map: day and layer switches, counts, selected tehsil (levels, reasons, exposure, river flow, satellite rain), filterable ranked list |
 | `/area` | My area: 4-day levels for a place, what to do, reasons, alerts sign-up, "Am I in a danger zone?" check with a walking route to higher ground, nearby safer places, Rescue 1122 and the district control room |
 | `/ask` | Ask Nigehban: suggested questions, grounded answers with sources, Urdu voice playback |
-| `/alerts` | Choose places, subscribe to the web inbox (and browser notifications), inbox, stop alerts, delete my data |
+| `/alerts` | Choose places, subscribe to the in-app inbox, read alerts with Urdu voice, stop alerts, delete my data |
 | `/safety` | Before / during / after guidance and emergency numbers |
 | `/board` | Authority board (password): map, ranked table, tehsil detail, advisory drafts, replay switch |
 
@@ -39,6 +39,7 @@ the system's reduced-motion setting, only gentle fades remain.
 2. In `frontend/`: `npm install`, copy `.env.example` to `.env.local`, then `npm run dev`
 3. Open http://localhost:3000 (website) and http://localhost:3000/board (board).
 
-Browser notifications need `NEXT_PUBLIC_VAPID_PUBLIC_KEY` here and the VAPID key pair in the
-backend `.env` (`python -m backend.app.alerts.channels --vapid`).
+Tests: `npm test` (Vitest: copy parity in English and Urdu, ranking and counts, place labels, the
+4-day strip). Shareable links: `?replay=2025-08-14` opens a past day, `?tehsil=swat__kabal` opens My
+area for a tehsil, `?lang=ur` opens in Urdu.
 

@@ -16,6 +16,17 @@ dist/
 data/*
 !data/contracts/
 !data/reference/
+# Small runtime files so a fresh clone can compute risk (no private data).
+!data/features/
+data/features/*
+!data/features/hydromet_daily.parquet
+!data/features/t2m_climatology.parquet
+!data/features/tehsil_static.parquet
+!data/raw/
+data/raw/*
+!data/raw/osm/
+data/raw/osm/*
+!data/raw/osm/riverside_spots_overpass.json.gz
 *.db
 *.sqlite
 

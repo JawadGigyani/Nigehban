@@ -61,9 +61,4 @@ def public_config() -> dict:
     """What the web app may turn on (no secrets)."""
 
     s = get_settings()
-    return {"voice": bool(s.elevenlabs_api_key), "webpush_public_key": s.vapid_public_key,
-            "sms": bool((s.sms_gateway_username and s.sms_gateway_password) or s.smsto_api_key),
-            "sms_twilio": bool(s.twilio_account_sid and s.twilio_sms_from),
-            "sms_smsto": bool(s.smsto_api_key),
-            "whatsapp": bool((s.whatsapp_token and s.whatsapp_phone_number_id) or s.twilio_account_sid),
-            "whatsapp_sandbox": s.twilio_whatsapp_from if s.twilio_account_sid else None}
+    return {"voice": bool(s.elevenlabs_api_key)}

@@ -141,12 +141,6 @@ class Settings(BaseSettings):
     alert_max_lead_days: int = Field(default=2, ge=0, le=3)
     # Protects POST /internal/run-cycle (required when environment is production).
     internal_token: SecretStr | None = None
-    # Web push (VAPID). Generate with: python -m backend.app.alerts.channels --vapid
-    vapid_public_key: str | None = None
-    vapid_private_key: SecretStr | None = None
-    vapid_subject: str = "mailto:alerts@nigehban.invalid"
-    # Telegram: private development channel only (Telegram is blocked in Pakistan).
-    telegram_bot_token: SecretStr | None = None
     # OpenRouteService (free key) for routes to safety; without it the built-in OSM router is used.
     ors_api_key: SecretStr | None = None
 
@@ -156,28 +150,6 @@ class Settings(BaseSettings):
     elevenlabs_voice_id: str = "JBFqnCBsd6RMkjVDRZzb"  # a premade multilingual voice (free tier can use premade voices)
     elevenlabs_model: str = "eleven_v3"
     voice_max_chars: int = Field(default=600, ge=50, le=5000)
-
-    # SMS through the free open-source "SMS Gateway for Android" app (a phone + SIM sends the SMS).
-    # Cloud mode: https://api.sms-gate.app/3rdparty/v1 ; local mode: http://<phone-ip>:8080
-    sms_gateway_url: str = "https://api.sms-gate.app/3rdparty/v1"
-    sms_gateway_username: str | None = None
-    sms_gateway_password: SecretStr | None = None
-
-    # WhatsApp Cloud API (Meta). Free only for a test number and up to 5 verified recipients.
-    whatsapp_token: SecretStr | None = None
-    whatsapp_phone_number_id: str | None = None
-    whatsapp_template: str | None = None  # approved template with one body parameter; else plain text
-
-    # SMS.to (free credits on signup, supports Pakistan). Used for SMS when the key is set.
-    smsto_api_key: SecretStr | None = None
-    smsto_sender_id: str = "Nigehban"
-
-    # Twilio (free trial credit): SMS to verified numbers, and the WhatsApp Sandbox for testing.
-    # When set, Twilio is used for SMS and WhatsApp instead of the adapters above.
-    twilio_account_sid: str | None = None
-    twilio_auth_token: SecretStr | None = None
-    twilio_sms_from: str | None = None  # your Twilio phone number, e.g. +1415...
-    twilio_whatsapp_from: str = "+14155238886"  # Twilio's shared WhatsApp Sandbox number
 
     # NASA Earthdata token for IMERG satellite rain (urs.earthdata.nasa.gov -> Generate Token)
     earthdata_token: SecretStr | None = None

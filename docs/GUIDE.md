@@ -17,28 +17,22 @@ administrations and Rescue 1122 a risk board. It supports official warnings and 
 | Ask Nigehban (grounded Q&A agent), place check, route to safety, advisory drafts | Done |
 | Satellite rain layer on the board (NASA IMERG) | Done |
 | Security hardening (rate limits, headers, encrypted contacts, board login) | Done |
-| Channels that work today | Web inbox, browser push, console, voice audio |
-| SMS | Code done (SMS.to, Android SMS Gateway, Twilio); needs a paid or phone route |
-| WhatsApp | Code done (Meta Cloud API, Twilio); needs a Meta test number |
+| Alert delivery | In-app web inbox with Urdu voice notes; other channels can be integrated |
+| Frontend tests (Vitest) and CI (GitHub Actions) | Done |
 | Alert cycle runner (`pipelines.alerts.run_cycle`, once or every few hours) | Done |
 | Documentation (architecture, model, data, API, configuration) | Done |
 | Weather history for non-monsoon months (`--scope all`) | Optional, 13/35 chunks; the app does not need it |
 
-**In short:** the system is built and runs end to end on one machine. Open items are message
-channels (SMS, WhatsApp) and the improvements in the roadmap below.
+**In short:** the system is built, tested and runs end to end on one machine as a web app.
 
 ### Roadmap
 
 | Item | Why |
 |---|---|
-| SMS route | Most people in the area have basic phones; needs an Android gateway phone or a paid provider |
-| WhatsApp | Needs a Meta test number (free for up to 5 recipients) or a paid account |
-| Live-season check | The model has only been tested on past seasons; the next monsoon (Jun–Sep) is the first live test |
-| Real river gauges | GloFAS added nothing in the backtest; FFD/WAPDA gauge bulletins would be a real river input |
-| More flood labels | 89 positive days is a small sample; adding NDMA and news reports would tighten the model |
-| Frontend tests | The backend has 192 tests; the website is checked by hand |
-| Urdu review | A native speaker should read the website's Urdu text once |
-| Mobile app | The website works on phones; a native app could add offline use and push notifications |
+| Delivery channels | SMS, WhatsApp, browser push or a mobile app can be integrated as one channel class each (`backend/app/alerts/channels.py`) |
+| Real river gauges | GloFAS added nothing in the backtest; FFD/WAPDA gauge readings would be a real river input, but no open historical feed exists |
+| More flood labels | 89 positive days is a small sample; NDMA reports and news would tighten the model |
+| Validation on new seasons | Re-run the backtest each season as new PDMA reports and archived forecasts accumulate |
 
 ## 2. Run it yourself (Windows, PowerShell)
 
@@ -162,7 +156,6 @@ happened next.
 ```powershell
 .venv\Scripts\python -m pipelines.alerts.replay_cycle   # Buner 13–15 Aug 2025 -> reports/m9_alerts_replay.md
 .venv\Scripts\python -m pipelines.backtest.run          # how many past floods were caught -> reports/m7_backtest.md
-.venv\Scripts\python -m pipelines.alerts.send_test --channel sms --to +92XXXXXXXXXX   # once an SMS route is set
 ```
 
 ## 4. How it works
@@ -186,7 +179,7 @@ happened next.
  +--------------------+-------------------------+----------------------+
         |
         v
- Web inbox, browser push, (SMS, WhatsApp when a route is set)
+ Web inbox (SMS, WhatsApp, push can be integrated)
 ```
 
 ### The pieces, one by one
@@ -221,8 +214,7 @@ happened next.
 8. **Alerts (M9).** Each cycle (for example every 3 hours with `run_cycle --every-hours 3`) the engine alerts subscribers when
    their tehsil is high or above within 2 days, or the river flag is raised. It sends once per
    tehsil, level and date and only again if the level goes up. Text is written by the LLM in
-   Urdu, English and Roman Urdu, then checked by code (level, place, date). A short plain SMS
-   version is built by code. The Urdu message is also turned into audio (ElevenLabs).
+   Urdu, English and Roman Urdu, then checked by code (level, place, date). The Urdu message is also turned into audio (ElevenLabs).
    Contacts are encrypted; phone numbers are never shown back.
 9. **Website and board (M12/M13).** The public website has six pages (Home, Risk map, My area,
    Ask, Alerts, Safety guide) in English and Urdu (Nastaliq, right-to-left), with a

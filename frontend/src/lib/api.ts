@@ -202,7 +202,7 @@ export const api = {
     request<SafeRoute>("/route/shelter", { method: "POST", body: JSON.stringify({ lat, lon, mode }) }),
   advisory: (token: string, tehsilIds: string[], asOf?: string | null) =>
     request<Advisory>("/advisories/draft", { method: "POST", body: JSON.stringify({ tehsil_ids: tehsilIds, as_of: asOf ?? null }) }, token),
-  config: () => request<{ voice: boolean; webpush_public_key: string | null; sms: boolean; whatsapp: boolean }>("/config"),
+  config: () => request<{ voice: boolean }>("/config"),
   tts: (text: string) => request<{ audio_url: string }>("/tts", { method: "POST", body: JSON.stringify({ text }) }),
   runCycle: (asOf: string | null) =>
     request<any>("/internal/run-cycle", { method: "POST", body: JSON.stringify({ as_of: asOf }) }),

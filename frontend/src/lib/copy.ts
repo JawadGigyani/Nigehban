@@ -119,7 +119,7 @@ const en: Dict = {
   about_place: "About",
 
   alerts_title: "Alerts",
-  alerts_sub: "Choose your places. When the risk turns high, the alert appears here and on your phone.",
+  alerts_sub: "Choose your places. When the risk turns high, the alert appears in your inbox on this page, with a voice message.",
   inbox: "Your alerts",
   places_label: "Your places",
   add_place: "Add a place",
@@ -188,7 +188,7 @@ const ur: Dict = {
   loading_map: "صورتحال لائی جا رہی ہے…",
 
   bento_title: "سیلاب سے پہلے ضرورت کی ہر چیز۔",
-  b_risk_t: "آپ کی تحصیل، تین دن پہلے",
+  b_risk_t: "آپ کی تحصیل، اگلے تین دن",
   b_risk_d: "ہر دن کا واضح درجہ، اور اس کی وجوہات۔",
   b_safe_t: "کیا میں نشیبی جگہ پر ہوں؟",
   b_safe_d: "اپنی جگہ چیک کریں اور اونچی جگہ کا پیدل راستہ پائیں۔",
@@ -261,7 +261,7 @@ const ur: Dict = {
   about_place: "بارے میں",
 
   alerts_title: "الرٹس",
-  alerts_sub: "اپنی جگہیں چنیں۔ خطرہ زیادہ ہونے پر الرٹ یہاں اور آپ کے فون پر آئے گا۔",
+  alerts_sub: "اپنی جگہیں چنیں۔ خطرہ زیادہ ہونے پر الرٹ آواز کے پیغام کے ساتھ اس صفحے پر آپ کے ان باکس میں آئے گا۔",
   inbox: "آپ کے الرٹس",
   places_label: "آپ کی جگہیں",
   add_place: "جگہ شامل کریں",

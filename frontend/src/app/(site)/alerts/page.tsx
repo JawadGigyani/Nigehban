@@ -8,14 +8,6 @@ import { S } from "@/lib/copy";
 import { T } from "@/lib/i18n";
 import { placeLabel, useSite } from "@/lib/site";
 
-const VAPID = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || "";
-
-function b64ToUint8(b64: string) {
-  const pad = "=".repeat((4 - (b64.length % 4)) % 4);
-  const raw = atob((b64 + pad).replace(/-/g, "+").replace(/_/g, "/"));
-  return Uint8Array.from(raw, (c) => c.charCodeAt(0));
-}
-
 export default function AlertsPage() {
   const { lang, deviceId, places, setPlaces, subId, setSubId, resetDevice } = useSite();
   const s = S[lang];
@@ -23,8 +15,6 @@ export default function AlertsPage() {
   const [alerts, setAlerts] = useState<InboxAlert[] | null>(null);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
-  const [pushOk, setPushOk] = useState(false);
-  useEffect(() => setPushOk(!!VAPID && "PushManager" in window), []);
 
   const refresh = useCallback(() => {
     if (!subId) { setAlerts(null); return; }
@@ -42,15 +32,6 @@ export default function AlertsPage() {
     try { const sub = await api.subscribe(body("web_inbox", deviceId)); setSubId(sub.id); }
     catch { setMsg({ ok: false, text: t.error }); }
     finally { setBusy(false); }
-  };
-  const enablePush = async () => {
-    try {
-      const reg = await navigator.serviceWorker.ready;
-      if ((await Notification.requestPermission()) !== "granted") return;
-      const push = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToUint8(VAPID) });
-      await api.subscribe(body("webpush", JSON.stringify(push.toJSON())));
-      setMsg({ ok: true, text: "✓" });
-    } catch { setMsg({ ok: false, text: t.error }); }
   };
 
   return (
@@ -81,7 +62,6 @@ export default function AlertsPage() {
             {subId && (
               <>
                 <p className="tiny">{t.subscribed_for} {places.map((p) => placeLabel(p, lang)).join(" · ")}</p>
-                {pushOk && <button className="btn ghost sm" style={{ marginTop: 12 }} onClick={enablePush}>{Icon.bell}{t.push_enable}</button>}
               </>
             )}
             {msg && <p className={`banner ${msg.ok ? "ok" : "err"}`} style={{ marginTop: 12 }}>{msg.text}</p>}

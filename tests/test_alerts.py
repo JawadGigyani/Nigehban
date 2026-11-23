@@ -10,7 +10,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlmodel import Session, select
 
-from backend.app.alerts.channels import ConsoleChannel, StubChannel, WebInboxChannel, WebPushChannel
+from backend.app.alerts.channels import ConsoleChannel, WebInboxChannel, build_channels
 from backend.app.alerts.composer import AlertComposer, AlertDraft, check_draft
 from backend.app.alerts.cycle import AlertEngine
 from backend.app.alerts.rules import select_candidates, should_send
@@ -110,8 +110,7 @@ class FixedRisk:
 
 
 def _engine(risk, cipher, console):
-    channels = {ChannelName.CONSOLE: console, ChannelName.WEB_INBOX: WebInboxChannel(),
-                ChannelName.SMS: StubChannel(ChannelName.SMS)}
+    channels = {ChannelName.CONSOLE: console, ChannelName.WEB_INBOX: WebInboxChannel()}
     return AlertEngine(risk, AlertComposer(DraftLLM([GOOD]), _context()), channels, cipher,
                        {"manual:pir_baba": "buner__gagra"}, {"buner__gagra", "battagram__allai"})
 
@@ -120,14 +119,13 @@ def test_cycle_sends_once_then_escalates(db, cipher):
     console = ConsoleChannel(stream=io.StringIO())
     for sub in (SubscriptionCreate(channel=ChannelName.CONSOLE, address="+92 300 1234567", tehsil_ids=("buner__gagra",)),
                 SubscriptionCreate(channel=ChannelName.WEB_INBOX, address="inbox-1", language=Language.EN,
-                                   village_ids=("manual:pir_baba",)),
-                SubscriptionCreate(channel=ChannelName.SMS, address="+923001112222", tehsil_ids=("buner__gagra",))):
+                                   village_ids=("manual:pir_baba",))):
         subscribe(db, cipher, sub, {"buner__gagra"}, {"manual:pir_baba"})
     risk = FixedRisk([fc(level=RiskLevel.HIGH)])
     engine = _engine(risk, cipher, console)
     as_of = dt.datetime(2025, 8, 14, 9, tzinfo=PKT)
     first = engine.run(db, as_of)
-    assert len(first.new_alerts) == 1 and first.deliveries_ok == 2 and first.deliveries_failed == 1  # SMS stub
+    assert len(first.new_alerts) == 1 and first.deliveries_ok == 2 and first.deliveries_failed == 0
     assert console.sent[0][0] == "+923001234567"  # decrypted only to send
     again = engine.run(db, as_of)
     assert again.new_alerts == [] and again.skipped_duplicates == 1
@@ -153,10 +151,17 @@ def test_subscription_privacy_and_deletion(db, cipher):
     assert not unsubscribe(db, first.id)
 
 
-def test_webpush_json_keeps_case(cipher):
-    address = '{"endpoint": "https://push.example/AbC", "keys": {"p256dh": "BXyZ", "auth": "QwE"}}'
-    assert cipher.decrypt(cipher.encrypt(address)) == address.replace(" ", "")
-    assert not WebPushChannel(None, "mailto:x").send(address, "hi").ok  # not configured
+def test_only_web_channels_and_unknown_channel_rows_are_skipped(db, cipher):
+    assert set(build_channels()) == {ChannelName.CONSOLE, ChannelName.WEB_INBOX}
+    subscribe(db, cipher, SubscriptionCreate(channel=ChannelName.WEB_INBOX, address="inbox-9",
+                                             tehsil_ids=("buner__gagra",)), {"buner__gagra"}, set())
+    # A row from an older build with a channel this build does not have (e.g. "sms").
+    db.add(SubscriptionRow(channel="sms", address_encrypted=cipher.encrypt("+920000000000"),
+                           address_hash=cipher.hash("+920000000000"), language="en", tehsil_ids=["buner__gagra"]))
+    db.commit()
+    engine = _engine(FixedRisk([fc(level=RiskLevel.HIGH)]), cipher, ConsoleChannel(stream=io.StringIO()))
+    report = engine.run(db, dt.datetime(2025, 8, 14, 9, tzinfo=PKT))
+    assert report.deliveries_ok == 1 and report.deliveries_failed == 1
 
 
 def test_api_flow(db, cipher, monkeypatch):
@@ -215,15 +220,3 @@ def test_urdu_place_names_are_fixed_and_checked():
     misspelled = draft.model_copy(update={"message_ur": "گرا، بونیر میں خطرہ زیادہ ہے۔"})
     assert any("name the tehsil" in e for e in check_draft(misspelled, bundle, "high", "buner__gagra"))
 
-
-def test_sms_text_is_one_plain_part():
-    import datetime as dt
-
-    from backend.app.alerts.cycle import sms_text
-    from backend.app.db import AlertRow
-
-    a = AlertRow(tehsil_id="mansehra__baffa_pakhal", level="very_high", valid_date=dt.date(2025, 8, 15))
-    for lang in ("en", "ur", "ur_roman"):
-        text = sms_text(a, lang)
-        assert len(text) <= 160 and text.isascii() and "1122" in text
-    assert "VERY HIGH" in sms_text(a, "en") and "BOHAT ZYADA" in sms_text(a, "ur")
