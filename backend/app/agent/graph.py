@@ -100,7 +100,7 @@ Answer ONLY from the evidence given. Rules:
    day asked about, state exactly that level and set `stated_level` to it. If there is no risk
    evidence, do not guess a level: say so and set `stated_level` to "none".
 3. Keep it short, calm and practical. Actions must come from the evidence (official guidance,
-   shelters, higher ground, Rescue 1122). Shelter and Rescue 1122 locations are unverified: say so.
+   shelters, higher ground, Rescue 1122). Name places exactly as in the evidence.
 4. Write `answer` and action texts in {language_name}. Keep ids, numbers and place names exact.
 5. Do not add a closing line about following instructions; it is added automatically.
 6. If the question is outside floods and safety, say briefly what you can help with."""
@@ -171,7 +171,11 @@ def build_graph(llm, context) -> Any:
         user = (f"Conversation so far:\n{_history_text(state.get('history', []))}\n\n"
                 f"User message: {state['message']}\nIntent: {u.intent}. Place: {bundle.place_name or u.place or 'none'}."
                 f"{focus}\n\nEvidence:\n{bundle.render()}{feedback}")
-        answer = llm.complete_structured(ANSWER_SYSTEM.format(language_name=LANGUAGE_NAMES[lang]), user, AgentAnswer)
+        from backend.app.config.settings import LLMProvider
+        from backend.app.llm.service import ask_structured
+
+        answer = ask_structured(llm, ANSWER_SYSTEM.format(language_name=LANGUAGE_NAMES[lang]), user, AgentAnswer,
+                                prefer=LLMProvider.GEMINI if lang is Language.UR else None)
         return {"answer": answer, "attempts": state.get("attempts", 0) + 1}
 
     def validate(state: AgentState) -> AgentState:
@@ -271,6 +275,10 @@ def _result(state: AgentState, answer: AgentAnswer, fallback: bool) -> dict:
     intent = state["understanding"].intent
     # Internal level codes never reach the reader ("بہت زیادہ (very_high)" -> "بہت زیادہ").
     text = re.sub(r"\s*\((?:low|moderate|high|very_high)\)", "", answer.answer).strip()
+    if lang is Language.UR:  # English level words in an Urdu answer become the Urdu names
+        names = LEVEL_NAMES[lang]
+        text = re.sub(r"[\"“”']?\b(very[ _]high|moderate|high|low)\b[\"“”']?",
+                      lambda m: names[m.group(1).lower().replace(" ", "_")], text, flags=re.I)
     if intent not in ("small_talk", "out_of_scope"):
         text = f"{text}\n\n{CLOSING[lang]}"
     return {

@@ -53,7 +53,7 @@ PROVIDER_DEFAULTS: dict[LLMProvider, tuple[str | None, str]] = {
     LLMProvider.GROQ: ("https://api.groq.com/openai/v1", "openai/gpt-oss-120b"),
     LLMProvider.GEMINI: (
         "https://generativelanguage.googleapis.com/v1beta/openai/",
-        "gemini-3.5-flash-lite",
+        "gemini-3.5-flash",  # writes much better Urdu than the lite model
     ),
     LLMProvider.OPENAI: (None, "gpt-4.1-mini"),
     LLMProvider.CUSTOM: (None, ""),
@@ -104,6 +104,8 @@ class Settings(BaseSettings):
         validation_alias=AliasChoices("NIGEHBAN_GEMINI_API_KEY", "GEMINI_API_KEY"),
     )
     gemini_model: str | None = None
+    # Extra Gemini models tried after the main one (rate limits are per model).
+    gemini_extra_models: list[str] = Field(default=["gemini-3.5-flash-lite"])
     # Extra Groq models tried after the primary one (each has its own free quota).
     groq_extra_models: list[str] = Field(default=["openai/gpt-oss-20b"])
     openai_api_key: SecretStr | None = Field(

@@ -48,7 +48,7 @@ export default function AskPage() {
     setItems((x) => [...x, { role: "user", text: message }]);
     setBusy(true);
     try {
-      const r = await api.chat({ message, session_id: session.current, language: lang, tehsil_id: place?.tehsil_id, as_of: asOf });
+      const r = await api.chat({ message, session_id: session.current, tehsil_id: place?.tehsil_id, as_of: asOf });
       session.current = r.session_id;
       setItems((x) => [...x, { role: "bot", text: r.answer, result: r }]);
     } catch {
@@ -83,10 +83,11 @@ export default function AskPage() {
               {m.text}
               {m.result && m.result.actions.length > 0 && <ul className="actions">{m.result.actions.map((a, j) => <li key={j}>{a.text}</li>)}</ul>}
               {m.result && voice && lang === "ur" && <Listen text={m.text} label={t.listen} />}
-              {m.result && (
+              {/* "Checked" only means something when the answer rests on cited sources. */}
+              {m.result && m.result.citations.length > 0 && (
                 <div className="src">
                   <span className={`badge ${m.result.checked ? "low" : "neutral"}`}>{m.result.checked ? t.checked : t.not_checked}</span>
-                  {m.result.citations.length > 0 && <span>{t.sources}: {m.result.citations.map((c) => c.label).filter((v, k, a) => a.indexOf(v) === k).slice(0, 3).join(" · ")}</span>}
+                  <span>{t.sources}: {m.result.citations.map((c) => c.label).filter((v, k, a) => a.indexOf(v) === k).slice(0, 3).join(" · ")}</span>
                 </div>
               )}
             </div>

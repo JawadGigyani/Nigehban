@@ -115,8 +115,8 @@ def test_from_settings_builds_primary_and_fallback(monkeypatch):
     s = Settings(_env_file=None)
     assert s.api_key_for(LLMProvider.GEMINI).get_secret_value() == "gemini-key"
     service = LLMService.from_settings(s)
-    assert service.providers == (LLMProvider.GROQ, LLMProvider.GROQ, LLMProvider.GEMINI)
-    groq, groq_extra, gemini = (slot.model for slot in service.slots)
+    assert service.providers == (LLMProvider.GROQ, LLMProvider.GROQ, LLMProvider.GEMINI, LLMProvider.GEMINI)
+    groq, groq_extra, gemini, gemini_lite = (slot.model for slot in service.slots)
     assert groq.model_name == "openai/gpt-oss-120b"
     assert groq_extra.model_name == "openai/gpt-oss-20b"  # separate free quota
     assert groq.reasoning_effort == "low"
@@ -214,6 +214,21 @@ def test_extra_keys_build_more_slots_without_leaking_keys(monkeypatch):
         "groq#1:openai/gpt-oss-120b", "groq#1:openai/gpt-oss-20b",
         "groq#2:openai/gpt-oss-120b", "groq#2:openai/gpt-oss-20b",
         "groq#3:openai/gpt-oss-120b", "groq#3:openai/gpt-oss-20b",
-        "gemini#1:gemini-3.5-flash-lite", "gemini#2:gemini-3.5-flash-lite",
+        "gemini#1:gemini-3.5-flash", "gemini#1:gemini-3.5-flash-lite",
+        "gemini#2:gemini-3.5-flash", "gemini#2:gemini-3.5-flash-lite",
     ]
     assert not any("gsk_" in label or "gem_" in label for label in labels)
+
+
+def test_prefer_moves_a_provider_first():
+    calls = []
+
+    class Model:
+        def __init__(self, name):
+            self.name = name
+
+    slots = [ModelSlot(LLMProvider.GROQ, Model("groq"), JsonMode.JSON_SCHEMA, "groq#1"),
+             ModelSlot(LLMProvider.GEMINI, Model("gemini"), JsonMode.JSON_SCHEMA, "gemini#1")]
+    service = LLMService(slots)
+    assert service._call_rotating(lambda slot: slot.label) == "groq#1"
+    assert service._call_rotating(lambda slot: slot.label, prefer=LLMProvider.GEMINI) == "gemini#1"

@@ -48,6 +48,20 @@ const STYLE: maplibregl.StyleSpecification = {
   layers: [{ id: "osm", type: "raster", source: "osm", paint: { "raster-saturation": -0.6, "raster-opacity": 0.85 } }],
 };
 
+// MapLibre cancels its own in-flight tile and data work when the map's data is replaced quickly
+// (date or day switches). In this version the cancellation can surface as an unhandled
+// "AbortError: signal is aborted without reason". It is harmless, so it is swallowed here.
+if (typeof window !== "undefined" && !(window as unknown as { __nigehbanAbortGuard?: boolean }).__nigehbanAbortGuard) {
+  (window as unknown as { __nigehbanAbortGuard?: boolean }).__nigehbanAbortGuard = true;
+  const isAbort = (r: unknown) => !!r && typeof r === "object" && (r as { name?: string }).name === "AbortError";
+  window.addEventListener("unhandledrejection", (e) => {
+    if (isAbort(e.reason)) { e.preventDefault(); e.stopImmediatePropagation(); }
+  }, { capture: true });
+  window.addEventListener("error", (e) => {
+    if (isAbort(e.error)) { e.preventDefault(); e.stopImmediatePropagation(); }
+  }, { capture: true });
+}
+
 /** Tehsil choropleth coloured by the model's level for the chosen lead day. */
 export default function RiskMap({ geojson, risk, lead, selected, onSelect, markers = [], height = "100%", mode = "risk", rain = null, cooperative = false, flyOnSelect = true }: Props) {
   const container = useRef<HTMLDivElement>(null);

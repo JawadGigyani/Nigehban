@@ -5,7 +5,7 @@ Ids:
 - river:<point_id>:<date>      GloFAS river flag at or above the flag level
 - exposure:<village_id>        village flood-exposure band (terrain)
 - exposure:tehsil:<tehsil_id>  how many villages in the tehsil are on low ground
-- facility:<facility_id>       nearest shelters, higher ground, Rescue 1122, health (unverified)
+- facility:<facility_id>       nearest named shelters, higher ground, Rescue 1122, health
 - doc:<slug>:p<page>#<n>       passage from official guidance (PDMA, NDMA, NIH)
 - contact:helplines            Rescue 1122 and the PDMA helpline
 """
@@ -114,17 +114,20 @@ def facility_items(facilities: pd.DataFrame, tehsil_id: str, lat: float, lon: fl
     picks = []
     shelters = near[near["kind"].isin(["shelter", "high_ground"]) & (near["exposure_band"] != "high")]
     shelters = shelters[shelters["tehsil_id"] == tehsil_id].sort_values(["shelter_priority", "km"])
+    shelters = shelters[~shelters["name"].astype(str).str.strip().str.lower().duplicated()]  # mapped twice
     picks += list(shelters.nsmallest(3, "km").itertuples(index=False))
     picks += list(near[near["kind"] == "rescue_1122"].nsmallest(1, "km").itertuples(index=False))
     picks += list(near[near["kind"] == "health"].nsmallest(1, "km").itertuples(index=False))
     for r in picks:
         kind = {"shelter": "possible shelter", "high_ground": "suggested higher ground (no known building)",
                 "rescue_1122": "Rescue 1122", "health": "health facility"}[r.kind]
-        name = r.name if isinstance(r.name, str) and r.name else f"unnamed {r.subtype}"
+        name = r.name if isinstance(r.name, str) and r.name.strip() else ("Rescue 1122" if r.kind == "rescue_1122" else "")
+        if not name:
+            continue
         out.append(EvidenceItem(
             f"facility:{r.facility_id}", "facility",
             f"{kind}: {name}, about {r.km:.1f} km away ({r.tehsil_id.split('__')[1].replace('_', ' ').title()}). "
-            f"Unverified location from {r.source.split(';')[0]}.", "OpenStreetMap / Nigehban (unverified)"))
+            f"Location from {r.source.split(';')[0]}.", "OpenStreetMap / Nigehban"))
     return out
 
 

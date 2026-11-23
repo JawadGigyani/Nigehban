@@ -78,7 +78,7 @@ function SafetyCheck({ place, autoLocate, onLocated }: { place: Place | null; au
       {route && point && (
         <div style={{ marginTop: 12 }}>
           <div className="facility">
-            <span>{route.destination.name || (route.destination.kind === "high_ground" ? t.high_ground : t.unnamed_shelter)} <span className="pill">{t.unverified}</span></span>
+            <span>{route.destination.name}{route.destination.kind === "high_ground" ? ` (${t.high_ground})` : ""}</span>
             <span className="meta">{(route.distance_m / 1000).toFixed(1)} {t.km} · {Math.round(route.duration_min)} {t.walk_min}</span>
           </div>
           {route.low_ground_share !== null && route.low_ground_share > 0.2 && <p className="tiny">{t.low_ground_route}</p>}
@@ -193,14 +193,14 @@ export default function AreaPage() {
               <h2>{t.shelters}</h2>
               {detail.shelters.slice(0, 4).map((f) => (
                 <div key={f.id} className="facility">
-                  <span>{f.name || t.unnamed_shelter}{f.kind === "high_ground" ? ` (${t.high_ground})` : ""} <span className="pill">{t.unverified}</span></span>
+                  <span>{f.name}{f.kind === "high_ground" ? ` (${t.high_ground})` : ""}</span>
                   <span className="meta">{f.km} {t.km}</span>
                 </div>
               ))}
               <h2 style={{ marginTop: 18 }}>{t.rescue}</h2>
               {detail.rescue_1122.slice(0, 2).map((f) => (
                 <div key={f.id} className="facility">
-                  <span>{f.name.replace(/^Rescue 1122\s*/, "") || `${t.rescue} · ${f.subtype || ""}`.replace(/ · $/, "")} <span className="pill">{t.unverified}</span></span>
+                  <span>{f.name.replace(/^Rescue 1122\s*/, "") || `${t.rescue} · ${f.subtype || ""}`.replace(/ · $/, "")}</span>
                   <span className="meta">{f.km} {t.km}</span>
                 </div>
               ))}

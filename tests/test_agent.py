@@ -173,3 +173,20 @@ def test_district_name_means_the_district_not_a_hamlet_with_that_name():
     for name in ("Buner", "buner", "بونیر"):
         assert ctx.locate(name, None, None, None)["tehsil_id"] == "buner__gagra"
     assert ctx.locate("Pir Baba", None, None, None)["village_id"] == "manual:pir_baba"
+
+
+def test_unnamed_shelters_are_never_offered():
+    ctx = _context()
+    unnamed = pd.DataFrame([{"facility_id": "osm:n10", "kind": "shelter", "subtype": "school", "shelter_priority": 1,
+                             "name": None, "name_ur": "", "lat": 34.455, "lon": 72.556, "tehsil_id": "buner__gagra",
+                             "hand_min_m": 20.0, "exposure_band": "low", "verified": False, "source": "osm"}])
+    ctx = AgentContext(ctx.risk, ctx.kb, ctx.gazetteer.drop(columns=["rank"]), ctx.villages,
+                       pd.concat([ctx.facilities, unnamed], ignore_index=True), ctx.tehsils)
+    assert "osm:n10" not in set(ctx.facilities["facility_id"])
+    assert "osm:n9" in set(ctx.facilities["facility_id"])  # named shelter kept
+
+
+def test_english_level_words_become_urdu_in_urdu_answers():
+    raw = GOOD.model_copy(update={"answer": 'کل پیر بابا میں خطرہ "high" ہے (high)۔'})
+    r = ChatAgent(FakeLLM(UNDERSTOOD, [raw]), _context()).ask("کل پیر بابا میں سیلاب کا خطرہ؟", as_of=AS_OF)
+    assert "high" not in r["answer"].lower() and "زیادہ" in r["answer"]

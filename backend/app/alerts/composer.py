@@ -7,6 +7,9 @@ then a template built only from the evidence. The closing line is added by code.
 
 from __future__ import annotations
 
+from backend.app.config.settings import LLMProvider
+from backend.app.llm.service import ask_structured
+
 from dataclasses import dataclass
 
 from pydantic import BaseModel, Field
@@ -43,7 +46,7 @@ SYSTEM = """You write short flash-flood alerts for residents of northern Khyber 
 Use ONLY the evidence. Each message: the place, the day, the risk level exactly as given, the main
 reason in plain words, and one or two actions from the evidence (move to higher ground, avoid
 streams and nullahs, keep livestock away from the river, where to go, call Rescue 1122).
-Shelter locations are unverified: say "if safe" or similar. No panic words, no exaggeration.
+When you mention a shelter, use its name and add "if safe". No panic words, no exaggeration.
 Plain words only: give rain in mm if useful, but no other technical units or values (say "wet ground",
 not soil-moisture numbers).
 Do not add a closing line about following instructions; it is added automatically.
@@ -105,7 +108,7 @@ class AlertComposer:
             if errors:
                 user += "\n\nYour previous draft was rejected: " + "; ".join(errors) + ". Fix this."
             try:
-                draft = self.llm.complete_structured(SYSTEM, user, AlertDraft)
+                draft = ask_structured(self.llm, SYSTEM, user, AlertDraft, prefer=LLMProvider.GEMINI)  # Urdu text
             except Exception as exc:  # LLM down: the template still goes out
                 errors = [f"LLM error: {exc.__class__.__name__}"]
                 break
