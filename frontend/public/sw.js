@@ -1,4 +1,4 @@
-// Nigehban service worker: offline app shell, and web-push notifications.
+// Nigehban service worker: caches the page shell so the site still opens on a weak connection.
 const CACHE = "nigehban-v1";
 const SHELL = ["/", "/manifest.webmanifest", "/icon.svg"];
 
@@ -26,15 +26,3 @@ self.addEventListener("fetch", (event) => {
   );
 });
 
-self.addEventListener("push", (event) => {
-  let data = { title: "Nigehban", body: "" };
-  try { data = event.data.json(); } catch (e) { data.body = event.data ? event.data.text() : ""; }
-  event.waitUntil(self.registration.showNotification(data.title || "Nigehban", {
-    body: data.body, icon: "/icon.svg", badge: "/icon.svg", dir: "auto", tag: "nigehban-alert",
-  }));
-});
-
-self.addEventListener("notificationclick", (event) => {
-  event.notification.close();
-  event.waitUntil(self.clients.openWindow("/?tab=alerts"));
-});

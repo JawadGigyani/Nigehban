@@ -11,7 +11,7 @@
  offline pipelines ──► data/ ──► │  FastAPI backend (backend/app) │
  (events, terrain,               │                               │
   training, index)               ▼                               ▼
-                         hydromet ──► risk ──► alerts ──► channels (web inbox, push, SMS, WhatsApp)
+                         hydromet ──► risk ──► alerts ──► web inbox (other channels pluggable)
                             │          │  │       │
                             │          │  └──► agent (LangGraph) ◄── knowledge (BM25 index)
                             │          │                 │
@@ -74,8 +74,11 @@ runs from `python -m pipelines.alerts.run_cycle` (once or every few hours) or th
 4. The composer asks the LLM for the message in Urdu, English and Roman Urdu, then checks in code
    that the level, place and date are right and that Urdu place names match the fixed table. On
    failure it uses a template.
-5. A short plain SMS text is built in code. The Urdu message is turned into audio.
-6. Each subscriber gets the alert on their channel in their language; deliveries are recorded.
+5. The Urdu message is turned into audio (skipped on dry runs).
+6. Each subscriber gets the alert in their web inbox in their language; deliveries are recorded.
+   SMS, WhatsApp, browser push or a mobile app can be integrated as one channel class each
+   (`alerts/channels.py`); rules, de-duplication, encrypted contacts and delivery records already
+   work for any channel.
 
 ### Ask Nigehban
 
@@ -122,8 +125,8 @@ backend/app/
   agent/service.py      AgentContext (place lookup, evidence), ChatAgent
   alerts/rules.py       alert rules and de-duplication
   alerts/composer.py    trilingual message with code checks
-  alerts/cycle.py       one alert cycle; SMS text; voice hook
-  alerts/channels.py    web inbox, web push, SMS.to, SMS Gateway, Twilio, WhatsApp, console
+  alerts/cycle.py       one alert cycle; voice hook
+  alerts/channels.py    web inbox and console; the interface other channels plug into
   alerts/advisory.py    advisory drafts for the board
   geo/danger.py         point danger check
   geo/routing.py        road tiles, low-ground penalty, SafeRouter

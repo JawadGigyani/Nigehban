@@ -1,6 +1,6 @@
 """Subscriptions: opt-in, minimal data, encrypted contacts, unsubscribe and delete-my-data.
 
-- The contact (phone, chat id or push subscription) is stored only encrypted
+- The contact (the web app's random device id) is stored only encrypted
   (Fernet) plus a keyed hash used to find it again. It is never returned by the API.
 - Subscribing again with the same contact on the same channel updates the
   existing subscription instead of creating a second one.

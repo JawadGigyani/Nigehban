@@ -61,7 +61,8 @@ export default function RiskMap({ geojson, risk, lead, selected, onSelect, marke
     if (!container.current || map.current) return;
     const m = new maplibregl.Map({ container: container.current, style: STYLE, center: [72.4, 35.0], zoom: 7.2, cooperativeGestures: cooperative, attributionControl: { compact: true } });
     m.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
-    m.on("load", () => {
+    // Add layers as soon as the style is parsed; "load" waits for every base-map tile and can stall.
+    m.once("style.load", () => {
       ready.current = true;
       m.addSource("tehsils", { type: "geojson", data: { type: "FeatureCollection", features: [] }, promoteId: "tehsil_id" });
       m.addLayer({

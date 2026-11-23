@@ -1,4 +1,4 @@
-"""Hardening, voice, SMS/WhatsApp channels, contacts, migration, runtime data."""
+"""Hardening, voice, contacts, migration, runtime data."""
 
 from __future__ import annotations
 
@@ -81,39 +81,6 @@ def test_voice_service_caches_and_reports_errors(tmp_path):
         VoiceService(None, "v", "eleven_v3", tmp_path).speak("x")
 
 
-def test_sms_gateway_channel(monkeypatch):
-    from backend.app.alerts.channels import SmsGatewayChannel
-
-    sent = {}
-
-    def fake_post(url, auth=None, json=None, timeout=None):
-        sent.update(url=url, auth=auth, json=json)
-        return httpx.Response(202, json={"id": "abc"})
-
-    monkeypatch.setattr(httpx, "post", fake_post)
-    r = SmsGatewayChannel("https://api.sms-gate.app/3rdparty/v1", "u", "p").send("03001234567", "الرٹ")
-    assert r.ok and r.provider_message_id == "abc"
-    assert sent["url"].endswith("/messages") and sent["json"]["phoneNumbers"] == ["+923001234567"]
-    assert sent["json"]["textMessage"]["text"] == "الرٹ"
-    SmsGatewayChannel("http://192.168.1.5:8080", "u", "p").send("+923001234567", "x")
-    assert sent["url"] == "http://192.168.1.5:8080/message"
-    assert not SmsGatewayChannel("https://x", None, None).send("+92300", "x").ok
-
-
-def test_whatsapp_channel(monkeypatch):
-    from backend.app.alerts.channels import WhatsAppChannel
-
-    bodies = []
-
-    def fake_post(url, json=None, headers=None, timeout=None):
-        bodies.append(json)
-        return httpx.Response(200, json={"messages": [{"id": "wamid.1"}]})
-
-    monkeypatch.setattr(httpx, "post", fake_post)
-    assert WhatsAppChannel("t", "123", "nigehban_alert").send("+923001234567", "الرٹ").ok
-    assert bodies[0]["type"] == "template" and bodies[0]["to"] == "923001234567"
-    assert WhatsAppChannel("t", "123", None).send("+923001234567", "hi").ok and bodies[1]["type"] == "text"
-    assert not WhatsAppChannel(None, None, None).send("+92", "x").ok
 
 
 def test_district_contacts():
@@ -165,27 +132,8 @@ def test_tts_route_is_urdu_only(monkeypatch):
     assert client.post("/tts", json={"text": "hello"}).status_code == 422
     assert client.post("/tts", json={"text": "سلام"}).json()["audio_url"] == "/audio/0123456789abcdef0123.mp3"
     assert client.get("/audio/../../etc.mp3").status_code == 404
-    assert client.get("/config").json().keys() >= {"voice", "sms", "whatsapp"}
+    assert client.get("/config").json().keys() == {"voice"}
 
-
-def test_twilio_channel(monkeypatch):
-    from backend.app.alerts.channels import TwilioChannel
-    from backend.app.contracts import ChannelName
-
-    posts = []
-
-    def fake_post(url, data=None, auth=None, timeout=None):
-        posts.append((url, data, auth))
-        return httpx.Response(201, json={"sid": "SM1"})
-
-    monkeypatch.setattr(httpx, "post", fake_post)
-    wa = TwilioChannel(ChannelName.WHATSAPP, "AC1", "tok", "+14155238886")
-    assert wa.send("03001234567", "الرٹ").ok
-    url, data, auth = posts[0]
-    assert url.endswith("/Accounts/AC1/Messages.json") and auth == ("AC1", "tok")
-    assert data["From"] == "whatsapp:+14155238886" and data["To"] == "whatsapp:+923001234567"
-    sms = TwilioChannel(ChannelName.SMS, "AC1", "tok", "+15550001111")
-    assert sms.send("+923001234567", "x").ok and posts[1][1]["From"] == "+15550001111"
 
 
 def test_imerg_parsing_and_tehsil_weights():
@@ -200,21 +148,6 @@ def test_imerg_parsing_and_tehsil_weights():
     mean, cell_max = tehsil_values(full, weights)["swat__babuzai"]
     assert mean == 10.0 and cell_max == 10.0
 
-
-def test_smsto_channel(monkeypatch):
-    from backend.app.alerts.channels import SmsToChannel
-
-    seen = {}
-
-    def fake_post(url, timeout=None, headers=None, json=None):
-        seen.update(url=url, headers=headers, json=json)
-        return httpx.Response(200, json={"success": True, "message_id": "m1", "message": "queued"})
-
-    monkeypatch.setattr(httpx, "post", fake_post)
-    r = SmsToChannel("key", "Nigehban").send("03235550000", "الرٹ")
-    assert r.ok and r.provider_message_id == "m1"
-    assert seen["url"] == "https://api.sms.to/sms/send" and seen["headers"]["Authorization"] == "Bearer key"
-    assert seen["json"] == {"message": "الرٹ", "to": "+923235550000", "sender_id": "Nigehban"}
 
 
 def test_rain_nowcast_live_replay_and_version_fallback(tmp_path):

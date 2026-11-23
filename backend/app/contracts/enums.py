@@ -66,7 +66,4 @@ class ExposureBand(str, Enum):
 class ChannelName(str, Enum):
     CONSOLE = "console"
     WEB_INBOX = "web_inbox"
-    WEBPUSH = "webpush"
-    TELEGRAM = "telegram"  # private, development only
-    WHATSAPP = "whatsapp"
-    SMS = "sms"
+    # SMS, WhatsApp, browser push or a mobile app can be added here (see alerts/channels.py).
