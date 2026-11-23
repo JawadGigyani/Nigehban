@@ -1,4 +1,4 @@
-"""Replay the alert engine over 13–15 Aug 2025 and write reports/m9_alerts_replay.md.
+"""Replay the alert engine over 13–15 Aug 2025 and write reports/alerts_replay.md.
 
 Uses a separate database (data/replay_alerts.db, rebuilt each run) with two demo
 subscribers for Buner (console and web inbox) and one for Swat Babuzai.
@@ -115,7 +115,7 @@ Three demo subscriptions (contacts are demo strings, stored encrypted): Buner Ga
 console in Urdu; Pir Baba (village, Gagra) in the web inbox in English; Swat Babuzai in the web inbox
 in Roman Urdu.
 """
-    Path("reports/m9_alerts_replay.md").write_text(text, encoding="utf-8")
+    Path("reports/alerts_replay.md").write_text(text, encoding="utf-8")
     print(text[:2500])
     return 0
 

@@ -1,4 +1,4 @@
-"""Replay the demo days with archived forecasts and write reports/m5_replay_check.md.
+"""Replay the demo days with archived forecasts and write reports/replay_check.md.
 
     python -m pipelines.risk.replay_check
 """
@@ -19,7 +19,7 @@ NOTES = """
 ## Reading these results
 
 - **Levels used here were tuned on the 2024-2025 forecasts, which include these days**, so these
-  replays are flattering. The fair test is the cross-season backtest in reports/m7_backtest.md
+  replays are flattering. The fair test is the cross-season backtest in reports/backtest.md
   (each season's levels tuned on the other season).
 - **Buner day (15 Aug 2025):** most flooded tehsils were at high 1-3 days ahead. The forecasts
   showed heavy rain across Swat, Buner and Mansehra.
@@ -64,7 +64,7 @@ def main() -> int:
             "Forecasts as they were issued 1–3 days before each demo day (Open-Meteo archived runs, "
             "ECMWF + GFS + ICON averaged), scored by the shipped model with the forecast-tuned levels.\n\n"
             + "\n\n".join(sections) + NOTES)
-    Path("reports/m5_replay_check.md").write_text(text, encoding="utf-8")
+    Path("reports/replay_check.md").write_text(text, encoding="utf-8")
     print(text[:3000])
     return 0
 

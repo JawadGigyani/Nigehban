@@ -13,7 +13,7 @@ Steps:
    record). A district-level positive within 1 day of a tehsil-level positive
    in the same district is folded into it.
 5. Write `data/events/flood_events.parquet`, a GeoJSON for the map viewer, a
-   spot-check sheet (private), and `reports/m1_events_qa.md` (counts only).
+   spot-check sheet (private), and `reports/flood_events_qa.md` (counts only).
 
 Usage: python -m pipelines.pdma.build_events
 """
@@ -475,7 +475,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--cache-dir", type=Path, default=data / "interim" / "pdma_llm")
     parser.add_argument("--raw-dir", type=Path, default=settings.raw_pdma_dir)
     parser.add_argument("--out-dir", type=Path, default=data / "events")
-    parser.add_argument("--report", type=Path, default=Path("reports") / "m1_events_qa.md")
+    parser.add_argument("--report", type=Path, default=Path("reports") / "flood_events_qa.md")
     args = parser.parse_args(argv)
 
     stats: Counter = Counter()

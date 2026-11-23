@@ -1,4 +1,4 @@
-"""Write `reports/m2_hydromet_qa.md`: coverage, planning checks, forecast vs ERA5, live timing.
+"""Write `reports/weather_qa.md`: coverage, planning checks, forecast vs ERA5, live timing.
 
     python -m pipelines.hydromet.qa
 """
@@ -180,7 +180,7 @@ both understate rain in the wettest valleys. "Caught" = forecast of at least
 - Archived forecasts start in March 2024, so the forecast-vs-ERA5 gap rests on
   two or three seasons.
 """
-    out = Path("reports") / "m2_hydromet_qa.md"
+    out = Path("reports") / "weather_qa.md"
     out.write_text(text, encoding="utf-8")
     print(f"wrote {out}; gate {'passed' if gate else 'NOT passed'}; live {live_s:.1f} s")
     return 0

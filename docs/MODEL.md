@@ -1,8 +1,8 @@
 # Risk model
 
 How Nigehban turns weather forecasts into a flash-flood level per tehsil and day, and how well it
-works. Full tables are in `reports/m5_risk_qa.md`, `reports/m7_backtest.md`,
-`reports/m6_glofas.md` and `reports/imerg_vs_era5.md`.
+works. Full tables are in `reports/risk_model.md`, `reports/backtest.md`,
+`reports/rivers_glofas.md` and `reports/imerg_vs_era5.md`.
 
 ## The question it answers
 
@@ -14,7 +14,7 @@ for 48 tehsils in 9 districts of northern Khyber Pakhtunkhwa, in the June–Sept
 - **Labels**: PDMA KP daily situation reports, July 2019 to April 2026 (4,922 reports). An LLM read
   each flood-like district row into a fixed form; events were geocoded to tehsils and merged.
   Positives are flash floods, floods, cloudbursts and drownings; landslides and roof collapses are
-  kept but are not positives. See `reports/m1_events_qa.md` (gate G1 passed).
+  kept but are not positives. See `reports/flood_events_qa.md` (gate G1 passed).
 - **Rows**: 40,992 tehsil-days (48 tehsils × June–September 2019–2025); 40,119 used. 89 positive
   tehsil-days. Left out: the days either side of an event, and districts on days PDMA named only
   the district.
@@ -92,9 +92,9 @@ far too rarely (7 of 41 at lead 1), which is why levels are tuned on forecasts.
 ### Replays of known floods
 
 - **Buner, 15 Aug 2025** (cloudburst): flagged from the forecasts issued on 14 Aug; the alert
-  engine sends Buner alerts once, with no duplicates (`reports/m9_alerts_replay.md`).
+  engine sends Buner alerts once, with no duplicates (`reports/alerts_replay.md`).
 - **Swat River, 27 Jun 2025**: missed; the forecast rain the day before was too low. GloFAS also
-  missed it (`reports/m5_replay_check.md`, `reports/m6_glofas.md`).
+  missed it (`reports/replay_check.md`, `reports/rivers_glofas.md`).
 
 ### What was tried and not kept
 
@@ -117,7 +117,7 @@ far too rarely (7 of 41 at lead 1), which is why levels are tuned on forecasts.
 
 ```powershell
 .venv\Scripts\python -m pipelines.risk.experiment     # compare feature sets and models
-.venv\Scripts\python -m pipelines.risk.train          # train, calibrate, write artifacts/v1 and reports/m5_risk_qa.md
-.venv\Scripts\python -m pipelines.backtest.run        # backtest on archived forecasts -> reports/m7_backtest.md
-.venv\Scripts\python -m pipelines.risk.replay_check   # replays of known floods -> reports/m5_replay_check.md
+.venv\Scripts\python -m pipelines.risk.train          # train, calibrate, write artifacts/v1 and reports/risk_model.md
+.venv\Scripts\python -m pipelines.backtest.run        # backtest on archived forecasts -> reports/backtest.md
+.venv\Scripts\python -m pipelines.risk.replay_check   # replays of known floods -> reports/replay_check.md
 ```

@@ -1,4 +1,4 @@
-"""Ask the live agent a fixed set of questions and write reports/m8_agent.md.
+"""Ask the live agent a fixed set of questions and write reports/agent_samples.md.
 
     python -m pipelines.agent.sample_answers
 """
@@ -65,7 +65,7 @@ BM25 search (no embedding API), name lists from committee pages removed.
 ## Samples
 
 """ + "\n".join(blocks)
-    Path("reports/m8_agent.md").write_text(text, encoding="utf-8")
+    Path("reports/agent_samples.md").write_text(text, encoding="utf-8")
     print(text)
     return 0
 

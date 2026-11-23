@@ -21,7 +21,7 @@ Baselines: a single rain threshold (best of day / wettest cell / 3-day rain) and
 an ERA5-only rain model (no terrain features).
 
 Outputs: backend/app/risk/artifacts/v1/{model.txt, meta.json, metrics.json},
-data/features/risk_oof.parquet, reports/m5_risk_qa.md.
+data/features/risk_oof.parquet, reports/risk_model.md.
 
     python -m pipelines.risk.train
 """
@@ -411,7 +411,7 @@ compared with feeding it ERA5 (what actually fell, known only afterwards).
 - ERA5 is 25 km; local cloudbursts are smoothed, which caps what any rain-based model can catch.
 - Archived forecasts exist only from 2024, so the forecast check rests on two seasons.
 """
-    Path("reports/m5_risk_qa.md").write_text(text, encoding="utf-8")
+    Path("reports/risk_model.md").write_text(text, encoding="utf-8")
 
 
 if __name__ == "__main__":

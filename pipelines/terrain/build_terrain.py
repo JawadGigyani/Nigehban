@@ -15,7 +15,7 @@ Steps
    > 8 m low. Bands only, never flood depths.
 
 Outputs: data/features/tehsil_static.parquet, data/reference/village_exposure.csv,
-data/interim/terrain/{hand,slope,streams}.tif, reports/m3_terrain_qa.md (via qa).
+data/interim/terrain/{hand,slope,streams}.tif, reports/terrain_qa.md (via qa).
 
     python -m pipelines.terrain.build_terrain
 """
@@ -40,7 +40,7 @@ from backend.app.config import get_settings
 # Bands use the lowest HAND within about 180 m of the place (a 5 x 5 window of
 # 90 m cells), because a village point is its centre while flooding starts at
 # its riverside edge. Thresholds were tuned on villages named in PDMA flood
-# reports (M1): see reports/m3_terrain_qa.md.
+# reports (M1): see reports/terrain_qa.md.
 HIGH_HAND_M = 5.0
 HIGH_MIN_UPSTREAM_KM2 = 50.0
 MEDIUM_HAND_M = 8.0

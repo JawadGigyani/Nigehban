@@ -141,7 +141,7 @@ Flooded tehsils at high or above: []
 ## Reading these results
 
 - **Levels used here were tuned on the 2024-2025 forecasts, which include these days**, so these
-  replays are flattering. The fair test is the cross-season backtest in reports/m7_backtest.md
+  replays are flattering. The fair test is the cross-season backtest in reports/backtest.md
   (each season's levels tuned on the other season).
 - **Buner day (15 Aug 2025):** most flooded tehsils were at high 1-3 days ahead. The forecasts
   showed heavy rain across Swat, Buner and Mansehra.
