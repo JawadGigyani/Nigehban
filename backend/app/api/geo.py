@@ -84,7 +84,11 @@ def _levels(tehsil_id: str, as_of: dt.datetime | None) -> dict[int, dict]:
 def geo_check(request: PointRequest) -> dict:
     from backend.app.geo.danger import advice
 
-    result = _checker().check(request.lat, request.lon)
+    checker = _checker()
+    if not checker.sets:  # never answer "not low ground" without terrain to look at
+        raise HTTPException(503, "Terrain data is not available on this server. Build it with the terrain "
+                                 "pipeline (docs/DATA.md, section 4).")
+    result = checker.check(request.lat, request.lon)
     if result["tehsil_id"] is None:
         raise HTTPException(422, "This point is outside the area Nigehban covers.")
     levels = _levels(result["tehsil_id"], request.as_of)

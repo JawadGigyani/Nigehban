@@ -148,3 +148,20 @@ def test_advisory_rejects_urdu_script_in_english_actions():
     assert out["checked"] and llm.calls == 2 and "Gagra" in out["actions"][0]["text"]
     assert out["public_message_en"].startswith("Flash-flood risk for today and tomorrow: Gagra: high.")
     assert out["footer"].startswith("DRAFT FOR OFFICIAL REVIEW")
+
+
+def test_geo_check_without_terrain_says_so(monkeypatch):
+    from fastapi.testclient import TestClient
+
+    from backend.app.api import geo
+    from backend.app.main import create_app
+
+    class NoTerrain:
+        sets = []
+
+        def check(self, lat, lon):  # must not be reached
+            raise AssertionError("checked without terrain")
+
+    monkeypatch.setattr(geo, "_checker", lambda: NoTerrain())
+    r = TestClient(create_app()).post("/geo/check", json={"lat": 34.8, "lon": 72.3})
+    assert r.status_code == 503 and "Terrain data is not available" in r.json()["detail"]
