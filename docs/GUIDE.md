@@ -1,5 +1,7 @@
 # Nigehban: guide to running, testing and understanding it
 
+Other documents: [Architecture](ARCHITECTURE.md) · [Risk model](MODEL.md) · [Data](DATA.md) · [API](API.md) · [Deployment](DEPLOYMENT.md).
+
 Nigehban gives a flash-flood risk level for each tehsil in northern Khyber Pakhtunkhwa for today
 and the next 3 days. It sends Urdu alerts to people who subscribe and gives PDMA, district
 administrations and Rescue 1122 a risk board. It supports official warnings and never replaces them.
