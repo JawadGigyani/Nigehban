@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { Icon, LevelBadge, PlaceSearch } from "@/components/site/ui";
+import { LEVEL_ORDER, type Level } from "@/lib/api";
+import { useRisk } from "@/lib/hooks";
 import { API_URL, api, ApiError, type InboxAlert } from "@/lib/api";
 import { S } from "@/lib/copy";
 import { T } from "@/lib/i18n";
@@ -13,6 +15,12 @@ export default function AlertsPage() {
   const s = S[lang];
   const t = T[lang];
   const [alerts, setAlerts] = useState<InboxAlert[] | null>(null);
+  const { asOf } = useSite();
+  const { risk } = useRisk(asOf);
+  const worstNext2 = (tehsilId: string): Level | null => {
+    const days = risk?.tehsils.find((r) => r.tehsil_id === tehsilId)?.days.filter((d) => d.lead_days <= 2) ?? [];
+    return days.length ? days.map((d) => d.level).sort((a, b) => LEVEL_ORDER.indexOf(b) - LEVEL_ORDER.indexOf(a))[0] : null;
+  };
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
 
@@ -61,9 +69,19 @@ export default function AlertsPage() {
             )}
             {subId && (
               <>
-                <p className="tiny">{t.subscribed_for} {places.map((p) => placeLabel(p, lang)).join(" · ")}</p>
+                <p className="tiny">{t.subscribed_for}</p>
+                {places.map((p) => {
+                  const level = worstNext2(p.tehsil_id);
+                  return (
+                    <div key={p.id} className="facility">
+                      <span>{placeLabel(p, lang)}</span>
+                      {level && <span className="row" style={{ gap: 8 }}><span className="tiny">{s.next_two_days}</span><LevelBadge level={level} lang={lang} /></span>}
+                    </div>
+                  );
+                })}
               </>
             )}
+            <p className="tiny" style={{ marginTop: 12 }}>{s.alert_rule}</p>
             {msg && <p className={`banner ${msg.ok ? "ok" : "err"}`} style={{ marginTop: 12 }}>{msg.text}</p>}
           </div>
 

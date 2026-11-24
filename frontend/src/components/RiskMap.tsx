@@ -2,7 +2,7 @@
 
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { LEVEL_COLORS, RAIN_STEPS, type Level, type ObservedRain, type TehsilRisk } from "@/lib/api";
 
@@ -70,10 +70,18 @@ export default function RiskMap({ geojson, risk, lead, selected, onSelect, marke
   const markerObjs = useRef<maplibregl.Marker[]>([]);
   const onSelectRef = useRef(onSelect);
   onSelectRef.current = onSelect;
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     if (!container.current || map.current) return;
-    const m = new maplibregl.Map({ container: container.current, style: STYLE, center: [72.4, 35.0], zoom: 7.2, cooperativeGestures: cooperative, attributionControl: { compact: true } });
+    let m: maplibregl.Map;
+    try {
+      m = new maplibregl.Map({ container: container.current, style: STYLE, center: [72.4, 35.0], zoom: 7.2, cooperativeGestures: cooperative, attributionControl: { compact: true } });
+    } catch {
+      // No WebGL (old device, graphics off, low memory): the rest of the page still works.
+      setFailed(true);
+      return;
+    }
     m.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
     // Add layers as soon as the style is parsed; "load" waits for every base-map tile and can stall.
     m.once("style.load", () => {
@@ -180,5 +188,13 @@ export default function RiskMap({ geojson, risk, lead, selected, onSelect, marke
     });
   }, [markers]);
 
-  return <div ref={container} style={{ width: "100%", height }} className="risk-map" />;
+  return (
+    <div ref={container} style={{ width: "100%", height }} className="risk-map">
+      {failed && (
+        <div className="map-loading" style={{ background: "var(--bg-2)", padding: 24, textAlign: "center" }}>
+          The map could not start in this browser (WebGL is unavailable). Risk levels, lists and details still work.
+        </div>
+      )}
+    </div>
+  );
 }

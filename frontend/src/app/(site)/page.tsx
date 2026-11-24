@@ -197,17 +197,10 @@ export default function Home() {
   const { lang, asOf, setPlace } = useSite();
   const s = S[lang];
   const router = useRouter();
-  const { risk } = useRisk(asOf);
-  const [updated, setUpdated] = useState<string | null>(null);
-  useEffect(() => {
-    if (!risk) return;
-    setUpdated(new Date(risk.generated_at).toLocaleString(lang === "ur" ? "ur-PK" : "en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }));
-  }, [risk, lang]);
 
   return (
     <>
       <section className="hero wrap">
-        <span className="eyebrow reveal"><span className="dot" />{s.hero_eyebrow}{updated && !asOf ? ` · ${s.updated} ${updated}` : ""}</span>
         <h1 className="display reveal" style={{ "--d": "70ms" } as React.CSSProperties}>{s.hero_title}</h1>
         <p className="lede reveal" style={{ "--d": "140ms" } as React.CSSProperties}>{s.hero_sub}</p>
         <div className="hero-search reveal" style={{ "--d": "210ms" } as React.CSSProperties}>
