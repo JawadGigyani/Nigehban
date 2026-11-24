@@ -1,7 +1,7 @@
 """District names in Khyber Pakhtunkhwa as each source spells them.
 
 `canonical` follows PDMA's daily situation reports, because those are the
-labels we extract. Spellings were checked against a sample of 400 cached PDMA
+labels being extracted. Spellings were checked against a sample of 400 cached PDMA
 reports (district table, first column) on 18 Nov 2026.
 """
 

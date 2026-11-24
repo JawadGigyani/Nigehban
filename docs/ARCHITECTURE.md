@@ -124,7 +124,7 @@ come from a fixed table. Urdu answers go to Gemini first, which writes better Ur
 
 | Decision | Why |
 |:--|:--|
-| **Tehsil, not house** | The weather grid is about 25 km; per-house risk would claim precision we don't have. |
+| **Tehsil, not house** | The weather grid is about 25 km; per-house risk would claim precision the data doesn't support. |
 | **Simple model** | With 89 flood days, tree models overfit. Logistic regression generalised best. |
 | **Levels from thresholds, never the AI** | Warnings must be reproducible. The AI only writes words. |
 | **Three weather models** | They disagree on local storms; the average is steadier. |

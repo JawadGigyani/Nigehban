@@ -7,7 +7,7 @@ PDMA reports name victims and house owners in several forms:
 - "<name> (Age 13 years)";
 - numbered lists of names ("Houses damaged: 1. <name> 2. <name>").
 
-We replace the person part with "[person]" and keep places. Numbered list
+The person part is replaced with "[person]"; places are kept. Numbered list
 items are kept only when they match a known place in that district's
 gazetteer; anything else in a list is treated as a name.
 

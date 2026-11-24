@@ -1,7 +1,7 @@
 """Protect subscriber contact details.
 
 Addresses are encrypted with Fernet so the alert engine can still send to
-them, and hashed with a keyed HMAC so we can look them up (for unsubscribe and
+them, and hashed with a keyed HMAC so they can be looked up (for unsubscribe and
 duplicate checks) without decrypting every row.
 """
 

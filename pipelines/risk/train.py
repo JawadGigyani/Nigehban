@@ -6,7 +6,7 @@ Labels (from M1 positives):
 - 1 on the day of a tehsil-level event.
 - Left out of training: the day before and after a tehsil-level event (report
   dates can be a day off), and every tehsil of a district on days when PDMA
-  only named the district (we do not know which tehsil flooded).
+  only named the district (the flooded tehsil is unknown).
 - 0 otherwise.
 
 Validation: leave-one-season-out (7 folds) and leave-one-district-out.
