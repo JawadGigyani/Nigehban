@@ -243,6 +243,7 @@ body.ur .badge { padding: 0 10px; }
 .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
 .card h2 { font-size: 18px; letter-spacing: -0.015em; margin-bottom: 10px; }
 .card + .card { margin-top: 16px; }
+.guide > .card, .numbers > .card { margin-top: 0; }  /* side-by-side cards: no stacking gap */
 .cols { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; align-items: start; }
 .stack { display: flex; flex-direction: column; gap: 16px; }
 .empty { text-align: center; padding: 40px 20px; }

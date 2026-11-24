@@ -1,45 +1,41 @@
 # Nigehban website
 
-Next.js website for Nigehban. Light, warm design (off-white ground, charcoal type, black pill
-buttons; colour only where it means risk). English (default) and Urdu (Nastaliq, right to left),
-switched from the header and remembered per browser. Works on desktop and phone.
+Next.js 15 website and authority board. English and Urdu (right to left), desktop and phone.
+
+## Run
+
+```bash
+npm install
+npm run dev        # http://localhost:3000
+npm test           # 13 tests (Vitest)
+```
+
+Needs the API running on port 8000 (set `NEXT_PUBLIC_API_URL` in `.env.local` to change it).
 
 ## Pages
 
-| Path | What it does |
-|---|---|
-| `/` | Home: place search, live outlook map (forecast risk or satellite rain, days 0–3) with the highest-risk tehsil, counts by level, features, how it works, safety band |
-| `/map` | Full risk map: day and layer switches, counts, selected tehsil (levels, reasons, exposure, river flow, satellite rain), filterable ranked list |
-| `/area` | My area: 4-day levels for a place, what to do, reasons, alerts sign-up, "Am I in a danger zone?" check with a walking route to higher ground, nearby safer places, Rescue 1122 and the district control room |
-| `/ask` | Ask Nigehban: suggested questions, grounded answers with sources, Urdu voice playback |
-| `/alerts` | Choose places, subscribe to the in-app inbox, read alerts with Urdu voice, stop alerts, delete my data |
-| `/safety` | Before / during / after guidance and emergency numbers |
-| `/board` | Authority board (password): map, ranked table, tehsil detail, advisory drafts, replay switch |
-
-The **Live / Replay** pill in the header switches every public page to a past day (14 Aug 2025 Buner,
-26 Jun 2025 Swat) to show what Nigehban said the day before a real flood.
-
-## Motion
-
-Sections fade and rise into view (`components/site/Motion.tsx` adds `.in` to `.reveal` elements),
-counts count up, risk bars grow, feature tiles animate their contents, the live dot pulses. With
-the system's reduced-motion setting, only gentle fades remain.
+| Path | Page |
+|:--|:--|
+| `/` | Home: search, outlook map, how it works |
+| `/map` | Risk map with every tehsil ranked |
+| `/area` | One place: levels, advice, danger check, safer places |
+| `/ask` | Ask Nigehban |
+| `/alerts` | Subscribe and read alerts |
+| `/safety` | Safety guide and emergency numbers |
+| `/board` | Authority board (password) |
 
 ## Code
 
-- `src/app/(site)/` public pages, sharing `layout.tsx` (header, footer, site state)
-- `src/components/site/` header, footer, logo, icons, place search, level strip
-- `src/lib/site.tsx` shared state (language, replay date, place, subscription) in localStorage
-- `src/lib/copy.ts` page text in English and Urdu; `src/lib/i18n.ts` app strings
-- `src/lib/hooks.ts` data hooks with a small cache; `src/components/RiskMap.tsx` MapLibre map
+| Path | Contains |
+|:--|:--|
+| `src/app/(site)/` | Public pages and their shared layout |
+| `src/app/board/` | Authority board |
+| `src/components/` | Map, header, footer, search, icons |
+| `src/lib/` | API client, shared state, English and Urdu text, tests |
 
-## Run locally
+## Design notes
 
-1. Start the API from the repo root: `python -m uvicorn backend.app.main:app --port 8000`
-2. In `frontend/`: `npm install`, copy `.env.example` to `.env.local`, then `npm run dev`
-3. Open http://localhost:3000 (website) and http://localhost:3000/board (board).
-
-Tests: `npm test` (Vitest: copy parity in English and Urdu, ranking and counts, place labels, the
-4-day strip). Shareable links: `?replay=2025-08-14` opens a past day, `?tehsil=swat__kabal` opens My
-area for a tehsil, `?lang=ur` opens in Urdu.
-
+- Colour is used only for risk levels; everything else stays neutral.
+- Sections fade in on scroll. With the system's reduced-motion setting, only gentle fades remain.
+- If a browser can't start the map (no WebGL), a short message replaces it; the rest still works.
+- Shareable links: `?replay=2025-08-14`, `?tehsil=swat__kabal`, `?lang=ur`.
