@@ -205,3 +205,11 @@ docs/        Documentation
 
 Code is [MIT](LICENSE). Data keeps its source licences: OpenStreetMap under ODbL; GeoNames, WorldPop,
 Open-Meteo and GloFAS under CC BY 4.0.
+
+## Acknowledgements
+
+Nigehban builds on ideas from **[flood-aware](https://github.com/Muhammad-Ilyas1408/flood-aware)** by
+**Muhammad Ilyas** and **Abdullah Ahmad**, an earlier flood-awareness prototype. From it we took the
+idea of a question-answering assistant grounded in official guidance, and four of the guidance
+documents in the knowledge base: the PDMA KP summer hazards contingency plan, the National Disaster
+Management Plan, the Swat disaster risk mapping, and the NIH flood guidelines. Thank you both.
