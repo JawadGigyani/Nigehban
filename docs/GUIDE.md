@@ -1,277 +1,85 @@
-# Nigehban: guide to running, testing and understanding it
+# User guide
 
-Other documents: [Architecture](ARCHITECTURE.md) · [Risk model](MODEL.md) · [Data](DATA.md) · [API](API.md) · [Configuration](CONFIGURATION.md).
+A 15-minute tour of every feature. Start the app first ([Quick start](../README.md#quick-start)),
+then open http://localhost:3000.
 
-Nigehban gives a flash-flood risk level for each tehsil in northern Khyber Pakhtunkhwa for today
-and the next 3 days. It sends Urdu alerts to people who subscribe and gives PDMA, district
-administrations and Rescue 1122 a risk board. It supports official warnings and never replaces them.
+> [!TIP]
+> Live risk is mostly Low outside the monsoon. For a real example, use **replay mode**: click the
+> **Live** pill in the header and pick **14 Aug 2025 · Buner cloudburst**. Every page then shows the
+> forecast exactly as it was issued the day before that flood.
 
-## 1. Status
+## 1. Home
 
-| Part | State |
-|---|---|
-| Data (PDMA flood events, weather history, terrain, villages, shelters, rivers) | Done |
-| Risk model (forecast 1–3 days ahead per tehsil) and backtest | Done, gate G2 passed |
-| Alert engine (rules, Urdu / English / Roman Urdu text, voice, de-duplication) | Done |
-| Public website (English and Urdu; desktop and phone, with motion) and authority board | Done |
-| Ask Nigehban (grounded Q&A agent), place check, route to safety, advisory drafts | Done |
-| Satellite rain layer on the board (NASA IMERG) | Done |
-| Security hardening (rate limits, headers, encrypted contacts, board login) | Done |
-| Alert delivery | In-app web inbox with Urdu voice notes; other channels can be integrated |
-| Frontend tests (Vitest) and CI (GitHub Actions) | Done |
-| Alert cycle runner (`pipelines.alerts.run_cycle`, once or every few hours) | Done |
-| Documentation (architecture, model, data, API, configuration) | Done |
-| Weather history for non-monsoon months (`--scope all`) | Optional, 13/35 chunks; the app does not need it |
+- **Search** a village, town or tehsil (try *Mingora*, *Daggar*, *Kalam*) to open its page.
+- **Map:** switch days with *Today / Tomorrow / …*. Click any tehsil for its card.
+- **Satellite rain:** shows rain NASA measured on the day before.
+- On the replay day, about 12 tehsils are **Very high** for 15 Aug.
 
-**In short:** the system is built, tested and runs end to end on one machine as a web app.
+## 2. My area
 
-### Roadmap
+Shows one place in detail:
 
-| Item | Why |
-|---|---|
-| Delivery channels | SMS, WhatsApp, browser push or a mobile app can be integrated as one channel class each (`backend/app/alerts/channels.py`) |
-| Real river gauges | GloFAS added nothing in the backtest; FFD/WAPDA gauge readings would be a real river input, but no open historical feed exists |
-| More flood labels | 89 positive days is a small sample; NDMA reports and news would tighten the model |
-| Validation on new seasons | Re-run the backtest each season as new PDMA reports and archived forecasts accumulate |
+| Section | What you see |
+|:--|:--|
+| **Outlook** | Four day cards, coloured by level |
+| **What to do** | Advice that matches the level |
+| **Why** | The reasons, in plain words |
+| **Am I in a danger zone?** | Checks a point; offers a walking route if it's low ground by a river |
+| **Nearby safer places** | Named shelters and higher ground, with distances |
+| **Rescue 1122** | Nearest stations and the district control room number |
 
-## 2. Run it yourself (Windows, PowerShell)
+Try *Fizagat* (beside the Swat River) to see the danger check say **move away**.
 
-You need Python 3.11 and Node.js 18+ installed. Everything below is run from
-the `nigehban` folder (the repository root).
+## 3. Risk map
 
-### First time only
+All tehsils, ranked from highest risk. Click one on the map or in the list for its levels, reasons,
+exposed villages and river flow. Use **Find a tehsil** to filter.
 
-```powershell
-py -3.11 -m venv .venv
-.venv\Scripts\python -m pip install -e ".[dev]"
-cd frontend; npm install; cd ..
-```
+## 4. Ask Nigehban
 
-`.env` already has your keys. The board password is `NIGEHBAN_BOARD_PASSWORD` in `.env`.
+Ask in English or Urdu. Each answer that uses data shows **Answer checked** and its sources.
 
-### Every time: two terminals
+| Try asking | Expect |
+|:--|:--|
+| *Is there flood risk in Swat tomorrow?* | Babuzai, Swat, very high (replay on) |
+| *کیا کل بونیر میں سیلاب کا خطرہ ہے؟* | A full Urdu answer |
+| *What should I do if water enters my house?* | Official safety advice |
+| *Who won the cricket match?* | A polite "I can only help with floods" |
 
-Terminal 1, the API (backend):
+## 5. Alerts
 
-```powershell
-.venv\Scripts\python -m uvicorn backend.app.main:app --host 127.0.0.1 --port 8000
-```
+Alerts are sent when a place reaches **High or Very high** within 2 days.
 
-Wait for `Application startup complete`. Check http://127.0.0.1:8000/health: it should say
-`"status": "ok"`. The API docs (every endpoint, with a "Try it out" button) are at
-http://127.0.0.1:8000/docs.
+1. Turn on the **14 Aug 2025** replay.
+2. On **Alerts**, add a place that is High that day, such as **Gagra**, **Kabal** or **Mingora**, and
+   click **Subscribe to alerts**. The page shows each place's level.
+3. Run the alert job:
 
-Terminal 2, the web app (frontend):
-
-```powershell
-cd frontend; npm run dev
-```
-
-Open:
-
-- http://localhost:3000 for the public website. Pages: Home, Risk map, My area, Ask, Alerts,
-  Safety guide. It also works on a phone-size window (F12, then the phone icon).
-- http://localhost:3000/board for the authority board (log in with the board password).
-
-In the Claude app you can also start both from the Browser pane: they are the `api` and `web`
-entries in `.claude/launch.json`.
-
-### Run the tests
-
-```powershell
-.venv\Scripts\python -m pytest -q
-```
-
-Expected: about 192 passed, 5 skipped (the skipped ones need live keys). Live LLM tests are opt-in:
-
-```powershell
-$env:NIGEHBAN_RUN_LIVE="1"; .venv\Scripts\python -m pytest -m live; Remove-Item Env:NIGEHBAN_RUN_LIVE
-```
-
-## 3. A 15-minute test walkthrough
-
-It is November, so live risk is almost all "Low". Use the **replays**. They rerun the system
-with the forecasts exactly as they were issued before real floods, with no knowledge of what
-happened next.
-
-### A. Board: the Buner cloudburst (15 Aug 2025)
-
-1. Open `/board` and log in.
-2. In the top bar choose **Replay: 14 Aug 2025 (Buner cloudburst eve)**.
-3. Click the day buttons (Thu 14 Aug … Sun 17 Aug). The map and the counts change by day.
-4. Click a coloured tehsil (for example Buner Daggar or Swat Babuzai). The side panel shows:
-   - its level for each day and **why** (for example "rain over 3 days: 56 mm", "wet topsoil");
-   - villages on low ground near big streams (high / medium / low exposure);
-   - shelters and higher ground, Rescue 1122 stations, the district control-room number;
-   - river flow forecast against the 2-year flow.
-5. Click **Draft advisory for high-risk tehsils**. A ready-to-print advisory appears: a risk table,
-   actions checked against the evidence, a public message in English and Urdu, and sources.
-   Use **Copy text** or **Print**.
-6. Click **Satellite rain** at the top left of the map. Blue squares show rain that NASA
-   satellites measured on the day before the replay date. The darker the blue, the more rain;
-   purple is 60 mm or more. The side list shows the wettest tehsils. Switch back with
-   **Forecast risk**.
-   - Tip: choose the date **15 Aug 2025** in "or date" to see the 14 Aug storm (60–80 mm over
-     Swat, Shangla, Battagram).
-7. **Alerts sent (replay)** at the bottom lists alerts the engine produced for that replay.
-8. Also try **Replay: 26 Jun 2025 (Swat River flood eve)**, or any date from 1 Mar 2024.
-
-### B. Public website
-
-1. Open http://localhost:3000. It opens in English; switch to **اردو** in the header.
-   The choice is remembered.
-2. Click the **Live** pill in the header and choose **14 Aug 2025 · Buner cloudburst**. A yellow bar
-   says you are viewing a past forecast; every page now shows that day. **Back to live** undoes it.
-3. **Home**: the map shows each tehsil's level. Switch days (Today, Tomorrow, …) and switch to
-   **Satellite rain**. The card on the map shows the highest-risk tehsil; click any tehsil to see
-   its card, then **See details**. The counts under the map, the feature cards, "How Nigehban
-   works", and the safety band follow.
-4. **Search** on Home (for example "Mingora", "Pir Baba", "Daggar") or click **Use my location**:
-   it opens **My area** with the 4-day levels, what to do, the reasons, villages on low ground,
-   nearby safer places, Rescue 1122 and the district control room. **Am I in a danger zone?**
-   checks the exact point and, if it is low ground by a river, gives a walking route to higher
-   ground. **Get alerts** adds the place to your alerts.
-5. **Risk map**: a full-screen map with a filterable ranked list; click a tehsil for its levels,
-   reasons, exposure, river flow and satellite rain.
-6. **Ask**: click a suggested question or type one, in Urdu or English, for example:
-   - "کیا کل سوات میں سیلاب کا خطرہ ہے؟"
-   - "What should I do if water enters my house?"
-   Answers use only Nigehban's own data and official guidance and list their sources. In Urdu,
-   **Listen** plays the answer (ElevenLabs voice).
-7. **Alerts**: add places and **Subscribe to alerts** (web inbox, no phone number needed). Then
-   start an alert cycle for the replay date. In a third terminal:
-
-   ```powershell
-   Invoke-RestMethod -Method Post -Uri http://127.0.0.1:8000/internal/run-cycle -ContentType "application/json" -Body '{"as_of":"2025-08-14T09:00:00+05:00"}'
+   ```bash
+   python -m pipelines.alerts.run_cycle --as-of 2025-08-14T09:00:00+05:00
    ```
 
-   If your place is at high or above within 2 days, the alert appears in the inbox in your
-   language, with a play button for the Urdu voice message. Run the command again: no
-   duplicate is sent. This also works from http://127.0.0.1:8000/docs. **Stop alerts** and
-   **Delete all my data** are on the same page.
-8. **Safety guide**: before / during / after advice and the emergency numbers (1122, PDMA 1700).
+4. Refresh **Alerts**. The alert appears with an Urdu voice note.
+5. Run the job again: nothing new arrives, because duplicates are blocked.
 
-### C. Command-line checks (optional)
+**Stop alerts** and **Delete all my data** are on the same page.
 
-```powershell
-.venv\Scripts\python -m pipelines.alerts.replay_cycle   # Buner 13–15 Aug 2025 -> reports/alerts_replay.md
-.venv\Scripts\python -m pipelines.backtest.run          # how many past floods were caught -> reports/backtest.md
-```
+## 6. Urdu
 
-## 4. How it works
+Click **اردو** in the header. The whole site switches to Urdu, right to left.
 
-```
- Open-Meteo forecasts (ECMWF, GFS, ICON)     NASA IMERG satellite rain (observed, board layer only)
- Open-Meteo GloFAS river flow                       |
-        |                                           v
-        v                                  "Satellite rain" map layer
- Weather per tehsil (0.25° cells, area-weighted) ---+
-        |                                           |
-        v                                           |
- Risk model (logistic regression, 7 inputs) <-- terrain + PDMA flood history (training)
-        |   per tehsil, lead 0–3 days, level low / moderate / high / very high, with reasons
-        v
- +--------------------+-------------------------+----------------------+
- | Alert engine       | Website + board         | Ask Nigehban agent   |
- | rules, dedupe,     | maps, details, routes,  | LangGraph: understand|
- | Urdu/English/Roman | advisory drafts         | -> locate -> gather  |
- | text, voice        |                         | -> compose -> check  |
- +--------------------+-------------------------+----------------------+
-        |
-        v
- Web inbox (SMS, WhatsApp, push can be integrated)
-```
+## 7. Authority board
 
-### The pieces, one by one
+Open http://localhost:3000/board and sign in with `NIGEHBAN_BOARD_PASSWORD`.
 
-1. **Flood history (M1).** 8,000+ PDMA KP daily situation reports were downloaded politely,
-   read by an LLM into a fixed form (date, tehsil, village, river, damage), geocoded to tehsils
-   and merged. This gives the flood days the model learns from. Names are removed and the raw
-   reports never leave your computer (gitignored).
-2. **Weather (M2).** Each tehsil is covered by 0.25° weather cells, weighted by area. For every
-   day we keep rain (tehsil average and wettest cell), 3- and 7-day rain, soil moisture and
-   temperature, from ERA5 (past) and the ECMWF / GFS / ICON forecasts (live and as issued in the past).
-3. **Terrain (M3) and places (M4b).** From a 90 m elevation model (30 m for Swat) we compute
-   "height above the nearest stream" and how big each stream is. A village on ground less than
-   5 m above a large stream is "high exposure". Shelters (schools, mosques, health sites),
-   higher ground and Rescue 1122 come from OpenStreetMap and official directories, and are
-   marked unverified.
-4. **Risk model (M5).** A calibrated logistic regression on 7 inputs (rain amounts, wet soil,
-   terrain exposure). We compared it with LightGBM, random forest and others: the simple model
-   generalised best with 89 flood days. Each forecast model (ECMWF, GFS, ICON) is run and the
-   results averaged. Level thresholds are tuned per lead day so false alarms stay near the
-   target. Every level comes with the reasons that pushed it up.
-5. **Rivers (M6).** GloFAS river flow forecasts for points on the main rivers. A flag is raised
-   when the flow is forecast above the 2-year flood. It never lowers a level.
-6. **Backtest (M7).** On real archived forecasts for 2024–2025 the system caught 22 of 41 flood
-   events, against 16 for a plain rain threshold at the same false-alarm rate; 19 were caught
-   3 days ahead.
-7. **Ask Nigehban (M8).** A LangGraph agent. It works out what you are asking and where, gathers
-   evidence (risk, exposure, facilities, PDMA/NDMA guidance from a search index, contacts),
-   writes an answer, then checks it: every claim must point to evidence, and Urdu place names
-   come from a fixed table. If the check fails twice it falls back to a safe template. It uses
-   LangChain with Groq first and Gemini as backup.
-8. **Alerts (M9).** Each cycle (for example every 3 hours with `run_cycle --every-hours 3`) the engine alerts subscribers when
-   their tehsil is high or above within 2 days, or the river flag is raised. It sends once per
-   tehsil, level and date and only again if the level goes up. Text is written by the LLM in
-   Urdu, English and Roman Urdu, then checked by code (level, place, date). The Urdu message is also turned into audio (ElevenLabs).
-   Contacts are encrypted; phone numbers are never shown back.
-9. **Website and board (M12/M13).** The public website has six pages (Home, Risk map, My area,
-   Ask, Alerts, Safety guide) in English and Urdu (Nastaliq, right-to-left), with a
-   Live / Replay switch in the header. The board is English, behind a password, with replays.
-10. **Place check, routes, advisories (M10/M11/F11).** Point danger check from terrain; walking
-    or driving route to safety on OpenStreetMap roads, avoiding low ground; advisory drafts for
-    officials, with actions checked against the evidence.
-11. **Satellite rain layer.** NASA IMERG rain already fallen, per 0.1° cell (about 11 km). We
-    tested it as a model input: it helps only on the day itself, after the rain, so it is shown
-    as an observed layer and kept out of the forecast. See `reports/imerg_vs_era5.md`.
+- Pick a replay or any date since March 2024.
+- Click a tehsil for exposed villages, safer places, Rescue 1122 and river flow.
+- **Draft advisory** builds a printable advisory in English and Urdu.
 
-## 5. Where things are
+## Shareable links
 
-```
-backend/app/
-  api/         HTTP endpoints (risk, geo, chat, alerts, voice)
-  hydromet/    weather, rivers, IMERG satellite rain, nowcast
-  risk/        risk model and its saved artefacts
-  agent/       Ask Nigehban (LangGraph)
-  knowledge/   search index of official guidance
-  alerts/      rules, composer, channels, voice, advisory
-  geo/         danger check, routing, contacts, Urdu names
-  db/          database tables (SQLite by default, Postgres supported)
-frontend/      Next.js website (/, /map, /area, /ask, /alerts, /safety) and board (/board)
-pipelines/     offline jobs that build data, train and evaluate
-reports/       results of each step (QA, model, backtest, alerts, IMERG)
-tests/         automated tests
-data/          reference data (small files in git; large and private data gitignored)
-```
-
-Useful reports: `risk_model.md` (model choice), `backtest.md` (floods caught),
-`alerts_replay.md` (Buner alert replay), `imerg_vs_era5.md` (satellite rain),
-`security_and_voice.md` (security, voice, channels).
-
-## 6. API endpoints (for reference)
-
-| Endpoint | What it does |
-|---|---|
-| `GET /health` | Is everything loaded |
-| `GET /geo/tehsils` | Tehsil boundaries |
-| `GET /risk?as_of=` | Level for every tehsil, days 0–3 (as_of = replay) |
-| `GET /tehsils/{id}` | Detail: exposure, shelters, Rescue 1122, rivers |
-| `GET /places/search?q=` | Find a village or town |
-| `POST /geo/check` | Is this point in a danger zone, and what to do |
-| `POST /route/shelter` | Route to the nearest safer place |
-| `POST /chat` | Ask Nigehban |
-| `POST /subscriptions`, `DELETE /subscriptions/{id}`, `POST /me/delete` | Alerts sign-up and data deletion |
-| `GET /inbox/{id}` | Web inbox |
-| `GET /rain/observed?as_of=` | Satellite rain already fallen |
-| `POST /board/login`, `GET /alerts`, `POST /advisories/draft` | Board (password) |
-| `POST /internal/run-cycle` | Run one alert cycle (token in production mode) |
-| `POST /tts`, `GET /audio/{key}.mp3` | Urdu voice |
-
-## 7. Limits to say out loud
-
-- Risk is per tehsil, not per house. Some floods will be missed (about half in the backtest),
-  and some alerts will be false.
-- Shelters and higher ground come from maps and are unverified.
-- Forecasts are only as good as the weather models; local cloudbursts are the hardest case.
-- Nigehban supports PDMA and district warnings; people should follow official instructions.
+| Link | Opens |
+|:--|:--|
+| `/?replay=2025-08-14` | That past day |
+| `/area?tehsil=swat__kabal` | My area for one tehsil |
+| `/?lang=ur` | The site in Urdu |

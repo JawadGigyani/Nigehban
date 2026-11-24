@@ -1,123 +1,109 @@
 # Risk model
 
-How Nigehban turns weather forecasts into a flash-flood level per tehsil and day, and how well it
-works. Full tables are in `reports/risk_model.md`, `reports/backtest.md`,
-`reports/rivers_glofas.md` and `reports/imerg_vs_era5.md`.
+**In one line:** a calibrated logistic regression on 7 inputs predicts, for each tehsil and day, the
+chance of a flash flood as PDMA would report it.
 
-## The question it answers
+## At a glance
 
-"Will this tehsil have a flash flood (as PDMA would report it) on this day?" for days 0–3 ahead,
-for 48 tehsils in 9 districts of northern Khyber Pakhtunkhwa, in the June–September season.
+| | |
+|:--|:--|
+| **Predicts** | Flood or no flood, per tehsil, today and the next 3 days |
+| **Area** | 48 tehsils in 9 districts of northern Khyber Pakhtunkhwa |
+| **Season** | June to September |
+| **Trained on** | 40,119 tehsil-days (2019–2025), 89 of them with a flood |
+| **Model** | Logistic regression, Platt-calibrated (`backend/app/risk/artifacts/v1/`) |
+| **Result** | 22 of 41 floods caught on real forecasts, against 16 for a rain threshold |
 
-## Training data
+## The data
 
-- **Labels**: PDMA KP daily situation reports, July 2019 to April 2026 (4,922 reports). An LLM read
-  each flood-like district row into a fixed form; events were geocoded to tehsils and merged.
-  Positives are flash floods, floods, cloudbursts and drownings; landslides and roof collapses are
-  kept but are not positives. See `reports/flood_events_qa.md` (gate G1 passed).
-- **Rows**: 40,992 tehsil-days (48 tehsils × June–September 2019–2025); 40,119 used. 89 positive
-  tehsil-days. Left out: the days either side of an event, and districts on days PDMA named only
-  the district.
-- **Weather**: ERA5 for training (what fell), on the 0.25° grid, area-weighted per tehsil plus the
-  wettest cell; archived ECMWF, GFS and ICON forecasts (lead 0–3) from March 2024 for tuning and
-  testing.
-- **Static**: terrain from Copernicus DEM (HAND, slope, catchment), population from WorldPop scaled
-  to the 2023 census.
+- **Floods:** 4,922 PDMA daily reports (July 2019 to April 2026), read by an LLM into a fixed form,
+  geocoded to tehsils and de-duplicated. Personal names are removed first. Counted as floods: flash
+  floods, floods, cloudbursts and drownings.
+- **Weather:** ERA5 for training (the rain that fell). Archived ECMWF, GFS and ICON forecasts
+  (from March 2024) for tuning and testing.
+- **Land:** height above the nearest stream, from the Copernicus elevation model; population from
+  WorldPop, scaled to the 2023 census.
 
-## Features (7)
+## The 7 inputs
 
-| Feature | Meaning |
-|---|---|
-| `log_precip_cell_max` | rain in the wettest 0.25° cell of the tehsil that day (log) |
-| `log_precip_3d` | rain over the last 3 days (log) |
-| `log_precip_max_1h` | heaviest hour of rain (log) |
-| `log_precip_7d_antecedent` | rain in the week before (log) |
-| `soil_moisture_0_7` | topsoil wetness (0–7 cm) |
-| `log_population` | people living in the tehsil (log) |
-| `log_high_villages` | villages on low ground beside large streams (log) |
+| Input | Meaning |
+|:--|:--|
+| Heaviest rain in the tehsil | Rain in its wettest 0.25° cell that day |
+| Rain over 3 days | Rain in the last three days |
+| Heaviest hour | The most intense hour of rain |
+| Rain the week before | How wet the past week was |
+| Topsoil wetness | Soil moisture, 0–7 cm |
+| People | Population of the tehsil |
+| Villages on low ground | Villages beside large streams, on low ground |
 
-19 candidate features were tried (`backend/app/risk/features.py`, `ALL_FEATURES`). With all 19,
-tree models latched onto season, temperature and population and lost to a plain rain threshold.
+Rain values are log-scaled. 19 inputs were tried; more inputs made the model worse.
 
-## Model choice
+## Why this model
 
-Compared with the same folds and the same false-alarm rate (2.5 false alerts per tehsil per
-season). "Hit rate" is the share of flood events with an alert on the day before, the day, or the
-day after.
+All compared at the same false-alarm rate, on seasons and districts the model never saw.
 
-| Model | Hit rate, seasons held out | ROC-AUC | Hit rate, districts held out |
-|---|---|---|---|
-| **Logistic regression** | **0.42** | **0.81** | **0.37** |
-| LightGBM | 0.34 | 0.77 | 0.35 |
-| XGBoost | 0.33 | 0.79 | 0.34 |
-| Extra trees | 0.30 | 0.80 | 0.30 |
-| Random forest | 0.25 | 0.74 | 0.28 |
-| Rain threshold (wettest cell) | 0.37 | 0.81 | — |
+| Model | Floods caught (seasons held out) | Floods caught (districts held out) |
+|:--|:--:|:--:|
+| **Logistic regression** | **42%** | **37%** |
+| LightGBM | 34% | 35% |
+| XGBoost | 33% | 34% |
+| Extra trees | 30% | 30% |
+| Random forest | 25% | 28% |
+| Rain threshold | 37% | — |
 
-Logistic regression was chosen (gate G2 passed: it beats the best single rain threshold on hit rate
-and PR-AUC). Probabilities are Platt-calibrated (Brier 0.0022 at a base rate of 0.0022). The
-artefact is `backend/app/risk/artifacts/v1/` (`model.joblib`, `meta.json`).
+With only 89 flood days, tree models learned noise. The simple model held up best.
 
 ## From probability to level
 
-Each forecast model (ECMWF, GFS, ICON) is scored separately and the three probabilities are
-averaged. Thresholds per lead day, tuned on the archived forecasts of 2024–2025
-(`artifacts/v1/forecast_levels.json`), target about 8 / 2.5 / 0.5 false alerts per tehsil-season:
+The three weather models are scored separately and averaged. Fixed thresholds, tuned on real
+forecasts, set the level:
 
-| Lead | Moderate | High | Very high |
-|---|---|---|---|
-| 1 day | 0.0037 | 0.0075 | 0.0115 |
-| 2 days | 0.0034 | 0.0066 | 0.0106 |
-| 3 days | 0.0036 | 0.0070 | 0.0108 |
+| Days ahead | Moderate | High | Very high |
+|:--:|:--:|:--:|:--:|
+| 1 | 0.0037 | 0.0075 | 0.0115 |
+| 2 | 0.0034 | 0.0066 | 0.0106 |
+| 3 | 0.0036 | 0.0070 | 0.0108 |
 
-Lead 0 uses the lead-1 thresholds. The "High" target is `NIGEHBAN_ALERT_FALSE_ALARM_TARGET_PER_SEASON`.
-Levels come only from the model and these thresholds, never from the LLM.
+Today uses the 1-day thresholds. High is set for about 2.5 false alerts per tehsil per season.
 
-**Reasons**: for each feature, the drop in log-odds when it is set to its median. The largest
-become the plain-language reasons shown with every level.
+## How well it works
 
-## Evaluation
+**Backtest** on real archived forecasts, June–September 2024–2025, each season predicted by a model
+that never saw it:
 
-### Backtest on real forecasts (Jun–Sep 2024–2025, each season predicted by a model trained without it)
+| Method | Floods caught (of 41) | 3 days early | 2+ days early |
+|:--|:--:|:--:|:--:|
+| **Nigehban** | **22** | **19** | **20** |
+| Rain threshold (33 mm) | 16 | 14 | 15 |
 
-| Rule | Events | Caught at any lead | Caught 3 days ahead | Caught 2+ days ahead |
-|---|---|---|---|---|
-| **Nigehban model** | 41 | **22** | **19** | **20** |
-| Model or river flag | 41 | 22 | 19 | 20 |
-| Rain threshold (33 mm, wettest cell) | 41 | 16 | 14 | 15 |
+**Real floods replayed:**
 
-At about 2.5–3 false alerts per tehsil per season. Levels tuned on ERA5 instead of forecasts fired
-far too rarely (7 of 41 at lead 1), which is why levels are tuned on forecasts.
+- **Buner, 15 Aug 2025** (cloudburst): flagged from the forecasts of 14 Aug.
+- **Swat River, 27 Jun 2025:** missed. The forecast rain the day before was too low.
 
-### Replays of known floods
+**Tried and dropped:**
 
-- **Buner, 15 Aug 2025** (cloudburst): flagged from the forecasts issued on 14 Aug; the alert
-  engine sends Buner alerts once, with no duplicates (`reports/alerts_replay.md`).
-- **Swat River, 27 Jun 2025**: missed; the forecast rain the day before was too low. GloFAS also
-  missed it (`reports/replay_check.md`, `reports/rivers_glofas.md`).
-
-### What was tried and not kept
-
-| Idea | Result |
-|---|---|
-| GloFAS river flag | Adds no extra hits in the backtest (kept as a flag that triggers alerts and "be ready" advice) |
-| NASA IMERG satellite rain | Same-day IMERG raises hits from 0.42 to 0.47, but exists only after the rain; past days lower it to 0.38. Not used for forecasting; shown as an observed-rain layer |
-| All 19 features / tree models | Overfit with 89 positives |
+| Idea | What happened |
+|:--|:--|
+| GloFAS river flow as an input | No extra floods caught; kept only as a flag |
+| NASA satellite rain as an input | Helps only after rain falls; shown as a map layer instead |
+| All 19 inputs, tree models | Overfit |
 
 ## Limits
 
-- 89 positive days is a small sample; confidence intervals are wide.
-- PDMA reports under-record floods in remote places, so some "false alerts" may be real events.
-- Weather models are coarse (about 9–25 km); small cloudbursts are the hardest case.
-- 90 m terrain blurs narrow valleys (30 m is used for Swat village bands).
-- About half of past floods were missed in the backtest. Nigehban must be used alongside
-  official warnings.
+- 89 flood days is a small sample.
+- PDMA misses some floods in remote places, so some "false alarms" may be real.
+- Weather models see about 9–25 km; small cloudbursts are the hardest case.
+- About half of past floods were missed. Use alongside official warnings.
 
-## Retraining
+## Retrain
 
-```powershell
-.venv\Scripts\python -m pipelines.risk.experiment     # compare feature sets and models
-.venv\Scripts\python -m pipelines.risk.train          # train, calibrate, write artifacts/v1 and reports/risk_model.md
-.venv\Scripts\python -m pipelines.backtest.run        # backtest on archived forecasts -> reports/backtest.md
-.venv\Scripts\python -m pipelines.risk.replay_check   # replays of known floods -> reports/replay_check.md
+```bash
+python -m pipelines.risk.experiment     # compare inputs and models
+python -m pipelines.risk.train          # train and calibrate
+python -m pipelines.backtest.run        # test on archived forecasts
+python -m pipelines.risk.replay_check   # replay known floods
 ```
+
+Full tables: [risk_model.md](../reports/risk_model.md) · [backtest.md](../reports/backtest.md) ·
+[rivers_glofas.md](../reports/rivers_glofas.md) · [imerg_vs_era5.md](../reports/imerg_vs_era5.md)

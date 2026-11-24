@@ -1,137 +1,72 @@
 # Data
 
-Where Nigehban's data comes from, how to rebuild it, and how private data is kept private. File
-contracts (columns and types) are in `data/contracts/README.md`; licences per file are in
-`data/reference/README.md`.
+Where the data comes from, how to rebuild it, and how private data stays private.
 
 ## Sources
 
-| Source | Used for | Access | Licence |
-|---|---|---|---|
-| PDMA KP daily situation reports (rms.pdma.gov.pk) | Flood event labels | Polite scraper, 2 s between requests, cached | Public reports; raw text kept private |
-| Open-Meteo: ERA5, forecast (ECMWF IFS, GFS, ICON), previous runs | Rain, soil moisture, temperature | Free API, paced to stay inside the free quota | CC BY 4.0 |
-| Open-Meteo Flood API (Copernicus GloFAS) | River flow and return periods | Free API | CC BY 4.0 |
-| NASA GPM IMERG (GES DISC OPeNDAP) | Observed satellite rain layer, comparison with ERA5 | Earthdata token | NASA open data |
-| Copernicus DEM GLO-90 / GLO-30 | HAND, slope, catchments, streams | AWS open data | Copernicus DEM licence |
-| OpenStreetMap (Geofabrik Pakistan extract, Overpass) | Villages, shelters, mosques, health, roads | Download | ODbL |
-| GeoNames | Place names and alternate names | Download | CC BY 4.0 |
-| WorldPop 2020 (1 km) | Population per cell | Download | CC BY 4.0 |
-| Pakistan Census 2023 | Tehsil population totals | PBS tables | Public |
-| PDMA KP, NDMA, NIH guidance PDFs | Knowledge index for answers and advisories | Public documents | Public |
-| Rescue 1122 KP directory and news reports | District control rooms, station points | Manual, marked unverified | Public |
+| Source | Used for | Licence |
+|:--|:--|:--|
+| PDMA KP daily reports | Flood history (labels) | Public; raw text kept private |
+| Open-Meteo: ERA5, ECMWF, GFS, ICON | Rain, soil moisture, temperature | CC BY 4.0 |
+| Open-Meteo: GloFAS | River flow | CC BY 4.0 |
+| NASA GPM IMERG | Satellite rain layer | NASA open data |
+| Copernicus DEM (30 m, 90 m) | Terrain, streams, low ground | Copernicus DEM licence |
+| OpenStreetMap | Villages, shelters, roads | ODbL |
+| GeoNames | Place names | CC BY 4.0 |
+| WorldPop, Census 2023 | Population | CC BY 4.0, public |
+| PDMA, NDMA, NIH guidance | Answers and advisories | Public |
 
-## Data folders
+Per-file licences: `data/reference/README.md`.
 
-```
-data/reference/   small reference tables, in git (tehsils, grid weights, gazetteer, facilities,
-                  village exposure, river points, Urdu names, Rescue 1122 contacts)
-data/raw/         downloads and PDMA reports                         (gitignored, private)
-data/interim/     intermediate files: LLM extractions, terrain rasters (gitignored)
-data/events/      flood events and corrections                        (gitignored, private)
-data/features/    hydromet_daily.parquet, imerg_daily.parquet         (gitignored)
-data/cache/       API caches (Open-Meteo, IMERG, OSM road tiles)       (gitignored)
-data/nigehban.db  local SQLite database                                 (gitignored)
-```
+## What's in git, and what isn't
 
-## Rebuild order
+| Folder | In git? | Contents |
+|:--|:--:|:--|
+| `data/reference/` | ✅ | Tehsils, place names, villages, shelters, rivers, Urdu names, Rescue 1122 |
+| `data/features/` (3 files) | ✅ | Weather history and tehsil features, so a fresh clone works |
+| `data/raw/`, `data/events/` | ❌ | PDMA reports and flood events (private); one small OSM file is kept |
+| `data/interim/`, `data/cache/` | ❌ | Terrain rasters, road tiles, API caches (large) |
 
-Run from the `nigehban` folder. Each step is resumable and cached; most write a QA report in
-`reports/`.
+Without the terrain files, everything works except the danger check, which says so clearly.
 
-### 1. Reference data (M4a)
+## Rebuild
 
-```powershell
-.venv\Scripts\python -m pipelines.reference.build_tehsils
-.venv\Scripts\python -m pipelines.reference.census2023
-.venv\Scripts\python -m pipelines.reference.build_gazetteer --fetch-osm
-.venv\Scripts\python -m pipelines.reference.build_aliases
-```
+Each step resumes where it stopped and caches its downloads. Run from the repository root.
 
-### 2. Flood events from PDMA reports (M1)
+| Step | Command | Output |
+|:--|:--|:--|
+| 1. Reference data | `python -m pipelines.reference.build_tehsils` (then `census2023`, `build_gazetteer --fetch-osm`, `build_aliases`) | `data/reference/` |
+| 2. Flood events | `python -m pipelines.pdma.fetch_dsr --start 1 --end 8200`, then `extract`, then `build_events` | `data/events/` (private) |
+| 3. Weather history | `python -m pipelines.hydromet.build_history` | `data/features/` |
+| 4. Terrain | `python -m pipelines.terrain.fetch_dem`, then `build_terrain` | `data/interim/terrain/` |
+| 5. Facilities and roads | `python -m pipelines.reference.build_facilities --fetch`, then `extract_roads` | shelters, road tiles |
+| 6. Rivers | `python -m pipelines.rivers.build_thresholds` | river flood levels |
+| 7. Model | see [Risk model](MODEL.md#retrain) | `backend/app/risk/artifacts/` |
+| 8. Guidance index | `python -m pipelines.knowledge.build_index` | `backend/app/knowledge/index/` |
 
-```powershell
-.venv\Scripts\python -m pipelines.pdma.fetch_dsr --start 1 --end 8200   # start or resume the download
-.venv\Scripts\python -m pipelines.pdma.fetch_dsr --status               # progress
-.venv\Scripts\python -m pipelines.pdma.extract --dry-run                # count the LLM work
-.venv\Scripts\python -m pipelines.pdma.extract                          # LLM extraction (cached)
-.venv\Scripts\python -m pipelines.pdma.build_events                     # dedupe, geocode, write events
-```
+<details>
+<summary>Extra options</summary>
 
-- `extract` parses each report, keeps flood-like district rows, removes personal names from the
-  text (`pipelines/pdma/redact.py`) and asks the LLM to fill a fixed form.
-- `build_events` geocodes (village, then tehsil, then district), merges repeat reports, applies the
-  private hand corrections in `data/events/event_corrections.csv`, and writes
-  `data/events/flood_events.parquet` plus `reports/flood_events_qa.md`.
+- **Swat at 30 m:** `fetch_dem --res 30 --bbox 72.0 34.6 72.9 35.9`, `build_terrain --tag swat30`,
+  `merge_detail --tag swat30 --district swat`.
+- **All months of weather:** `build_history --scope all` (not needed by the app; uses the free daily
+  quota, so it can take days).
+- **Satellite rain history:** `python -m pipelines.hydromet.imerg_history`.
+- **Quality reports:** `pipelines.hydromet.qa`, `pipelines.terrain.qa`, `pipelines.rivers.qa`.
 
-### 3. Weather history (M2)
-
-```powershell
-.venv\Scripts\python -m pipelines.hydromet.build_history              # Jun–Sep 2019–2025 (core)
-.venv\Scripts\python -m pipelines.hydromet.build_history --scope all  # every month (optional)
-.venv\Scripts\python -m pipelines.hydromet.build_history --status
-.venv\Scripts\python -m pipelines.hydromet.qa                         # reports/weather_qa.md
-.venv\Scripts\python -m pipelines.hydromet.imerg_history              # IMERG Jun–Sep 2019–2025
-```
-
-The Open-Meteo pacer keeps usage under the free limits (per minute, hour and day) and remembers
-usage across runs (`data/cache/openmeteo/_pacer.json`). When the daily quota is used up the script
-stops cleanly; run it again the next day.
-
-### 4. Terrain and facilities (M3, M4b)
-
-```powershell
-.venv\Scripts\python -m pipelines.terrain.fetch_dem
-.venv\Scripts\python -m pipelines.terrain.build_terrain
-.venv\Scripts\python -m pipelines.terrain.fetch_dem --res 30 --bbox 72.0 34.6 72.9 35.9
-.venv\Scripts\python -m pipelines.terrain.build_terrain --tag swat30
-.venv\Scripts\python -m pipelines.terrain.merge_detail --tag swat30 --district swat
-.venv\Scripts\python -m pipelines.terrain.qa                          # reports/terrain_qa.md
-.venv\Scripts\python -m pipelines.reference.build_facilities --fetch
-.venv\Scripts\python -m pipelines.reference.extract_roads             # OSM road tiles for routing
-```
-
-Village exposure band: the lowest HAND (height above nearest stream) within about 180 m of the
-village; high = under 5 m beside a stream draining at least 50 km², medium = under 8 m.
-
-### 5. Rivers (M6)
-
-```powershell
-.venv\Scripts\python -m pipelines.rivers.build_thresholds   # Gumbel fit to yearly GloFAS peaks 1997–2025
-.venv\Scripts\python -m pipelines.rivers.qa                 # reports/rivers_glofas.md
-```
-
-### 6. Model and evaluation (M5, M7)
-
-See [MODEL.md](MODEL.md#retraining).
-
-### 7. Knowledge index (M8)
-
-```powershell
-.venv\Scripts\python -m pipelines.knowledge.build_index
-```
-
-Builds `backend/app/knowledge/index/passages.jsonl.gz` from the guidance PDFs (PDMA KP summer
-hazards contingency plan, NDMP, Swat disaster risk mapping, PDMA flood do's and don'ts, NIH flood
-guidelines). Lists of officials' names are filtered out.
-
-### 8. Check
-
-`GET /health` lists any runtime file still missing (`backend/app/runtime_data.py`, `RUNTIME_FILES`).
+</details>
 
 ## Privacy
 
-- Raw PDMA reports contain personal names. They stay in gitignored `data/raw/` and are never
-  committed or bundled. Names are redacted before any text goes to an LLM.
-- Event files, hand corrections and spot checks are private (`data/events/`).
-- Subscriber contacts are encrypted at rest (Fernet) and looked up by keyed hash; the API never
-  returns them. Users can delete all their data (`POST /me/delete`).
-- API keys live only in `.env` (gitignored).
+- PDMA reports contain names. They never leave `data/raw/`, and names are removed before any text goes
+  to a language model.
+- Subscriber contacts are encrypted and never returned by the API. Users can delete all their data.
+- API keys live only in `.env`, which git ignores.
 
-## Hand-edited reference files
+## Files you might edit by hand
 
-| File | What to know |
-|---|---|
-| `data/reference/urdu_names.csv` | Fixed Urdu names for districts and tehsils, confirmed by a native speaker. UTF-8 with BOM; in Excel save as "CSV UTF-8" or the Urdu is corrupted. |
-| `data/reference/manual_places.csv` | Places the gazetteer misses or misplaces (for example Fizagat). |
-| `data/reference/rescue1122_manual.csv`, `rescue1122_district_contacts.csv` | Rescue 1122 stations and district control rooms; shown as unverified. |
-| `data/events/event_corrections.csv` (private) | Corrections from the manual spot check, applied on every rebuild. |
+| File | Note |
+|:--|:--|
+| `data/reference/urdu_names.csv` | Urdu names for districts and tehsils. In Excel, save as **CSV UTF-8**. |
+| `data/reference/manual_places.csv` | Places the maps miss or misplace |
+| `data/reference/rescue1122_*.csv` | Rescue 1122 stations and district numbers |
